@@ -10,7 +10,7 @@ export default function DashboardPage() {
   return (
     <AppShell>
       <div className="overflow-y-auto">
-        <div className="mx-auto flex max-w-[1200px] flex-col gap-6 p-6 lg:p-8">
+        <div className="mx-auto flex flex-col gap-6 p-6 lg:p-8">
           <DashboardHeader />
           <KpiCards />
 

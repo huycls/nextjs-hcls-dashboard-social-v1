@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -93,12 +93,10 @@ export function WorkflowList() {
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
-  const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const [workflowToDelete, setWorkflowToDelete] = useState<WorkflowItem | null>(
     null,
   );
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
 
   const totalPages = Math.max(1, Math.ceil(workflows.length / pageSize));
   const effectivePage = Math.min(page, totalPages);
@@ -116,17 +114,6 @@ export function WorkflowList() {
   const allPageSelected =
     pageItems.length > 0 &&
     pageItems.every((workflow) => selectedIds.has(workflow.id));
-
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setOpenMenuId(null);
-      }
-    }
-
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   function toggleSelectAll() {
     setSelectedIds((current) => {
@@ -256,7 +243,7 @@ export function WorkflowList() {
                   <th className="px-4 py-3 font-medium">Apps</th>
                   <th className="px-4 py-3 font-medium">Status</th>
                   <th className="px-4 py-3 font-medium">Last modified</th>
-                  <th className="w-12 px-4 py-3" />
+                  <th className="w-24 px-4 py-3 font-medium">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -326,43 +313,22 @@ export function WorkflowList() {
                           {workflow.lastModified}
                         </td>
 
-                        <td className="relative px-4 py-4">
-                          <button
-                            type="button"
-                            aria-label={`Actions for ${workflow.name}`}
-                            aria-expanded={openMenuId === workflow.id}
-                            onClick={() =>
-                              setOpenMenuId((current) =>
-                                current === workflow.id ? null : workflow.id,
-                              )
-                            }
-                            className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 transition hover:bg-gray-100 hover:text-gray-600">
-                            <MoreHorizontal className="h-4 w-4" />
-                          </button>
-
-                          {openMenuId === workflow.id && (
-                            <div
-                              ref={menuRef}
-                              className="absolute right-4 top-12 z-20 w-40 overflow-hidden rounded-xl border border-gray-200 bg-white py-1 shadow-lg">
-                              <Link
-                                href={`/automations/${workflow.id}/edit`}
-                                onClick={() => setOpenMenuId(null)}
-                                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">
-                                <Pencil className="h-4 w-4" />
-                                Edit
-                              </Link>
-                              <button
-                                type="button"
-                                onClick={() => {
-                                  setOpenMenuId(null);
-                                  setWorkflowToDelete(workflow);
-                                }}
-                                className="flex w-full items-center gap-2 px-3 py-2 text-sm text-red-600 hover:bg-red-50">
-                                <Trash2 className="h-4 w-4" />
-                                Delete
-                              </button>
-                            </div>
-                          )}
+                        <td className="px-4 py-4">
+                          <div className="flex items-center justify-end gap-1">
+                            <Link
+                              href={`/automations/${workflow.id}/edit`}
+                              aria-label={`Edit ${workflow.name}`}
+                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 transition hover:bg-gray-100 hover:text-gray-700">
+                              <Pencil className="h-5 w-5" />
+                            </Link>
+                            <button
+                              type="button"
+                              aria-label={`Delete ${workflow.name}`}
+                              onClick={() => setWorkflowToDelete(workflow)}
+                              className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-gray-400 transition hover:bg-red-50 hover:text-red-600">
+                              <Trash2 className="h-5 w-5" />
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     );

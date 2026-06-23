@@ -399,7 +399,7 @@ export function WorkflowCanvasEditor({
 
         {selectedNodeId === "webhook" && (
           <WebhookConfigPanel
-            workflowId={workflowId}
+            appWorkflowId={workflowId}
             config={config}
             onChange={handleConfigChange}
             onClose={() => setSelectedNodeId(null)}

@@ -49,22 +49,16 @@ export type WorkflowItem = {
 };
 
 export type WorkflowNodeConfig = {
+  workflowId: string;
   topic: string;
-  useProductionWebhook: boolean;
-  /** Paste Test URL từ n8n Webhook node (ưu tiên hơn .env) */
-  webhookTestUrl: string;
-  /** Paste Production URL từ n8n */
-  webhookProductionUrl: string;
   credentials: Partial<
     Record<string, { apiKey: string; secretKey: string }>
   >;
 };
 
 export const DEFAULT_WORKFLOW_CONFIG: WorkflowNodeConfig = {
+  workflowId: "",
   topic: "",
-  useProductionWebhook: false,
-  webhookTestUrl: "",
-  webhookProductionUrl: "",
   credentials: {},
 };
 

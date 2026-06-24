@@ -181,7 +181,7 @@ export function PricingSection() {
           <p className="text-sm font-semibold uppercase tracking-wider text-primary">
             Pricing
           </p>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-heading sm:text-4xl lg:text-5xl">
+          <h2 className="mt-4 text-3xl font-semibold text-heading sm:text-4xl lg:text-5xl">
             Choose the plan that&apos;s right for you
           </h2>
 

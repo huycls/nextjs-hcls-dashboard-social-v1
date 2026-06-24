@@ -36,7 +36,7 @@ export function ProblemSection() {
           <p className="text-sm font-semibold uppercase tracking-wider text-primary">
             Problem
           </p>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-heading sm:text-4xl lg:text-5xl">
+          <h2 className="mt-4 text-3xl font-semibold text-heading sm:text-4xl lg:text-5xl">
             Manually entering your data is a hassle.
           </h2>
         </div>

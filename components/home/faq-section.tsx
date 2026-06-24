@@ -87,7 +87,7 @@ export function FaqSection() {
           <p className="text-sm font-semibold uppercase tracking-wider text-primary">
             FAQ
           </p>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-heading sm:text-4xl lg:text-5xl">
+          <h2 className="mt-4 text-3xl font-semibold text-heading sm:text-4xl lg:text-5xl">
             Frequently asked questions
           </h2>
         </div>

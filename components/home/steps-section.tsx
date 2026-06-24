@@ -120,7 +120,7 @@ export function StepsSection() {
           <p className="text-sm font-semibold uppercase tracking-wider text-primary">
             How it works
           </p>
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-heading sm:text-4xl lg:text-5xl">
+          <h2 className="mt-4 text-3xl font-semibold text-heading sm:text-4xl lg:text-5xl">
             Just 3 steps to get started
           </h2>
         </div>

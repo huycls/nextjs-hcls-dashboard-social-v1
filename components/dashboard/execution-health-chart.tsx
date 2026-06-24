@@ -6,7 +6,7 @@ import { TrendingUp } from "lucide-react";
 const data = [
   { name: "Success", value: 86.3, color: "var(--node-green)" },
   { name: "Delayed", value: 8.5, color: "var(--node-orange)" },
-  { name: "Failed", value: 5.2, color: "var(--muted)" },
+  { name: "Failed", value: 5.2, color: "var(--error, var(--dpop-error-500))" },
 ];
 
 export function ExecutionHealthChart() {
@@ -60,7 +60,7 @@ export function ExecutionHealthChart() {
               className="h-2.5 w-2.5 rounded-full"
               style={{ backgroundColor: item.color }}
             />
-            <span className="text-xs text-[#333333]d">{item.name}</span>
+            <span className="text-xs text-muted">{item.name}</span>
           </div>
         ))}
       </div>

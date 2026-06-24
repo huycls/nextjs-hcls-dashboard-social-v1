@@ -110,7 +110,7 @@ function NavDropdownMenu({ label, items }: NavDropdown) {
 
 export function HomeNavbar() {
   return (
-    <header className="sticky top-0 z-40 border-b border-border bg-surface/95 backdrop-blur-sm">
+    <header className="sticky top-0 z-40 border-b border-border bg-surface/95 backdrop-blur-lg">
       <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-6 lg:px-10">
         <Link
           href="/"

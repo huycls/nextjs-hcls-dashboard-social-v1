@@ -139,7 +139,7 @@ export function WorkflowCanvasEditor({
             <h1 className="text-lg font-semibold text-heading">
               {workflowName}
             </h1>
-            <p className="text-xs text-[#333333]d">
+            <p className="text-xs text-muted">
               {workflowTypeLabel} · n8n workflow · {configuredCount}/
               {template.configurableNodes.length} nodes configured
             </p>
@@ -150,7 +150,7 @@ export function WorkflowCanvasEditor({
           <div className="flex items-center gap-2">
             <span
               id="testing-mode-label"
-              className="text-sm text-[#333333]d">
+              className="text-sm text-muted">
               Testing mode
             </span>
             <button
@@ -173,7 +173,7 @@ export function WorkflowCanvasEditor({
           <button
             type="button"
             aria-label="Share workflow"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border text-[#333333]d">
+            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border text-muted">
             <Share2 className="h-4 w-4" />
           </button>
 
@@ -198,14 +198,14 @@ export function WorkflowCanvasEditor({
                 type="button"
                 aria-label="Undo"
                 disabled
-                className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-surface-elevated text-[#333333]d">
+                className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-surface-elevated text-muted">
                 <Undo2 className="h-4 w-4" />
               </button>
               <button
                 type="button"
                 aria-label="Redo"
                 disabled
-                className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-surface-elevated text-[#333333]d">
+                className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-surface-elevated text-muted">
                 <Redo2 className="h-4 w-4" />
               </button>
             </div>
@@ -261,7 +261,7 @@ export function WorkflowCanvasEditor({
             );
 
             const baseClasses =
-              "absolute select-none rounded-lg border shadow-sm transition";
+              "absolute select-none rounded-lg border transition";
 
             if (
               node.variant === "ai-agent" ||
@@ -285,7 +285,7 @@ export function WorkflowCanvasEditor({
                         {node.label}
                       </p>
                       {node.subtitle && (
-                        <p className="text-[10px] text-[#333333]d">
+                        <p className="text-[10px] text-muted">
                           {node.subtitle}
                         </p>
                       )}
@@ -306,6 +306,7 @@ export function WorkflowCanvasEditor({
                     key={node.id}
                     type="button"
                     data-canvas-node="true"
+                    data-node-tone={nodeStyle.tone}
                     onClick={() =>
                       node.configurableId &&
                       setSelectedNodeId(node.configurableId)
@@ -326,6 +327,7 @@ export function WorkflowCanvasEditor({
                 <div
                   key={node.id}
                   data-canvas-node="true"
+                  data-node-tone={nodeStyle.tone}
                   className={`${baseClasses} ${nodeStyle.card}`}
                   style={{
                     left: node.x,
@@ -344,6 +346,7 @@ export function WorkflowCanvasEditor({
               <Wrapper
                 key={node.id}
                 data-canvas-node={isConfigurable ? "true" : undefined}
+                data-node-tone={nodeStyle.tone}
                 type={isConfigurable ? "button" : undefined}
                 onClick={
                   isConfigurable
@@ -372,7 +375,7 @@ export function WorkflowCanvasEditor({
                     {node.label}
                   </p>
                   {node.subtitle && (
-                    <p className="text-[10px] text-[#333333]d">
+                    <p className="text-[10px] text-muted">
                       {node.subtitle}
                     </p>
                   )}

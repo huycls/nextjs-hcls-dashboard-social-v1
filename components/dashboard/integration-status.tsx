@@ -33,12 +33,13 @@ const integrations = [
 
 const badgeStyles = {
   success: "bg-[var(--node-green-bg)] text-[var(--node-green)]",
-  warning: "bg-[var(--node-orange-bg)] text-[var(--node-orange)]",
+  warning:
+    "bg-[var(--status-warning-bg,var(--node-orange-bg))] text-[var(--status-warning,var(--node-orange))]",
 };
 
 const iconStyles = {
   success: "text-[var(--node-green)]",
-  warning: "text-[var(--node-orange)]",
+  warning: "text-[var(--status-warning,var(--node-orange))]",
 };
 
 export function IntegrationStatus() {
@@ -48,7 +49,7 @@ export function IntegrationStatus() {
         <h2 className="text-base font-semibold text-heading">
           Integration Status
         </h2>
-        <p className="mt-1 text-sm text-[#333333]d">
+        <p className="mt-1 text-sm text-muted">
           Real-time status of connected systems
         </p>
       </div>
@@ -59,14 +60,14 @@ export function IntegrationStatus() {
             key={name}
             className="flex items-center justify-between gap-3 py-4 first:pt-0 last:pb-0">
             <div className="flex min-w-0 items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-background text-[11px] font-bold text-[#333333]d">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-background text-[11px] font-bold text-muted">
                 {logo}
               </div>
               <div className="min-w-0">
                 <p className="truncate text-sm font-medium text-heading">
                   {name}
                 </p>
-                <p className="text-xs text-[#333333]d">Last sync: {lastSync}</p>
+                <p className="text-xs text-muted">Last sync: {lastSync}</p>
               </div>
             </div>
 

@@ -194,7 +194,7 @@ export function WorkflowList() {
           <h1 className="text-2xl font-semibold tracking-tight text-heading">
             Automations
           </h1>
-          <p className="mt-1 text-sm text-[#333333]d">
+          <p className="mt-1 text-sm text-muted">
             Manage your workflow projects and integrations
           </p>
         </div>
@@ -212,7 +212,7 @@ export function WorkflowList() {
         <div className="surface-card overflow-hidden rounded-2xl bg-surface-elevated">
           <div className="flex items-center justify-between border-b border-border px-5 py-4">
             <div className="flex items-center gap-2">
-              <ClipboardList className="h-4 w-4 text-[#333333]d" />
+              <ClipboardList className="h-4 w-4 text-muted" />
               <h2 className="text-sm font-semibold text-heading">
                 Recent Workflows
               </h2>
@@ -220,7 +220,7 @@ export function WorkflowList() {
             <button
               type="button"
               aria-label="Workflow list options"
-              className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-[#333333]d transition hover:bg-surface hover:text-foreground">
+              className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-muted transition hover:bg-surface hover:text-foreground">
               <MoreHorizontal className="h-4 w-4" />
             </button>
           </div>
@@ -228,7 +228,7 @@ export function WorkflowList() {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[920px] text-left text-sm">
               <thead>
-                <tr className="border-b border-border text-xs text-[#333333]d">
+                <tr className="border-b border-border text-xs text-muted">
                   <th className="w-12 px-4 py-3">
                     <input
                       type="checkbox"
@@ -251,7 +251,7 @@ export function WorkflowList() {
                   <tr>
                     <td
                       colSpan={7}
-                      className="px-4 py-12 text-center text-sm text-[#333333]d">
+                      className="px-4 py-12 text-center text-sm text-muted">
                       No workflows found. Create a new project to get started.
                     </td>
                   </tr>
@@ -278,7 +278,7 @@ export function WorkflowList() {
 
                         <td className="px-4 py-4">
                           <div className="flex items-center gap-3">
-                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-surface text-[#333333]d">
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-surface text-muted">
                               <Network className="h-4 w-4" />
                             </div>
                             <span className="font-medium text-heading">
@@ -295,7 +295,7 @@ export function WorkflowList() {
                           {workflow.apps.length > 0 ? (
                             <AppIcons apps={workflow.apps} />
                           ) : (
-                            <span className="text-xs text-[#333333]d">—</span>
+                            <span className="text-xs text-muted">—</span>
                           )}
                         </td>
 
@@ -309,7 +309,7 @@ export function WorkflowList() {
                           />
                         </td>
 
-                        <td className="px-4 py-4 text-[#333333]d">
+                        <td className="px-4 py-4 text-muted">
                           {workflow.lastModified}
                         </td>
 
@@ -318,14 +318,14 @@ export function WorkflowList() {
                             <Link
                               href={`/dashboard/automations/${workflow.id}/edit`}
                               aria-label={`Edit ${workflow.name}`}
-                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-[#333333]d transition hover:bg-surface hover:text-foreground">
+                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-muted transition hover:bg-surface hover:text-foreground">
                               <Pencil className="h-5 w-5" />
                             </Link>
                             <button
                               type="button"
                               aria-label={`Delete ${workflow.name}`}
                               onClick={() => setWorkflowToDelete(workflow)}
-                              className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-[#333333]d transition hover:bg-rose-500/10 hover:text-rose-400">
+                              className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-muted transition hover:bg-rose-500/10 hover:text-rose-400">
                               <Trash2 className="h-5 w-5" />
                             </button>
                           </div>
@@ -353,7 +353,7 @@ export function WorkflowList() {
                 pageNumber === "ellipsis" ? (
                   <span
                     key={`ellipsis-${index}`}
-                    className="px-1 text-sm text-[#333333]d">
+                    className="px-1 text-sm text-muted">
                     ...
                   </span>
                 ) : (
@@ -387,7 +387,7 @@ export function WorkflowList() {
               </button>
             </div>
 
-            <div className="flex items-center gap-3 text-sm text-[#333333]d">
+            <div className="flex items-center gap-3 text-sm text-muted">
               <label
                 htmlFor="page-size"
                 className="font-medium">
@@ -438,7 +438,7 @@ export function WorkflowList() {
             </h2>
             <p
               id="delete-workflow-description"
-              className="mt-2 text-sm text-[#333333]d">
+              className="mt-2 text-sm text-muted">
               Are you sure you want to delete{" "}
               <span className="font-medium text-heading">
                 {workflowToDelete.name}

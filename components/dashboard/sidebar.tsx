@@ -12,7 +12,12 @@ import {
 import { BrandLogo } from "@/components/home/brand-logo";
 
 const mainNav = [
-  { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard, exact: true },
+  {
+    label: "Dashboard",
+    href: "/dashboard",
+    icon: LayoutDashboard,
+    exact: true,
+  },
   {
     label: "Automations",
     href: "/dashboard/automations",
@@ -33,10 +38,15 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="flex h-screen w-[240px] shrink-0 flex-col bg-sidebar px-4 py-6">
+    <aside className="flex h-screen w-[240px] shrink-0 flex-col border-r border-border bg-sidebar px-4 py-6">
       <div className="mb-8 px-2">
-        <Link href="/dashboard" className="flex items-center gap-2.5">
-          <BrandLogo className="h-5 w-5 shrink-0" variant="primary" />
+        <Link
+          href="/dashboard"
+          className="flex items-center gap-2.5">
+          <BrandLogo
+            className="h-5 w-5 shrink-0"
+            variant="primary"
+          />
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold text-sidebar-heading">
               Flowaxon
@@ -60,8 +70,7 @@ export function Sidebar() {
                 active
                   ? "bg-sidebar-active text-primary"
                   : "text-sidebar-foreground hover:bg-sidebar-hover hover:text-sidebar-heading"
-              }`}
-            >
+              }`}>
               <Icon className="h-4 w-4 shrink-0" />
               {label}
             </Link>

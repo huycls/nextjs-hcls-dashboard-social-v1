@@ -40,7 +40,8 @@ const activities: ActivityItem[] = [
 const statusStyles: Record<ActivityItem["status"], string> = {
   Approved: "bg-[var(--node-green-bg)] text-[var(--node-green)]",
   Processing: "bg-[var(--node-blue-bg)] text-[var(--node-blue)]",
-  "Pending Docs": "bg-[var(--node-orange-bg)] text-[var(--node-orange)]",
+  "Pending Docs":
+    "bg-[var(--status-warning-bg,var(--node-orange-bg))] text-[var(--status-warning,var(--node-orange))]",
 };
 
 export function RecentWorkflows() {
@@ -50,7 +51,7 @@ export function RecentWorkflows() {
         <h2 className="text-base font-semibold text-heading">
           Recent Activity
         </h2>
-        <p className="mt-1 text-sm text-[#333333]d">
+        <p className="mt-1 text-sm text-muted">
           Latest workflows processed by AI
         </p>
       </div>
@@ -62,7 +63,7 @@ export function RecentWorkflows() {
             className="flex flex-col gap-3 py-4 first:pt-0 last:pb-0 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0">
               <p className="font-medium text-heading">{item.title}</p>
-              <p className="mt-0.5 text-sm text-[#333333]d">{item.subtitle}</p>
+              <p className="mt-0.5 text-sm text-muted">{item.subtitle}</p>
             </div>
 
             <div className="flex flex-wrap items-center gap-3 sm:justify-end">
@@ -73,7 +74,7 @@ export function RecentWorkflows() {
                 className={`inline-flex rounded-md px-2.5 py-1 text-xs font-medium ${statusStyles[item.status]}`}>
                 {item.status}
               </span>
-              <span className="text-xs text-[#333333]d">{item.date}</span>
+              <span className="text-xs text-muted">{item.date}</span>
             </div>
           </li>
         ))}

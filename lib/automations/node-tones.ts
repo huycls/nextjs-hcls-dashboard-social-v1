@@ -35,7 +35,7 @@ export const ZONE_TONE_STYLES: Record<NodeTone, string> = {
 export function resolveNodeTone(node: CanvasNode): NodeTone {
   if (node.tone) return node.tone;
 
-  if (node.variant === "webhook" || node.variant === "form") return "green";
+  if (node.variant === "webhook" || node.variant === "form") return "orange";
   if (
     node.variant === "condition" ||
     node.icon === "code" ||

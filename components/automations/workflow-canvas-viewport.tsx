@@ -164,7 +164,7 @@ export function WorkflowCanvasViewport({
       className="relative min-w-0 flex-1 overflow-hidden">
       {toolbar}
 
-      <div className="absolute right-6 top-6 z-10 flex items-center gap-2 rounded-lg border border-border bg-surface-elevated px-2 py-1 text-xs text-[#333333]d shadow-sm">
+      <div className="absolute right-6 top-6 z-10 flex items-center gap-2 rounded-lg border border-border bg-surface-elevated px-2 py-1 text-xs text-muted shadow-sm">
         <button
           type="button"
           aria-label="Zoom out"

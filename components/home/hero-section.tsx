@@ -16,7 +16,7 @@ export function HeroSection() {
             Work
             <RotatingText
               texts={["smarter.", "Faster"]}
-              mainClassName="px-2 ml-4 sm:px-2 md:px-3 bg-cyan-300 text-black overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
+              mainClassName="px-2 ml-4 sm:px-2 md:px-3 bg-primary text-black overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
               staggerFrom="last"
               initial={{ y: "100%" }}
               animate={{ y: 0 }}

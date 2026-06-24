@@ -11,11 +11,11 @@ export default function DashboardPage() {
         <DashboardHeader />
         <KpiCards />
 
-        <section className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:gap-8">
-          <RecentWorkflows />
+        <section className="grid grid-cols-1 gap-6 lg:grid-cols-3 lg:gap-8">
           <div className="lg:col-span-2">
-            <IntegrationStatus />
+            <RecentWorkflows />
           </div>
+          <IntegrationStatus />
         </section>
 
         <AiProcessingMetrics />

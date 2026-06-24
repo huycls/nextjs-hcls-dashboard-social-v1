@@ -31,7 +31,7 @@ function CustomTooltip({
 
   return (
     <div className="surface-card rounded-xl bg-surface-elevated px-3 py-2">
-      <p className="text-xs font-medium text-[#333333]d">CRM</p>
+      <p className="text-xs font-medium text-muted">CRM</p>
       <p className="text-sm font-semibold text-heading">
         ${payload[0].value.toLocaleString()}
       </p>
@@ -65,12 +65,12 @@ export function WorkflowActivityChart() {
                 y2="1">
                 <stop
                   offset="0%"
-                  stopColor="var(--primary)"
+                  stopColor="var(--node-blue)"
                   stopOpacity={0.35}
                 />
                 <stop
                   offset="100%"
-                  stopColor="var(--primary)"
+                  stopColor="var(--node-blue)"
                   stopOpacity={0.02}
                 />
               </linearGradient>
@@ -98,11 +98,11 @@ export function WorkflowActivityChart() {
             <Area
               type="monotone"
               dataKey="value"
-              stroke="var(--primary)"
+              stroke="var(--node-blue)"
               strokeWidth={2}
               fill="url(#activityFill)"
               dot={false}
-              activeDot={{ r: 5, fill: "var(--primary)", strokeWidth: 0 }}
+              activeDot={{ r: 5, fill: "var(--node-blue)", strokeWidth: 0 }}
             />
           </AreaChart>
         </ResponsiveContainer>

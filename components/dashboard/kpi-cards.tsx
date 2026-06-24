@@ -60,7 +60,7 @@ export function KpiCards() {
           key={title}
           className="surface-card rounded-xl bg-surface p-5">
           <div className="mb-4 flex items-start justify-between gap-3">
-            <p className="text-sm font-medium text-[#333333]d">{title}</p>
+            <p className="text-sm font-medium text-muted">{title}</p>
             <div
               className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${iconClass}`}>
               <Icon className="h-5 w-5" />

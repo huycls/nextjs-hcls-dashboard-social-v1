@@ -5,7 +5,7 @@ export function DashboardHeader() {
         <h1 className="text-2xl font-semibold tracking-tight text-heading">
           Dashboard
         </h1>
-        <p className="mt-1 text-sm text-[#333333]d">
+        <p className="mt-1 text-sm text-muted">
           Automating your workflow operations with AI.
         </p>
       </div>
@@ -15,7 +15,7 @@ export function DashboardHeader() {
           <span className="h-1.5 w-1.5 rounded-full bg-[var(--node-green)]" />
           AI Active
         </span>
-        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-xs font-semibold text-background">
+        <div className="flex h-9 w-9 items-center justify-center rounded-full bg-primary text-xs font-semibold text-[var(--primary-foreground,#fff)]">
           HN
         </div>
       </div>

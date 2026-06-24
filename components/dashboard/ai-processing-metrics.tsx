@@ -16,7 +16,7 @@ export function AiProcessingMetrics() {
         <h2 className="text-base font-semibold text-heading">
           AI Processing Metrics
         </h2>
-        <p className="mt-1 text-sm text-[#333333]d">
+        <p className="mt-1 text-sm text-muted">
           Real-time insights into automated workflows
         </p>
       </div>

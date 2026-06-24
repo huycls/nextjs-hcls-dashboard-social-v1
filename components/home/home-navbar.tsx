@@ -130,7 +130,7 @@ export function HomeNavbar() {
               />
             ))}
             <Link
-              href="#"
+              href="/articles"
               className="rounded-lg px-3 py-2 text-sm font-medium text-foreground transition hover:text-heading">
               Blog
             </Link>

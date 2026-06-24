@@ -40,9 +40,7 @@ export function WebhookConfigPanel({
   }, []);
 
   const jobWorkflowId =
-    (config.workflowId ?? "").trim() ||
-    jobConfig?.defaultWorkflowId ||
-    "123";
+    (config.workflowId ?? "").trim() || jobConfig?.defaultWorkflowId || "123";
 
   async function handleTrigger() {
     if (!config.topic.trim() || !jobWorkflowId) return;
@@ -50,10 +48,7 @@ export function WebhookConfigPanel({
     setTriggering(true);
     setTriggerResult(null);
 
-    const result = await triggerWorkflowJob(
-      jobWorkflowId,
-      config.topic.trim(),
-    );
+    const result = await triggerWorkflowJob(jobWorkflowId, config.topic.trim());
 
     if (result.ok) {
       incrementWorkflowTriggers(appWorkflowId);
@@ -64,21 +59,21 @@ export function WebhookConfigPanel({
   }
 
   return (
-    <aside className="flex w-[380px] shrink-0 flex-col border-l border-gray-200 bg-white">
-      <div className="border-b border-gray-100 px-5 py-4">
+    <aside className="flex w-[380px] shrink-0 flex-col border-l border-border bg-surface">
+      <div className="border-b border-border px-5 py-4">
         <div className="flex gap-4 text-sm">
-          <span className="font-medium text-gray-900">Parameters</span>
-          <span className="text-gray-400">Settings</span>
+          <span className="font-medium text-heading">Parameters</span>
+          <span className="text-[#333333]d">Settings</span>
         </div>
       </div>
 
       <div className="flex-1 overflow-y-auto px-5 py-5">
-        <h2 className="text-lg font-semibold text-gray-900">Trigger</h2>
-        <p className="mt-1 text-sm text-gray-500">
+        <h2 className="text-lg font-semibold text-heading">Trigger</h2>
+        <p className="mt-1 text-sm text-[#333333]d">
           Gửi job tới backend — backend sẽ gọi n8n workflow
         </p>
 
-        <div className="mt-4 rounded-xl border border-sky-100 bg-sky-50 px-4 py-3 text-xs leading-5 text-sky-800">
+        <div className="mt-4 rounded-xl border border-[var(--node-blue-border)] bg-[var(--node-blue-bg)] px-4 py-3 text-xs leading-5 text-[var(--node-blue)]">
           Next.js proxy →{" "}
           <code className="font-mono">
             {jobConfig?.runUrl ?? "http://localhost:5000/api/jobs/run"}
@@ -87,27 +82,27 @@ export function WebhookConfigPanel({
 
         <div className="mt-5 space-y-4">
           <div>
-            <p className="mb-2 text-xs font-medium uppercase tracking-wide text-gray-400">
+            <p className="mb-2 text-xs font-medium uppercase tracking-wide text-[#333333]d">
               API Endpoint
             </p>
-            <div className="flex items-start gap-2 rounded-xl border border-gray-200 bg-gray-50 p-3">
-              <span className="shrink-0 rounded bg-gray-200 px-1.5 py-0.5 text-[10px] font-semibold text-gray-700">
+            <div className="flex items-start gap-2 rounded-xl border border-border bg-surface-elevated p-3">
+              <span className="shrink-0 rounded bg-surface px-1.5 py-0.5 text-[10px] font-semibold text-foreground">
                 {jobConfig?.method ?? "POST"}
               </span>
-              <p className="break-all text-xs text-gray-600">
+              <p className="break-all text-xs text-foreground">
                 {jobConfig?.runUrl ?? "Loading..."}
               </p>
             </div>
           </div>
 
-          <div className="rounded-xl border border-gray-200 p-4">
-            <p className="mb-3 text-sm font-medium text-gray-900">
+          <div className="rounded-xl border border-border p-4">
+            <p className="mb-3 text-sm font-medium text-heading">
               Request Body
             </p>
 
             <label
               htmlFor="job-workflow-id"
-              className="mb-2 block text-sm font-medium text-gray-900">
+              className="mb-2 block text-sm font-medium text-heading">
               workflowId
             </label>
             <input
@@ -118,12 +113,12 @@ export function WebhookConfigPanel({
                 onChange({ ...config, workflowId: event.target.value })
               }
               placeholder={jobConfig?.defaultWorkflowId ?? "123"}
-              className="mb-4 h-11 w-full rounded-xl border border-gray-200 px-4 text-sm outline-none transition focus:border-gray-300 focus:ring-2 focus:ring-gray-100"
+              className="mb-4 h-11 w-full rounded-xl border border-border bg-surface px-4 text-sm text-foreground outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
             />
 
             <label
               htmlFor="job-topic"
-              className="mb-2 block text-sm font-medium text-gray-900">
+              className="mb-2 block text-sm font-medium text-heading">
               topic
             </label>
             <input
@@ -134,7 +129,7 @@ export function WebhookConfigPanel({
                 onChange({ ...config, topic: event.target.value })
               }
               placeholder="AI marketing trends 2026"
-              className="h-11 w-full rounded-xl border border-gray-200 px-4 text-sm outline-none transition focus:border-gray-300 focus:ring-2 focus:ring-gray-100"
+              className="h-11 w-full rounded-xl border border-border bg-surface px-4 text-sm text-foreground outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
             />
           </div>
 
@@ -142,8 +137,8 @@ export function WebhookConfigPanel({
             <div
               className={`rounded-xl border px-4 py-3 text-sm ${
                 triggerResult.ok
-                  ? "border-emerald-100 bg-emerald-50 text-emerald-700"
-                  : "border-red-100 bg-red-50 text-red-600"
+                  ? "border-[var(--node-green-border)] bg-[var(--node-green-bg)] text-[var(--node-green)]"
+                  : "border-rose-500/20 bg-rose-500/10 text-rose-400"
               }`}>
               {triggerResult.message}
             </div>
@@ -151,18 +146,18 @@ export function WebhookConfigPanel({
         </div>
       </div>
 
-      <div className="flex items-center justify-between border-t border-gray-100 px-5 py-4">
+      <div className="flex items-center justify-between border-t border-border px-5 py-4">
         <button
           type="button"
           onClick={onClose}
-          className="rounded-xl border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50">
+          className="rounded-xl border border-border px-4 py-2 text-sm font-medium text-foreground transition hover:bg-surface-elevated">
           Close
         </button>
         <button
           type="button"
           disabled={!config.topic.trim() || triggering}
           onClick={handleTrigger}
-          className="inline-flex items-center gap-2 rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-40">
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-background transition hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-40">
           {triggering ? (
             <Loader2 className="h-4 w-4 animate-spin" />
           ) : (

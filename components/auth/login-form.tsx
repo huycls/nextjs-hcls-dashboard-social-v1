@@ -6,7 +6,10 @@ import { Eye, EyeOff, Lock, Mail, Sun } from "lucide-react";
 
 function GoogleIcon() {
   return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5">
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-5 w-5">
       <path
         fill="#4285F4"
         d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -29,7 +32,10 @@ function GoogleIcon() {
 
 function AppleIcon() {
   return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5 fill-current">
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className="h-5 w-5 fill-current">
       <path d="M17.05 20.28c-.98.95-2.05.88-3.08.4-1.09-.5-2.08-.48-3.24 0-1.44.62-2.2.44-3.06-.4C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
     </svg>
   );
@@ -40,33 +46,34 @@ export function LoginForm() {
 
   return (
     <div className="flex w-full max-w-[420px] flex-col">
-      <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-full bg-gray-900 text-white">
+      <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-background">
         <Sun className="h-5 w-5" />
       </div>
 
-      <h1 className="text-[32px] font-semibold tracking-tight text-gray-900">
+      <h1 className="text-[32px] font-semibold tracking-tight text-heading">
         Hi, Welcome
       </h1>
-      <p className="mt-2 text-sm text-gray-500">
+      <p className="mt-2 text-sm text-[#333333]d">
         Please login to your account
       </p>
 
-      <form className="mt-8 space-y-5" onSubmit={(e) => e.preventDefault()}>
+      <form
+        className="mt-8 space-y-5"
+        onSubmit={(e) => e.preventDefault()}>
         <div>
           <label
             htmlFor="email"
-            className="mb-2 block text-sm font-medium text-gray-900"
-          >
+            className="mb-2 block text-sm font-medium text-heading">
             Email
           </label>
           <div className="relative">
-            <Mail className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <Mail className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#333333]d" />
             <input
               id="email"
               type="email"
               defaultValue="fajar@gmail.com"
               autoComplete="email"
-              className="h-12 w-full rounded-xl border border-gray-200 bg-white pl-11 pr-4 text-sm text-gray-900 outline-none transition focus:border-gray-300 focus:ring-2 focus:ring-gray-100"
+              className="h-12 w-full rounded-xl border border-border bg-surface-elevated pl-11 pr-4 text-sm text-heading outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
             />
           </div>
         </div>
@@ -74,27 +81,23 @@ export function LoginForm() {
         <div>
           <label
             htmlFor="password"
-            className="mb-2 block text-sm font-medium text-gray-900"
-          >
+            className="mb-2 block text-sm font-medium text-heading">
             Password
           </label>
           <div className="relative">
-            <Lock className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <Lock className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#333333]d" />
             <input
               id="password"
               type={showPassword ? "text" : "password"}
               defaultValue="password123"
               autoComplete="current-password"
-              className="h-12 w-full rounded-xl border border-gray-200 bg-white pl-11 pr-12 text-sm text-gray-900 outline-none transition focus:border-gray-300 focus:ring-2 focus:ring-gray-100"
+              className="h-12 w-full rounded-xl border border-border bg-surface-elevated pl-11 pr-12 text-sm text-heading outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
             />
             <button
               type="button"
-              aria-label={
-                showPassword ? "Hide password" : "Show password"
-              }
+              aria-label={showPassword ? "Hide password" : "Show password"}
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 transition hover:text-gray-600"
-            >
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-[#333333]d transition hover:text-foreground">
               {showPassword ? (
                 <EyeOff className="h-4 w-4" />
               ) : (
@@ -105,36 +108,34 @@ export function LoginForm() {
         </div>
 
         <div className="flex items-center justify-between">
-          <label className="flex cursor-pointer items-center gap-2 text-sm text-gray-600">
+          <label className="flex cursor-pointer items-center gap-2 text-sm text-foreground">
             <input
               type="checkbox"
               defaultChecked
-              className="h-4 w-4 rounded border-gray-300 text-gray-900 focus:ring-gray-300"
+              className="h-4 w-4 rounded border-border bg-surface-elevated text-primary focus:ring-primary/30"
             />
             Remember me
           </label>
           <Link
             href="#"
-            className="text-sm font-medium text-gray-900 underline underline-offset-2"
-          >
+            className="text-sm font-medium text-heading underline underline-offset-2">
             Forgot password?
           </Link>
         </div>
 
         <button
           type="submit"
-          className="h-12 w-full rounded-xl bg-gray-900 text-sm font-medium text-white shadow-sm transition hover:bg-gray-800"
-        >
+          className="h-12 w-full rounded-xl bg-primary text-sm font-medium text-background shadow-sm transition hover:bg-primary-hover">
           Login
         </button>
       </form>
 
       <div className="relative my-8">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-gray-200" />
+          <div className="w-full border-t border-border" />
         </div>
         <div className="relative flex justify-center">
-          <span className="bg-[#F9FAFB] px-3 text-sm text-gray-500">
+          <span className="bg-background px-3 text-sm text-[#333333]d">
             Or login with
           </span>
         </div>
@@ -143,26 +144,23 @@ export function LoginForm() {
       <div className="grid grid-cols-2 gap-3">
         <button
           type="button"
-          className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white text-sm font-medium text-gray-900 transition hover:bg-gray-50"
-        >
+          className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-border bg-surface-elevated text-sm font-medium text-heading transition hover:bg-surface">
           <GoogleIcon />
           Sign in with Google
         </button>
         <button
           type="button"
-          className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white text-sm font-medium text-gray-900 transition hover:bg-gray-50"
-        >
+          className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-border bg-surface-elevated text-sm font-medium text-heading transition hover:bg-surface">
           <AppleIcon />
           Sign in with Apple
         </button>
       </div>
 
-      <p className="mt-8 text-center text-sm text-gray-500">
+      <p className="mt-8 text-center text-sm text-[#333333]d">
         Don&apos;t have an account?{" "}
         <Link
           href="#"
-          className="font-medium text-gray-900 underline underline-offset-2"
-        >
+          className="font-medium text-heading underline underline-offset-2">
           Register
         </Link>
       </p>

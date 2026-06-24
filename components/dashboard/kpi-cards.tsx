@@ -2,9 +2,9 @@ import {
   Activity,
   CheckCircle2,
   Clock,
+  DollarSign,
   TrendingDown,
   TrendingUp,
-  Workflow,
   type LucideIcon,
 } from "lucide-react";
 
@@ -13,85 +13,80 @@ type KpiCard = {
   value: string;
   trend: string;
   trendUp: boolean;
-  subtitle: string;
   icon: LucideIcon;
+  iconClass: string;
 };
 
 const cards: KpiCard[] = [
   {
-    title: "Active Workflows",
-    value: "23",
+    title: "Workflows Run Today",
+    value: "147",
     trend: "+12%",
     trendUp: true,
-    subtitle: "+7 from last month",
-    icon: Workflow,
-  },
-  {
-    title: "Automation Triggered",
-    value: "1,205",
-    trend: "+12%",
-    trendUp: true,
-    subtitle: "+107 from last month",
     icon: Activity,
+    iconClass: "bg-[var(--node-blue-bg)] text-[var(--node-blue)]",
   },
   {
-    title: "Avg Execution Time",
-    value: "3.4s",
-    trend: "-12%",
-    trendUp: false,
-    subtitle: "-0.5s from last month",
-    icon: Clock,
-  },
-  {
-    title: "Success Rate",
-    value: "98.5%",
-    trend: "+4%",
+    title: "Automations Approved",
+    value: "89",
+    trend: "+23%",
     trendUp: true,
-    subtitle: "+9.6% from last month",
     icon: CheckCircle2,
+    iconClass: "bg-[var(--node-green-bg)] text-[var(--node-green)]",
+  },
+  {
+    title: "Avg Processing Time",
+    value: "2.3 hrs",
+    trend: "-45%",
+    trendUp: true,
+    icon: Clock,
+    iconClass: "bg-[var(--node-orange-bg)] text-[var(--node-orange)]",
+  },
+  {
+    title: "Cost Saved",
+    value: "$12,540",
+    trend: "+18%",
+    trendUp: true,
+    icon: DollarSign,
+    iconClass: "bg-[var(--node-green-bg)] text-[var(--node-green)]",
   },
 ];
 
 export function KpiCards() {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
-      {cards.map(
-        ({ title, value, trend, trendUp, subtitle, icon: Icon }) => (
-          <article
-            key={title}
-            className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm"
-          >
-            <div className="mb-4 flex items-start justify-between">
-              <p className="text-sm font-medium text-gray-500">{title}</p>
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gray-50 text-gray-500">
-                <Icon className="h-4 w-4" />
-              </div>
+      {cards.map(({ title, value, trend, trendUp, icon: Icon, iconClass }) => (
+        <article
+          key={title}
+          className="surface-card rounded-xl bg-surface p-5">
+          <div className="mb-4 flex items-start justify-between gap-3">
+            <p className="text-sm font-medium text-[#333333]d">{title}</p>
+            <div
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${iconClass}`}>
+              <Icon className="h-5 w-5" />
             </div>
+          </div>
 
-            <div className="flex items-end gap-2">
-              <p className="text-3xl font-semibold tracking-tight text-gray-900">
-                {value}
-              </p>
-              <span
-                className={`mb-1 inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-xs font-medium ${
-                  trendUp
-                    ? "bg-emerald-50 text-emerald-600"
-                    : "bg-rose-50 text-rose-500"
-                }`}
-              >
-                {trendUp ? (
-                  <TrendingUp className="h-3 w-3" />
-                ) : (
-                  <TrendingDown className="h-3 w-3" />
-                )}
-                {trend}
-              </span>
-            </div>
-
-            <p className="mt-3 text-xs text-gray-400">{subtitle}</p>
-          </article>
-        ),
-      )}
+          <div className="flex items-end gap-2">
+            <p className="text-3xl font-semibold tracking-tight text-heading">
+              {value}
+            </p>
+            <span
+              className={`mb-1 inline-flex items-center gap-0.5 rounded-md px-1.5 py-0.5 text-xs font-semibold ${
+                trendUp
+                  ? "bg-[var(--node-green-bg)] text-[var(--node-green)]"
+                  : "bg-[var(--node-orange-bg)] text-[var(--node-orange)]"
+              }`}>
+              {trendUp ? (
+                <TrendingUp className="h-3 w-3" />
+              ) : (
+                <TrendingDown className="h-3 w-3" />
+              )}
+              {trend}
+            </span>
+          </div>
+        </article>
+      ))}
     </div>
   );
 }

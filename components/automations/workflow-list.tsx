@@ -76,11 +76,11 @@ function StatusToggle({
       aria-label={label}
       onClick={() => onChange(!checked)}
       className={`relative h-6 w-11 shrink-0 rounded-full transition ${
-        checked ? "bg-sky-500" : "bg-gray-200"
+        checked ? "bg-secondary" : "bg-border"
       }`}>
       <span className="sr-only">{label}</span>
       <span
-        className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition ${
+        className={`absolute top-0.5 h-5 w-5 rounded-full bg-surface-elevated shadow transition ${
           checked ? "left-5" : "left-0.5"
         }`}
       />
@@ -189,12 +189,12 @@ export function WorkflowList() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="flex items-center justify-between border-b border-gray-200 bg-white px-6 py-5 lg:px-8">
+      <div className="flex items-center justify-between border-b border-border bg-surface px-6 py-5 lg:px-8">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-gray-900">
+          <h1 className="text-2xl font-semibold tracking-tight text-heading">
             Automations
           </h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-sm text-[#333333]d">
             Manage your workflow projects and integrations
           </p>
         </div>
@@ -203,24 +203,24 @@ export function WorkflowList() {
           type="button"
           aria-label="Add new workflow"
           onClick={() => setCreateDialogOpen(true)}
-          className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gray-900 text-white transition hover:bg-gray-800">
+          className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-background transition hover:bg-primary-hover">
           <Plus className="h-5 w-5" />
         </button>
       </div>
 
       <div className="flex-1 overflow-y-auto p-6 lg:p-8">
-        <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-          <div className="flex items-center justify-between border-b border-gray-100 px-5 py-4">
+        <div className="surface-card overflow-hidden rounded-2xl bg-surface-elevated">
+          <div className="flex items-center justify-between border-b border-border px-5 py-4">
             <div className="flex items-center gap-2">
-              <ClipboardList className="h-4 w-4 text-gray-500" />
-              <h2 className="text-sm font-semibold text-gray-900">
+              <ClipboardList className="h-4 w-4 text-[#333333]d" />
+              <h2 className="text-sm font-semibold text-heading">
                 Recent Workflows
               </h2>
             </div>
             <button
               type="button"
               aria-label="Workflow list options"
-              className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 transition hover:bg-gray-50 hover:text-gray-600">
+              className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-[#333333]d transition hover:bg-surface hover:text-foreground">
               <MoreHorizontal className="h-4 w-4" />
             </button>
           </div>
@@ -228,14 +228,14 @@ export function WorkflowList() {
           <div className="overflow-x-auto">
             <table className="w-full min-w-[920px] text-left text-sm">
               <thead>
-                <tr className="border-b border-gray-100 text-xs text-gray-400">
+                <tr className="border-b border-border text-xs text-[#333333]d">
                   <th className="w-12 px-4 py-3">
                     <input
                       type="checkbox"
                       aria-label="Select all workflows on this page"
                       checked={allPageSelected}
                       onChange={toggleSelectAll}
-                      className="h-4 w-4 rounded border-gray-300"
+                      className="h-4 w-4 rounded border-border"
                     />
                   </th>
                   <th className="px-4 py-3 font-medium">Name</th>
@@ -251,7 +251,7 @@ export function WorkflowList() {
                   <tr>
                     <td
                       colSpan={7}
-                      className="px-4 py-12 text-center text-sm text-gray-500">
+                      className="px-4 py-12 text-center text-sm text-[#333333]d">
                       No workflows found. Create a new project to get started.
                     </td>
                   </tr>
@@ -263,8 +263,8 @@ export function WorkflowList() {
                     return (
                       <tr
                         key={workflow.id}
-                        className={`border-b border-gray-50 last:border-0 ${
-                          isSelected ? "bg-gray-50" : "hover:bg-gray-50/60"
+                        className={`border-b border-border last:border-0 ${
+                          isSelected ? "bg-surface" : "hover:bg-surface/60"
                         }`}>
                         <td className="px-4 py-4">
                           <input
@@ -272,22 +272,22 @@ export function WorkflowList() {
                             aria-label={`Select ${workflow.name}`}
                             checked={isSelected}
                             onChange={() => toggleSelect(workflow.id)}
-                            className="h-4 w-4 rounded border-gray-300"
+                            className="h-4 w-4 rounded border-border"
                           />
                         </td>
 
                         <td className="px-4 py-4">
                           <div className="flex items-center gap-3">
-                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gray-100 text-gray-500">
+                            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-surface text-[#333333]d">
                               <Network className="h-4 w-4" />
                             </div>
-                            <span className="font-medium text-gray-900">
+                            <span className="font-medium text-heading">
                               {workflow.name}
                             </span>
                           </div>
                         </td>
 
-                        <td className="px-4 py-4 text-gray-600">
+                        <td className="px-4 py-4 text-foreground">
                           {WORKFLOW_TYPE_LABELS[workflow.type]}
                         </td>
 
@@ -295,7 +295,7 @@ export function WorkflowList() {
                           {workflow.apps.length > 0 ? (
                             <AppIcons apps={workflow.apps} />
                           ) : (
-                            <span className="text-xs text-gray-400">—</span>
+                            <span className="text-xs text-[#333333]d">—</span>
                           )}
                         </td>
 
@@ -309,23 +309,23 @@ export function WorkflowList() {
                           />
                         </td>
 
-                        <td className="px-4 py-4 text-gray-500">
+                        <td className="px-4 py-4 text-[#333333]d">
                           {workflow.lastModified}
                         </td>
 
                         <td className="px-4 py-4">
                           <div className="flex items-center justify-end gap-1">
                             <Link
-                              href={`/automations/${workflow.id}/edit`}
+                              href={`/dashboard/automations/${workflow.id}/edit`}
                               aria-label={`Edit ${workflow.name}`}
-                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 transition hover:bg-gray-100 hover:text-gray-700">
+                              className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-[#333333]d transition hover:bg-surface hover:text-foreground">
                               <Pencil className="h-5 w-5" />
                             </Link>
                             <button
                               type="button"
                               aria-label={`Delete ${workflow.name}`}
                               onClick={() => setWorkflowToDelete(workflow)}
-                              className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-gray-400 transition hover:bg-red-50 hover:text-red-600">
+                              className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-[#333333]d transition hover:bg-rose-500/10 hover:text-rose-400">
                               <Trash2 className="h-5 w-5" />
                             </button>
                           </div>
@@ -338,14 +338,14 @@ export function WorkflowList() {
             </table>
           </div>
 
-          <div className="flex flex-col gap-4 border-t border-gray-100 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col gap-4 border-t border-border px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 aria-label="Previous page"
                 disabled={effectivePage <= 1}
                 onClick={() => setPage((current) => Math.max(1, current - 1))}
-                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40">
+                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-surface-elevated text-foreground transition hover:bg-surface disabled:cursor-not-allowed disabled:opacity-40">
                 <ChevronLeft className="h-4 w-4" />
               </button>
 
@@ -353,7 +353,7 @@ export function WorkflowList() {
                 pageNumber === "ellipsis" ? (
                   <span
                     key={`ellipsis-${index}`}
-                    className="px-1 text-sm text-gray-400">
+                    className="px-1 text-sm text-[#333333]d">
                     ...
                   </span>
                 ) : (
@@ -367,8 +367,8 @@ export function WorkflowList() {
                     onClick={() => setPage(pageNumber)}
                     className={`inline-flex h-9 min-w-9 items-center justify-center rounded-lg border px-3 text-sm font-medium transition ${
                       pageNumber === effectivePage
-                        ? "border-gray-900 bg-gray-900 text-white"
-                        : "border-gray-200 bg-white text-gray-600 hover:bg-gray-50"
+                        ? "border-primary bg-primary text-background"
+                        : "border-border bg-surface-elevated text-foreground hover:bg-surface"
                     }`}>
                     {pageNumber}
                   </button>
@@ -382,13 +382,15 @@ export function WorkflowList() {
                 onClick={() =>
                   setPage((current) => Math.min(totalPages, current + 1))
                 }
-                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-600 transition hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40">
+                className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-surface-elevated text-foreground transition hover:bg-surface disabled:cursor-not-allowed disabled:opacity-40">
                 <ChevronRight className="h-4 w-4" />
               </button>
             </div>
 
-            <div className="flex items-center gap-3 text-sm text-gray-500">
-              <label htmlFor="page-size" className="font-medium">
+            <div className="flex items-center gap-3 text-sm text-[#333333]d">
+              <label
+                htmlFor="page-size"
+                className="font-medium">
                 Show
               </label>
               <select
@@ -397,9 +399,11 @@ export function WorkflowList() {
                 onChange={(event) =>
                   handlePageSizeChange(Number(event.target.value))
                 }
-                className="h-9 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 outline-none focus:border-gray-300">
+                className="h-9 rounded-lg border border-border bg-surface-elevated px-3 text-sm text-foreground outline-none focus:border-primary/50">
                 {PAGE_SIZE_OPTIONS.map((size) => (
-                  <option key={size} value={size}>
+                  <option
+                    key={size}
+                    value={size}>
                     {size}
                   </option>
                 ))}
@@ -425,18 +429,18 @@ export function WorkflowList() {
             aria-modal="true"
             aria-labelledby="delete-workflow-title"
             aria-describedby="delete-workflow-description"
-            className="w-full max-w-md rounded-2xl border border-gray-200 bg-white p-6 shadow-xl"
+            className="surface-card w-full max-w-md rounded-2xl bg-surface-elevated p-6 shadow-[var(--shadow-card-hover)]"
             onClick={(event) => event.stopPropagation()}>
             <h2
               id="delete-workflow-title"
-              className="text-lg font-semibold text-gray-900">
+              className="text-lg font-semibold text-heading">
               Delete workflow?
             </h2>
             <p
               id="delete-workflow-description"
-              className="mt-2 text-sm text-gray-500">
+              className="mt-2 text-sm text-[#333333]d">
               Are you sure you want to delete{" "}
-              <span className="font-medium text-gray-900">
+              <span className="font-medium text-heading">
                 {workflowToDelete.name}
               </span>
               ? This action cannot be undone.
@@ -446,13 +450,13 @@ export function WorkflowList() {
               <button
                 type="button"
                 onClick={() => setWorkflowToDelete(null)}
-                className="rounded-xl border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50">
+                className="rounded-xl border border-border px-4 py-2 text-sm font-medium text-foreground transition hover:bg-surface">
                 Cancel
               </button>
               <button
                 type="button"
                 onClick={confirmDelete}
-                className="rounded-xl bg-red-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-red-700">
+                className="rounded-xl bg-rose-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-rose-700">
                 Delete workflow
               </button>
             </div>

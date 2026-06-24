@@ -60,34 +60,30 @@ export function CreateWorkflowDialog({
     notifyWorkflowStoreUpdated();
     onCreated();
     handleClose();
-    router.push(`/automations/${workflow.id}/edit`);
+    router.push(`/dashboard/automations/${workflow.id}/edit`);
   }
 
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-      onClick={handleClose}
-    >
+      onClick={handleClose}>
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="create-workflow-title"
-        className="w-full max-w-lg rounded-2xl border border-gray-200 bg-white shadow-xl"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4">
+        className="surface-card w-full max-w-lg rounded-2xl bg-surface-elevated shadow-[var(--shadow-card-hover)]"
+        onClick={(event) => event.stopPropagation()}>
+        <div className="flex items-center justify-between border-b border-border px-6 py-4">
           <h2
             id="create-workflow-title"
-            className="text-lg font-semibold text-gray-900"
-          >
+            className="text-lg font-semibold text-heading">
             {step === "type" ? "Choose workflow type" : "Name your workflow"}
           </h2>
           <button
             type="button"
             aria-label="Close dialog"
             onClick={handleClose}
-            className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-gray-400 transition hover:bg-gray-100 hover:text-gray-600"
-          >
+            className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-[#333333]d transition hover:bg-surface hover:text-foreground">
             <X className="h-4 w-4" />
           </button>
         </div>
@@ -102,16 +98,15 @@ export function CreateWorkflowDialog({
                   key={workflowType.id}
                   type="button"
                   onClick={() => handleSelectType(workflowType.id)}
-                  className="flex w-full items-start gap-4 rounded-xl border border-gray-200 p-4 text-left transition hover:border-gray-300 hover:bg-gray-50"
-                >
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gray-100 text-gray-700">
+                  className="surface-card surface-card-hover flex w-full items-start gap-4 rounded-xl bg-surface p-4 text-left transition hover:bg-surface-elevated">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-surface text-foreground">
                     <Icon className="h-5 w-5" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">
+                    <p className="font-medium text-heading">
                       {workflowType.title}
                     </p>
-                    <p className="mt-1 text-sm text-gray-500">
+                    <p className="mt-1 text-sm text-[#333333]d">
                       {workflowType.description}
                     </p>
                   </div>
@@ -120,11 +115,13 @@ export function CreateWorkflowDialog({
             })}
           </div>
         ) : (
-          <form onSubmit={handleCreate} className="p-6">
+          <form
+            onSubmit={handleCreate}
+            className="p-6">
             {selectedType && (
-              <p className="mb-4 text-sm text-gray-500">
+              <p className="mb-4 text-sm text-[#333333]d">
                 Type:{" "}
-                <span className="font-medium text-gray-900">
+                <span className="font-medium text-heading">
                   {WORKFLOW_TYPE_LABELS[selectedType]}
                 </span>
               </p>
@@ -132,8 +129,7 @@ export function CreateWorkflowDialog({
 
             <label
               htmlFor="workflow-name"
-              className="mb-2 block text-sm font-medium text-gray-900"
-            >
+              className="mb-2 block text-sm font-medium text-heading">
               Workflow name
             </label>
             <input
@@ -143,22 +139,20 @@ export function CreateWorkflowDialog({
               onChange={(event) => setWorkflowName(event.target.value)}
               placeholder="Enter workflow name"
               autoFocus
-              className="h-11 w-full rounded-xl border border-gray-200 px-4 text-sm outline-none transition focus:border-gray-300 focus:ring-2 focus:ring-gray-100"
+              className="h-11 w-full rounded-xl border border-border bg-surface px-4 text-sm text-foreground outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
             />
 
             <div className="mt-6 flex justify-end gap-3">
               <button
                 type="button"
                 onClick={handleBack}
-                className="rounded-xl border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 transition hover:bg-gray-50"
-              >
+                className="rounded-xl border border-border px-4 py-2 text-sm font-medium text-foreground transition hover:bg-surface">
                 Back
               </button>
               <button
                 type="submit"
                 disabled={!workflowName.trim()}
-                className="rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
-              >
+                className="rounded-xl bg-primary px-4 py-2 text-sm font-medium text-background transition hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-40">
                 Create workflow
               </button>
             </div>

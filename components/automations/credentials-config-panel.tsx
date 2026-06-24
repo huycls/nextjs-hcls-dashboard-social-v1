@@ -34,24 +34,23 @@ export function CredentialsConfigPanel({
   }
 
   return (
-    <aside className="flex w-[380px] shrink-0 flex-col border-l border-gray-200 bg-white">
-      <div className="border-b border-gray-100 px-5 py-4">
+    <aside className="flex w-[380px] shrink-0 flex-col border-l border-border bg-surface">
+      <div className="border-b border-border px-5 py-4">
         <div className="flex gap-4 text-sm">
-          <span className="font-medium text-gray-900">Parameters</span>
-          <span className="text-gray-400">Settings</span>
+          <span className="font-medium text-heading">Parameters</span>
+          <span className="text-[#333333]d">Settings</span>
         </div>
       </div>
 
       <div className="flex-1 overflow-y-auto px-5 py-5">
-        <h2 className="text-lg font-semibold text-gray-900">{node.title}</h2>
-        <p className="mt-1 text-sm text-gray-500">{node.description}</p>
+        <h2 className="text-lg font-semibold text-heading">{node.title}</h2>
+        <p className="mt-1 text-sm text-[#333333]d">{node.description}</p>
 
         <div className="mt-6 space-y-4">
           <div>
             <label
               htmlFor={`${nodeId}-api-key`}
-              className="mb-2 block text-sm font-medium text-gray-900"
-            >
+              className="mb-2 block text-sm font-medium text-heading">
               API Key
             </label>
             <input
@@ -62,15 +61,14 @@ export function CredentialsConfigPanel({
                 updateCredentials({ apiKey: event.target.value })
               }
               placeholder="Enter API key"
-              className="h-11 w-full rounded-xl border border-gray-200 px-4 text-sm outline-none transition focus:border-gray-300 focus:ring-2 focus:ring-gray-100"
+              className="h-11 w-full rounded-xl border border-border bg-surface-elevated px-4 text-sm text-foreground outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
             />
           </div>
 
           <div>
             <label
               htmlFor={`${nodeId}-secret-key`}
-              className="mb-2 block text-sm font-medium text-gray-900"
-            >
+              className="mb-2 block text-sm font-medium text-heading">
               Secret Key
             </label>
             <input
@@ -81,34 +79,32 @@ export function CredentialsConfigPanel({
                 updateCredentials({ secretKey: event.target.value })
               }
               placeholder="Enter secret key"
-              className="h-11 w-full rounded-xl border border-gray-200 px-4 text-sm outline-none transition focus:border-gray-300 focus:ring-2 focus:ring-gray-100"
+              className="h-11 w-full rounded-xl border border-border bg-surface-elevated px-4 text-sm text-foreground outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
             />
           </div>
 
           {!values.apiKey || !values.secretKey ? (
-            <div className="rounded-xl border border-amber-100 bg-amber-50 px-4 py-3 text-sm text-amber-700">
+            <div className="rounded-xl border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm text-amber-400">
               Credentials required for this node.
             </div>
           ) : (
-            <div className="rounded-xl border border-emerald-100 bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+            <div className="rounded-xl border border-[var(--node-green-border)] bg-[var(--node-green-bg)] px-4 py-3 text-sm text-[var(--node-green)]">
               Credentials saved for this node.
             </div>
           )}
         </div>
       </div>
 
-      <div className="flex items-center justify-between border-t border-gray-100 px-5 py-4">
+      <div className="flex items-center justify-between border-t border-border px-5 py-4">
         <button
           type="button"
           onClick={onClose}
-          className="rounded-xl border border-red-200 px-4 py-2 text-sm font-medium text-red-500 transition hover:bg-red-50"
-        >
+          className="rounded-xl border border-rose-500/30 px-4 py-2 text-sm font-medium text-rose-400 transition hover:bg-rose-500/10">
           Close
         </button>
         <button
           type="button"
-          className="inline-flex items-center gap-2 rounded-xl bg-gray-900 px-4 py-2 text-sm font-medium text-white transition hover:bg-gray-800"
-        >
+          className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-background transition hover:bg-primary-hover">
           Continue
           <ArrowRight className="h-4 w-4" />
         </button>
@@ -124,15 +120,15 @@ export function NodeIcon({ icon }: { icon?: string }) {
     case "sparkles":
       return <span className="text-base">✨</span>;
     case "gemini":
-      return <span className="text-[10px] font-bold text-blue-600">G</span>;
+      return <span className="text-[10px] font-bold text-secondary">G</span>;
     case "openrouter":
-      return <span className="text-[10px] font-bold text-violet-600">OR</span>;
+      return <span className="text-[10px] font-bold text-violet-400">OR</span>;
     case "code":
       return <span className="text-base">{`{}`}</span>;
     case "split":
       return <span className="text-base">⑂</span>;
     case "sheets":
-      return <span className="text-[10px] font-bold text-emerald-600">GS</span>;
+      return <span className="text-[10px] font-bold text-emerald-400">GS</span>;
     case "form":
       return <span className="text-base">📋</span>;
     case "condition":

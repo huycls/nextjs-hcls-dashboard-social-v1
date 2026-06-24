@@ -1,9 +1,9 @@
 import type { AppId } from "@/lib/automations/data";
 
 const appStyles: Record<AppId, { bg: string; label: string }> = {
-  notion: { bg: "bg-gray-900", label: "N" },
+  notion: { bg: "bg-background ring-1 ring-border", label: "N" },
   trello: { bg: "bg-blue-600", label: "T" },
-  google: { bg: "bg-white ring-1 ring-gray-200", label: "G" },
+  google: { bg: "bg-surface-elevated ring-1 ring-border", label: "G" },
   discord: { bg: "bg-indigo-500", label: "D" },
   slack: { bg: "bg-fuchsia-500", label: "S" },
   dropbox: { bg: "bg-sky-500", label: "Db" },
@@ -27,8 +27,8 @@ export function AppIcons({ apps }: AppIconsProps) {
           <span
             key={app}
             title={app}
-            className={`inline-flex h-7 w-7 items-center justify-center rounded-lg text-[10px] font-semibold text-white shadow-sm ring-2 ring-white ${style.bg} ${
-              app === "google" ? "text-blue-600" : ""
+            className={`inline-flex h-7 w-7 items-center justify-center rounded-lg text-[10px] font-semibold text-white shadow-sm ring-2 ring-surface ${style.bg} ${
+              app === "google" ? "text-secondary" : ""
             }`}
           >
             {style.label}

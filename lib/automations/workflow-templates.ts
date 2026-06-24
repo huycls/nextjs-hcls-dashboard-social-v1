@@ -35,7 +35,8 @@ export type CanvasNode = {
     | "condition";
   configurableId?: ConfigurableNodeId;
   icon?: NodeIconType;
-  zoneColor?: "blue" | "green";
+  zoneColor?: "blue" | "green" | "orange";
+  tone?: "green" | "orange" | "blue";
 };
 
 export type WorkflowTemplate = {

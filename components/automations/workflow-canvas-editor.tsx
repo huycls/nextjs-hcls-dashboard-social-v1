@@ -2,17 +2,13 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
+import { ArrowLeft, Redo2, Share2, Sparkles, Undo2 } from "lucide-react";
 import {
-  ArrowLeft,
-  Minus,
-  Plus,
-  Redo2,
-  Share2,
-  Sparkles,
-  Undo2,
-} from "lucide-react";
-import { CredentialsConfigPanel, NodeIcon } from "@/components/automations/credentials-config-panel";
+  CredentialsConfigPanel,
+  NodeIcon,
+} from "@/components/automations/credentials-config-panel";
 import { WebhookConfigPanel } from "@/components/automations/webhook-config-panel";
+import { WorkflowCanvasViewport } from "@/components/automations/workflow-canvas-viewport";
 import {
   DEFAULT_WORKFLOW_CONFIG,
   type WorkflowNodeConfig,
@@ -24,6 +20,12 @@ import {
   type ConfigurableNodeId,
 } from "@/lib/automations/workflow-templates";
 import { updateWorkflowConfig } from "@/lib/automations/workflow-store";
+import {
+  NODE_TONE_STYLES,
+  ZONE_TONE_STYLES,
+  resolveNodeTone,
+  type NodeTone,
+} from "@/lib/automations/node-tones";
 
 function getNodeCenter(nodes: CanvasNode[], nodeId: string) {
   const node = nodes.find((item) => item.id === nodeId);
@@ -98,27 +100,46 @@ export function WorkflowCanvasEditor({
     updateWorkflowConfig(workflowId, next);
   }
 
-  const zoneColors = {
-    blue: "bg-sky-50/80 border-sky-100",
-    green: "bg-emerald-50/80 border-emerald-100",
+  const zoneToneMap: Record<"blue" | "green" | "orange", NodeTone> = {
+    blue: "blue",
+    green: "green",
+    orange: "orange",
   };
 
+  function getNodeClasses(
+    node: (typeof template.nodes)[number],
+    isSelected: boolean,
+    isConfigured: boolean,
+  ) {
+    const tone = resolveNodeTone(node);
+    const styles = NODE_TONE_STYLES[tone];
+
+    return {
+      tone,
+      styles,
+      card: `${styles.card} ${
+        isSelected ? "ring-2 ring-[var(--node-green)]/30" : ""
+      }`,
+      icon: isConfigured ? styles.icon : styles.icon,
+      ready: styles.ready,
+    };
+  }
+
   return (
-    <div className="flex h-screen flex-col bg-white">
-      <div className="flex items-center justify-between border-b border-gray-100 px-6 py-4">
+    <div className="flex h-screen flex-col bg-background">
+      <div className="flex items-center justify-between border-b border-border px-6 py-4">
         <div className="flex items-center gap-4">
           <Link
-            href="/automations"
-            className="inline-flex items-center gap-2 text-sm font-medium text-gray-600 transition hover:text-gray-900"
-          >
+            href="/dashboard/automations"
+            className="inline-flex items-center gap-2 text-sm font-medium text-foreground transition hover:text-heading">
             <ArrowLeft className="h-4 w-4" />
             Back to list
           </Link>
           <div>
-            <h1 className="text-lg font-semibold text-gray-900">
+            <h1 className="text-lg font-semibold text-heading">
               {workflowName}
             </h1>
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-[#333333]d">
               {workflowTypeLabel} · n8n workflow · {configuredCount}/
               {template.configurableNodes.length} nodes configured
             </p>
@@ -127,7 +148,9 @@ export function WorkflowCanvasEditor({
 
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
-            <span id="testing-mode-label" className="text-sm text-gray-500">
+            <span
+              id="testing-mode-label"
+              className="text-sm text-[#333333]d">
               Testing mode
             </span>
             <button
@@ -137,11 +160,10 @@ export function WorkflowCanvasEditor({
               aria-labelledby="testing-mode-label"
               onClick={() => setTestingMode(!testingMode)}
               className={`relative h-6 w-11 rounded-full transition ${
-                testingMode ? "bg-blue-500" : "bg-gray-200"
-              }`}
-            >
+                testingMode ? "bg-secondary" : "bg-border"
+              }`}>
               <span
-                className={`absolute top-0.5 h-5 w-5 rounded-full bg-white shadow transition ${
+                className={`absolute top-0.5 h-5 w-5 rounded-full bg-surface-elevated shadow transition ${
                   testingMode ? "left-5" : "left-0.5"
                 }`}
               />
@@ -151,16 +173,14 @@ export function WorkflowCanvasEditor({
           <button
             type="button"
             aria-label="Share workflow"
-            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-500"
-          >
+            className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border text-[#333333]d">
             <Share2 className="h-4 w-4" />
           </button>
 
           <button
             type="button"
-            className="rounded-xl bg-gradient-to-r from-violet-500 via-fuchsia-500 to-orange-400 p-[1.5px]"
-          >
-            <span className="inline-flex h-[34px] items-center gap-2 rounded-[10px] bg-white px-3 text-sm font-medium text-gray-900">
+            className="rounded-xl bg-gradient-to-r from-violet-500 via-fuchsia-500 to-orange-400 p-[1.5px]">
+            <span className="inline-flex h-[34px] items-center gap-2 rounded-[10px] bg-surface-elevated px-3 text-sm font-medium text-heading">
               <Sparkles className="h-4 w-4 text-violet-500" />
               Try AI
             </span>
@@ -169,233 +189,203 @@ export function WorkflowCanvasEditor({
       </div>
 
       <div className="flex min-h-0 flex-1">
-        <div className="relative min-w-0 flex-1 overflow-auto">
-          <div className="absolute left-6 top-6 z-10 flex gap-2">
-            <button
-              type="button"
-              aria-label="Undo"
-              disabled
-              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-400"
-            >
-              <Undo2 className="h-4 w-4" />
-            </button>
-            <button
-              type="button"
-              aria-label="Redo"
-              disabled
-              className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-gray-200 bg-white text-gray-400"
-            >
-              <Redo2 className="h-4 w-4" />
-            </button>
-          </div>
+        <WorkflowCanvasViewport
+          canvasWidth={template.canvasWidth}
+          canvasHeight={template.canvasHeight}
+          toolbar={
+            <div className="absolute left-6 top-6 z-10 flex gap-2">
+              <button
+                type="button"
+                aria-label="Undo"
+                disabled
+                className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-surface-elevated text-[#333333]d">
+                <Undo2 className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                aria-label="Redo"
+                disabled
+                className="inline-flex h-8 w-8 items-center justify-center rounded-lg border border-border bg-surface-elevated text-[#333333]d">
+                <Redo2 className="h-4 w-4" />
+              </button>
+            </div>
+          }>
+          <svg
+            className="pointer-events-none absolute inset-0 h-full w-full text-border"
+            viewBox={`0 0 ${template.canvasWidth} ${template.canvasHeight}`}
+            aria-hidden="true">
+            {connectionPaths.map(({ id, d }) => (
+              <path
+                key={id}
+                d={d}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+            ))}
+          </svg>
 
-          <div className="absolute right-6 top-6 z-10 flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-2 py-1 text-xs text-gray-500">
-            <button type="button" aria-label="Zoom out" disabled>
-              <Minus className="h-3.5 w-3.5" />
-            </button>
-            <span>100%</span>
-            <button type="button" aria-label="Zoom in" disabled>
-              <Plus className="h-3.5 w-3.5" />
-            </button>
-          </div>
-
-          <div
-            className="relative mx-auto min-h-full py-8"
-            style={{
-              width: template.canvasWidth,
-              minHeight: template.canvasHeight,
-              backgroundImage:
-                "radial-gradient(circle, #E5E7EB 1px, transparent 1px)",
-              backgroundSize: "20px 20px",
-            }}
-          >
-            <svg
-              className="pointer-events-none absolute inset-0 h-full w-full"
-              viewBox={`0 0 ${template.canvasWidth} ${template.canvasHeight}`}
-              aria-hidden="true"
-            >
-              {connectionPaths.map(({ id, d }) => (
-                <path
-                  key={id}
-                  d={d}
-                  fill="none"
-                  stroke="#C4C9D1"
-                  strokeWidth="2"
-                />
-              ))}
-            </svg>
-
-            {template.nodes.map((node) => {
-              if (node.variant === "zone") {
-                return (
-                  <div
-                    key={node.id}
-                    className={`pointer-events-none absolute rounded-2xl border ${
-                      zoneColors[node.zoneColor ?? "blue"]
-                    }`}
-                    style={{
-                      left: node.x,
-                      top: node.y,
-                      width: node.width,
-                      height: node.height,
-                    }}
-                  >
-                    <p className="px-3 py-2 text-xs font-semibold text-gray-600">
-                      {node.label}
-                    </p>
-                  </div>
-                );
-              }
-
-              const isConfigurable = Boolean(node.configurableId);
-              const isSelected =
-                node.configurableId && selectedNodeId === node.configurableId;
-              const isConfigured =
-                node.configurableId &&
-                isNodeConfigured(node.configurableId, config);
-
-              const baseClasses =
-                "absolute select-none rounded-xl border bg-white shadow-sm transition";
-
-              if (
-                node.variant === "ai-agent" ||
-                node.variant === "sub-node" ||
-                node.variant === "form" ||
-                node.variant === "condition"
-              ) {
-                const isClickable =
-                  node.configurableId && node.variant === "sub-node";
-
-                const content = (
-                  <>
-                    <div className="flex items-center gap-2 px-3 py-2">
-                      <span
-                        className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${
-                          isConfigured
-                            ? "bg-emerald-50"
-                            : node.variant === "ai-agent"
-                              ? "bg-violet-50"
-                              : "bg-gray-50"
-                        }`}
-                      >
-                        <NodeIcon icon={node.icon} />
-                      </span>
-                      <div className="min-w-0">
-                        <p className="truncate text-xs font-medium text-gray-900">
-                          {node.label}
-                        </p>
-                        {node.subtitle && (
-                          <p className="text-[10px] text-gray-400">
-                            {node.subtitle}
-                          </p>
-                        )}
-                      </div>
-                      {isConfigured && (
-                        <span className="ml-auto text-[10px] text-emerald-600">
-                          Ready
-                        </span>
-                      )}
-                    </div>
-                  </>
-                );
-
-                if (isClickable) {
-                  return (
-                    <button
-                      key={node.id}
-                      type="button"
-                      onClick={() =>
-                        node.configurableId &&
-                        setSelectedNodeId(node.configurableId)
-                      }
-                      className={`${baseClasses} text-left ${
-                        isSelected
-                          ? "border-gray-900 ring-2 ring-gray-900/10"
-                          : "border-gray-200 hover:border-gray-300"
-                      }`}
-                      style={{
-                        left: node.x,
-                        top: node.y,
-                        width: node.width,
-                        height: node.height,
-                      }}
-                    >
-                      {content}
-                    </button>
-                  );
-                }
-
-                return (
-                  <div
-                    key={node.id}
-                    className={`${baseClasses} border-gray-200`}
-                    style={{
-                      left: node.x,
-                      top: node.y,
-                      width: node.width,
-                      height: node.height,
-                    }}
-                  >
-                    {content}
-                  </div>
-                );
-              }
-
-              const Wrapper = isConfigurable ? "button" : "div";
-
+          {template.nodes.map((node) => {
+            if (node.variant === "zone") {
+              const zoneTone = zoneToneMap[node.zoneColor ?? "blue"];
               return (
-                <Wrapper
+                <div
                   key={node.id}
-                  type={isConfigurable ? "button" : undefined}
-                  onClick={
-                    isConfigurable
-                      ? () =>
-                          node.configurableId &&
-                          setSelectedNodeId(node.configurableId)
-                      : undefined
-                  }
-                  className={`${baseClasses} flex items-center gap-2 px-3 text-left ${
-                    isSelected
-                      ? "border-gray-900 ring-2 ring-gray-900/10"
-                      : "border-gray-200"
-                  } ${isConfigurable ? "hover:border-gray-300" : ""}`}
+                  className={`pointer-events-none absolute rounded-2xl border ${
+                    ZONE_TONE_STYLES[zoneTone]
+                  }`}
                   style={{
                     left: node.x,
                     top: node.y,
                     width: node.width,
                     height: node.height,
-                    cursor: isConfigurable ? "pointer" : "default",
-                  }}
-                >
-                  <span
-                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
-                      isConfigured
-                        ? "bg-emerald-50"
-                        : node.variant === "webhook"
-                          ? "bg-orange-50"
-                          : "bg-gray-50"
-                    }`}
-                  >
-                    <NodeIcon icon={node.icon} />
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-xs font-medium text-gray-900">
-                      {node.label}
-                    </p>
-                    {node.subtitle && (
-                      <p className="text-[10px] text-gray-400">
-                        {node.subtitle}
+                  }}>
+                  <p
+                    className={`px-3 py-2 text-xs font-semibold ${NODE_TONE_STYLES[zoneTone].label}`}>
+                    {node.label}
+                  </p>
+                </div>
+              );
+            }
+
+            const isConfigurable = Boolean(node.configurableId);
+            const isSelected =
+              node.configurableId && selectedNodeId === node.configurableId;
+            const isConfigured =
+              node.configurableId &&
+              isNodeConfigured(node.configurableId, config);
+            const nodeStyle = getNodeClasses(
+              node,
+              Boolean(isSelected),
+              Boolean(isConfigured),
+            );
+
+            const baseClasses =
+              "absolute select-none rounded-lg border shadow-sm transition";
+
+            if (
+              node.variant === "ai-agent" ||
+              node.variant === "sub-node" ||
+              node.variant === "form" ||
+              node.variant === "condition"
+            ) {
+              const isClickable =
+                node.configurableId && node.variant === "sub-node";
+
+              const content = (
+                <>
+                  <div className="flex items-center gap-2 px-3 py-2">
+                    <span
+                      className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-md ${nodeStyle.icon}`}>
+                      <NodeIcon icon={node.icon} />
+                    </span>
+                    <div className="min-w-0">
+                      <p
+                        className={`truncate text-xs font-medium ${nodeStyle.styles.label}`}>
+                        {node.label}
                       </p>
+                      {node.subtitle && (
+                        <p className="text-[10px] text-[#333333]d">
+                          {node.subtitle}
+                        </p>
+                      )}
+                    </div>
+                    {isConfigured && (
+                      <span
+                        className={`ml-auto text-[10px] ${nodeStyle.ready}`}>
+                        Ready
+                      </span>
                     )}
                   </div>
-                  {isConfigured && (
-                    <span className="text-[10px] text-emerald-600">Ready</span>
-                  )}
-                </Wrapper>
+                </>
               );
-            })}
-          </div>
-        </div>
+
+              if (isClickable) {
+                return (
+                  <button
+                    key={node.id}
+                    type="button"
+                    data-canvas-node="true"
+                    onClick={() =>
+                      node.configurableId &&
+                      setSelectedNodeId(node.configurableId)
+                    }
+                    className={`${baseClasses} ${nodeStyle.card} text-left hover:brightness-[0.98]`}
+                    style={{
+                      left: node.x,
+                      top: node.y,
+                      width: node.width,
+                      height: node.height,
+                    }}>
+                    {content}
+                  </button>
+                );
+              }
+
+              return (
+                <div
+                  key={node.id}
+                  data-canvas-node="true"
+                  className={`${baseClasses} ${nodeStyle.card}`}
+                  style={{
+                    left: node.x,
+                    top: node.y,
+                    width: node.width,
+                    height: node.height,
+                  }}>
+                  {content}
+                </div>
+              );
+            }
+
+            const Wrapper = isConfigurable ? "button" : "div";
+
+            return (
+              <Wrapper
+                key={node.id}
+                data-canvas-node={isConfigurable ? "true" : undefined}
+                type={isConfigurable ? "button" : undefined}
+                onClick={
+                  isConfigurable
+                    ? () =>
+                        node.configurableId &&
+                        setSelectedNodeId(node.configurableId)
+                    : undefined
+                }
+                className={`${baseClasses} ${nodeStyle.card} flex items-center gap-2 px-3 text-left ${
+                  isConfigurable ? "hover:brightness-[0.98]" : ""
+                }`}
+                style={{
+                  left: node.x,
+                  top: node.y,
+                  width: node.width,
+                  height: node.height,
+                  cursor: isConfigurable ? "pointer" : "default",
+                }}>
+                <span
+                  className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-md ${nodeStyle.icon}`}>
+                  <NodeIcon icon={node.icon} />
+                </span>
+                <div className="min-w-0 flex-1">
+                  <p
+                    className={`truncate text-xs font-medium ${nodeStyle.styles.label}`}>
+                    {node.label}
+                  </p>
+                  {node.subtitle && (
+                    <p className="text-[10px] text-[#333333]d">
+                      {node.subtitle}
+                    </p>
+                  )}
+                </div>
+                {isConfigured && (
+                  <span className={`text-[10px] ${nodeStyle.ready}`}>
+                    Ready
+                  </span>
+                )}
+              </Wrapper>
+            );
+          })}
+        </WorkflowCanvasViewport>
 
         {selectedNodeId === "webhook" && (
           <WebhookConfigPanel

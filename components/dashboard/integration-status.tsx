@@ -1,59 +1,95 @@
+import { AlertTriangle, CheckCircle2 } from "lucide-react";
+
 const integrations = [
   {
-    name: "Slack",
+    name: "n8n Workflows",
+    lastSync: "2 min ago",
     status: "Connected",
     tone: "success" as const,
-    logo: "💬",
+    logo: "n8",
   },
   {
-    name: "Notion",
+    name: "Google Sheets",
+    lastSync: "15 min ago",
+    status: "Connected",
+    tone: "success" as const,
+    logo: "GS",
+  },
+  {
+    name: "OpenRouter API",
+    lastSync: "1 hr ago",
     status: "Syncing",
     tone: "warning" as const,
-    logo: "📝",
+    logo: "OR",
   },
   {
-    name: "Google Drive",
-    status: "Error",
-    tone: "error" as const,
-    logo: "📁",
+    name: "Slack Webhooks",
+    lastSync: "3 hr ago",
+    status: "Attention",
+    tone: "warning" as const,
+    logo: "SL",
   },
 ];
 
-const toneStyles = {
-  success: "bg-emerald-500",
-  warning: "bg-amber-500",
-  error: "bg-red-500",
+const badgeStyles = {
+  success: "bg-[var(--node-green-bg)] text-[var(--node-green)]",
+  warning: "bg-[var(--node-orange-bg)] text-[var(--node-orange)]",
+};
+
+const iconStyles = {
+  success: "text-[var(--node-green)]",
+  warning: "text-[var(--node-orange)]",
 };
 
 export function IntegrationStatus() {
   return (
-    <article className="rounded-2xl border border-gray-100 bg-white p-5 shadow-sm">
-      <h2 className="mb-5 text-base font-semibold text-gray-900">
-        Integration Status
-      </h2>
+    <section className="surface-card rounded-xl bg-surface p-6">
+      <div className="mb-5">
+        <h2 className="text-base font-semibold text-heading">
+          Integration Status
+        </h2>
+        <p className="mt-1 text-sm text-[#333333]d">
+          Real-time status of connected systems
+        </p>
+      </div>
 
-      <ul className="space-y-4">
-        {integrations.map(({ name, status, tone, logo }) => (
+      <ul className="divide-y divide-border">
+        {integrations.map(({ name, lastSync, status, tone, logo }) => (
           <li
             key={name}
-            className="flex items-center justify-between rounded-xl border border-gray-100 px-4 py-3"
-          >
-            <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gray-50 text-lg">
+            className="flex items-center justify-between gap-3 py-4 first:pt-0 last:pb-0">
+            <div className="flex min-w-0 items-center gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-background text-[11px] font-bold text-[#333333]d">
                 {logo}
               </div>
-              <span className="text-sm font-medium text-gray-900">{name}</span>
+              <div className="min-w-0">
+                <p className="truncate text-sm font-medium text-heading">
+                  {name}
+                </p>
+                <p className="text-xs text-[#333333]d">Last sync: {lastSync}</p>
+              </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex shrink-0 items-center gap-2">
+              {tone === "success" ? (
+                <CheckCircle2
+                  className={`h-4 w-4 ${iconStyles[tone]}`}
+                  aria-hidden
+                />
+              ) : (
+                <AlertTriangle
+                  className={`h-4 w-4 ${iconStyles[tone]}`}
+                  aria-hidden
+                />
+              )}
               <span
-                className={`h-2 w-2 rounded-full ${toneStyles[tone]}`}
-              />
-              <span className="text-sm text-gray-500">{status}</span>
+                className={`inline-flex rounded-md px-2 py-1 text-xs font-medium ${badgeStyles[tone]}`}>
+                {status}
+              </span>
             </div>
           </li>
         ))}
       </ul>
-    </article>
+    </section>
   );
 }

@@ -10,6 +10,7 @@ import {
   Workflow,
 } from "lucide-react";
 import { BrandLogo } from "@/components/home/brand-logo";
+import { cn } from "@/lib/utils/tailwind-merge";
 
 const mainNav = [
   {
@@ -34,14 +35,35 @@ function isActivePath(pathname: string, href: string, exact = false) {
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function Sidebar() {
+type SidebarProps = {
+  open?: boolean;
+  onClose?: () => void;
+};
+
+export function Sidebar({ open = false, onClose }: SidebarProps) {
   const pathname = usePathname();
 
+  function handleNavClick() {
+    onClose?.();
+  }
+
   return (
-    <aside className="flex h-screen w-[240px] shrink-0 flex-col border-r border-border bg-sidebar px-4 py-6">
+    <aside
+      className={cn(
+        "flex h-screen w-[240px] shrink-0 flex-col border-r border-border bg-sidebar px-4 py-6",
+        "fixed left-0 top-0 z-50 transition-transform duration-300 ease-out",
+        "xl:static xl:translate-x-0",
+        open ? "translate-x-0" : "-translate-x-full xl:translate-x-0",
+      )}>
       <div className="mb-8 px-2">
-        <Link href="/dashboard" className="flex items-center gap-2.5">
-          <BrandLogo className="h-5 w-5 shrink-0" variant="primary" />
+        <Link
+          href="/dashboard"
+          onClick={handleNavClick}
+          className="flex items-center gap-2.5">
+          <BrandLogo
+            className="h-5 w-5 shrink-0"
+            variant="primary"
+          />
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold text-sidebar-heading">
               Avispark
@@ -61,11 +83,13 @@ export function Sidebar() {
             <Link
               key={label}
               href={href}
-              className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition ${
+              onClick={handleNavClick}
+              className={cn(
+                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition",
                 active
                   ? "bg-sidebar-active text-primary"
-                  : "text-sidebar-foreground hover:bg-sidebar-hover hover:text-sidebar-heading"
-              }`}>
+                  : "text-sidebar-foreground hover:bg-sidebar-hover hover:text-sidebar-heading",
+              )}>
               <Icon className="h-4 w-4 shrink-0" />
               {label}
             </Link>

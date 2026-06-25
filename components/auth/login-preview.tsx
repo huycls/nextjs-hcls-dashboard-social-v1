@@ -1,3 +1,4 @@
+"use client";
 import {
   Bell,
   FileText,
@@ -10,6 +11,8 @@ import {
   Users,
   Workflow,
 } from "lucide-react";
+import Lottie from "lottie-react";
+import { useEffect, useState } from "react";
 
 const mainNav = [
   { label: "Dashboard", icon: LayoutDashboard, active: false },
@@ -23,10 +26,34 @@ const settingsNav = [
   { label: "Notifications", icon: Bell },
 ];
 
+const LOTTIE_SRC = "/assets/lotties/two-people-workflow.json";
+
 export function LoginPreview() {
+  const [animationData, setAnimationData] = useState<object | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetch(LOTTIE_SRC)
+      .then((response) => {
+        if (!response.ok) throw new Error("Failed to load animation");
+        return response.json();
+      })
+      .then((data) => {
+        if (!cancelled) setAnimationData(data);
+      })
+      .catch(() => {
+        if (!cancelled) setAnimationData(null);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
-    <div className="relative h-full min-h-[640px] overflow-hidden rounded-[28px] border border-border bg-background shadow-2xl">
-      <div className="flex h-full">
+    <div className="relative h-full overflow-hidden rounded-2xl shadow-lg border border-border">
+      {/* <div className="flex h-full">
         <aside className="hidden w-[220px] shrink-0 flex-col border-r border-border bg-surface p-4 sm:flex">
           <div className="mb-4 flex items-center justify-between px-1">
             <div className="flex items-center gap-2">
@@ -162,7 +189,19 @@ export function LoginPreview() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
+      {animationData ? (
+        <Lottie
+          animationData={animationData}
+          loop
+          className=" grid place-content-center h-full w-full"
+        />
+      ) : (
+        <div
+          className="h-full w-full animate-pulse bg-surface-elevated"
+          aria-hidden
+        />
+      )}
     </div>
   );
 }

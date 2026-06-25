@@ -128,7 +128,7 @@ export function HomeNavbar() {
             delay={0}
             className="text-2xl font-bold"
             color={isDark ? "#ffffff" : "#333333"}
-            shineColor="#00a73e"
+            shineColor={isDark ? "#f49e0b" : "#00a73e"}
             spread={120}
             direction="left"
             yoyo={false}

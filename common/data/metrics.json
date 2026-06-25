@@ -1,0 +1,37 @@
+{
+  "title": "AI Processing Metrics",
+  "description": "Real-time insights into automated workflows",
+  "updatedAt": "2026-06-25T08:30:00Z",
+  "metrics": [
+    {
+      "id": "automation-success-rate",
+      "label": "Automation Success Rate",
+      "value": 94,
+      "unit": "%"
+    },
+    {
+      "id": "document-processing",
+      "label": "Document Processing",
+      "value": 87,
+      "unit": "%"
+    },
+    {
+      "id": "webhook-delivery-rate",
+      "label": "Webhook Delivery Rate",
+      "value": 72,
+      "unit": "%"
+    },
+    {
+      "id": "ai-response-accuracy",
+      "label": "AI Response Accuracy",
+      "value": 91,
+      "unit": "%"
+    },
+    {
+      "id": "queue-throughput",
+      "label": "Queue Throughput",
+      "value": 68,
+      "unit": "%"
+    }
+  ]
+}

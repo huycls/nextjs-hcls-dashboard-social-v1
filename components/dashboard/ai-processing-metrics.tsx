@@ -1,33 +1,37 @@
-type Metric = {
+import metricsData from "@/common/data/metrics.json";
+
+type MetricItem = {
+  id: string;
   label: string;
   value: number;
+  unit: string;
 };
 
-const metrics: Metric[] = [
-  { label: "Automation Success Rate", value: 94 },
-  { label: "Document Processing", value: 87 },
-  { label: "Webhook Delivery Rate", value: 72 },
-];
+type MetricsData = {
+  title: string;
+  description: string;
+  updatedAt: string;
+  metrics: MetricItem[];
+};
+
+const { title, description, metrics } = metricsData as MetricsData;
 
 export function AiProcessingMetrics() {
   return (
     <section className="surface-card rounded-xl bg-surface p-6">
       <div className="mb-6">
-        <h2 className="text-base font-semibold text-heading">
-          AI Processing Metrics
-        </h2>
-        <p className="mt-1 text-sm text-muted">
-          Real-time insights into automated workflows
-        </p>
+        <h2 className="text-base font-semibold text-heading">{title}</h2>
+        <p className="mt-1 text-sm text-muted">{description}</p>
       </div>
 
       <ul className="space-y-5">
-        {metrics.map(({ label, value }) => (
-          <li key={label}>
+        {metrics.map(({ id, label, value, unit }) => (
+          <li key={id}>
             <div className="mb-2 flex items-center justify-between gap-4">
               <span className="text-sm font-medium text-heading">{label}</span>
               <span className="text-sm font-semibold text-heading">
-                {value}%
+                {value}
+                {unit}
               </span>
             </div>
             <div className="h-2 overflow-hidden rounded-full bg-background">

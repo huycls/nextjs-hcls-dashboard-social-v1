@@ -71,7 +71,7 @@ export function LoginForm() {
             <input
               id="email"
               type="email"
-              defaultValue="fajar@gmail.com"
+              defaultValue="below@gmail.com"
               autoComplete="email"
               className="h-12 w-full rounded-xl border border-border bg-surface-elevated pl-11 pr-4 text-sm text-heading outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
             />

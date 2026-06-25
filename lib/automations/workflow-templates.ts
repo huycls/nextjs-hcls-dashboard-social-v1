@@ -35,7 +35,8 @@ export type CanvasNode = {
     | "condition";
   configurableId?: ConfigurableNodeId;
   icon?: NodeIconType;
-  zoneColor?: "blue" | "green";
+  zoneColor?: "blue" | "green" | "orange";
+  tone?: "green" | "orange" | "blue";
 };
 
 export type WorkflowTemplate = {
@@ -44,6 +45,7 @@ export type WorkflowTemplate = {
   nodes: CanvasNode[];
   connections: Array<[string, string]>;
   configurableNodes: ConfigurableNodeId[];
+  requiresTopic: boolean;
 };
 
 const IDEA_POSTS_NODES: CanvasNode[] = [
@@ -215,6 +217,7 @@ export const IDEA_POSTS_TEMPLATE: WorkflowTemplate = {
     "openrouter-model",
     "add-to-sheet",
   ],
+  requiresTopic: true,
 };
 
 export const CONTENT_POST_TEMPLATE: WorkflowTemplate = {
@@ -271,6 +274,7 @@ export const CONTENT_POST_TEMPLATE: WorkflowTemplate = {
     ["generate-content", "publish"],
   ],
   configurableNodes: ["webhook", "gemini-model", "add-to-sheet"],
+  requiresTopic: false,
 };
 
 export const WORKFLOW_TEMPLATES: Record<WorkflowType, WorkflowTemplate> = {

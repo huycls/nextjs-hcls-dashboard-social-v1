@@ -1,12 +1,15 @@
 import type {
-  AppId,
   WorkflowItem,
   WorkflowNodeConfig,
   WorkflowType,
 } from "@/lib/automations/data";
-import { DEFAULT_WORKFLOW_CONFIG } from "@/lib/automations/data";
+import {
+  mapBackendWorkflow,
+  parseApiError,
+  type BackendWorkflow,
+} from "@/lib/automations/automations-api";
 
-const STORAGE_KEY = "flowaxon-workflows";
+const STORAGE_KEY = "Avispark-workflows";
 
 function readStorage(): WorkflowItem[] {
   if (typeof window === "undefined") return [];
@@ -23,7 +26,7 @@ function readStorage(): WorkflowItem[] {
 function writeStorage(workflows: WorkflowItem[]) {
   if (typeof window === "undefined") return;
   localStorage.setItem(STORAGE_KEY, JSON.stringify(workflows));
-  window.dispatchEvent(new Event("flowaxon-workflows-updated"));
+  window.dispatchEvent(new Event("Avispark-workflows-updated"));
 }
 
 export function loadWorkflows(): WorkflowItem[] {
@@ -46,24 +49,76 @@ function formatLastModified(date: Date) {
   });
 }
 
-export function createWorkflow(name: string, type: WorkflowType): WorkflowItem {
-  const now = new Date();
-  const workflow: WorkflowItem = {
-    id: `wf-${crypto.randomUUID()}`,
-    name: name.trim(),
-    type,
-    status: "Draft",
-    triggers: 0,
-    updatedAt: now.toISOString().slice(0, 10),
-    lastModified: "Just now",
-    apps: [] as AppId[],
-    config: { ...DEFAULT_WORKFLOW_CONFIG },
-  };
+/** Sync danh sách workflow từ NestJS qua Next.js proxy */
+export async function fetchWorkflows(): Promise<WorkflowItem[]> {
+  const response = await fetch("/api/automations", { cache: "no-store" });
 
+  if (!response.ok) {
+    throw new Error(await parseApiError(response));
+  }
+
+  const data = (await response.json()) as BackendWorkflow[];
+  const workflows = data.map(mapBackendWorkflow);
+  writeStorage(workflows);
+  return workflows;
+}
+
+/** Lấy 1 workflow từ BE nếu chưa có trong cache */
+export async function fetchWorkflowById(id: string): Promise<WorkflowItem> {
+  const cached = getWorkflowById(id);
+  if (cached) return cached;
+
+  const response = await fetch(`/api/automations/${encodeURIComponent(id)}`, {
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error(await parseApiError(response));
+  }
+
+  const workflow = mapBackendWorkflow(
+    (await response.json()) as BackendWorkflow,
+  );
   const workflows = readStorage();
-  writeStorage([workflow, ...workflows]);
+  writeStorage([
+    workflow,
+    ...workflows.filter((item) => item.id !== workflow.id),
+  ]);
+  return workflow;
+}
+
+/** Tạo workflow trên NestJS — webhook URL theo type */
+export async function createWorkflow(
+  name: string,
+  type: WorkflowType,
+): Promise<WorkflowItem> {
+  const response = await fetch("/api/automations", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name: name.trim(), type }),
+  });
+
+  if (!response.ok) {
+    throw new Error(await parseApiError(response));
+  }
+
+  const workflow = mapBackendWorkflow(
+    (await response.json()) as BackendWorkflow,
+  );
+  const workflows = readStorage();
+  writeStorage([
+    workflow,
+    ...workflows.filter((item) => item.id !== workflow.id),
+  ]);
 
   return workflow;
+}
+
+export function updateWorkflowFromBackend(workflow: WorkflowItem) {
+  const workflows = readStorage().map((item) =>
+    item.id === workflow.id ? { ...item, ...workflow } : item,
+  );
+  writeStorage(workflows);
 }
 
 export function updateWorkflow(

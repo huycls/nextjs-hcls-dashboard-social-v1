@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AppShell } from "@/components/dashboard/app-shell";
+import { AppShell } from "@/components/templates/dashboard/app-shell";
 
 export const metadata: Metadata = {
   title: "Avispark — Dashboard",

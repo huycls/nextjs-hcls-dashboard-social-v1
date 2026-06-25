@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { NotFoundView } from "@/components/errors/not-found-view";
+import { NotFoundView } from "@/components/molecules/errors/not-found-view";
 
 export const metadata: Metadata = {
   title: "404 — Page not found",

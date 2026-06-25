@@ -1,4 +1,4 @@
-import { EditWorkflowClient } from "@/components/automations/edit-workflow-client";
+import { EditWorkflowClient } from "@/components/templates/automations/edit-workflow-client";
 
 type EditAutomationPageProps = {
   params: Promise<{ id: string }>;

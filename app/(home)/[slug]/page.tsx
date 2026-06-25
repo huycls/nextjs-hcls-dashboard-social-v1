@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ArticleHero } from "@/components/home/article-hero";
-import { RelatedArticlesSidebar } from "@/components/home/related-articles-sidebar";
+import { ArticleContent } from "@/components/templates/home/article-content";
+import { ArticleHero } from "@/components/templates/home/article-hero";
+import { RelatedArticlesSidebar } from "@/components/templates/home/related-articles-sidebar";
 import { isReservedArticleSlug } from "@/lib/wp/article-routes";
 import {
   getArticleBySlug,
   getArticleSlugs,
   getRelatedArticles,
 } from "@/lib/wp/articles";
-import { ScrollProgress } from "@/components/atoms/ScrollProgress";
 
 type ArticleDetailPageProps = {
   params: Promise<{ slug: string }>;
@@ -66,17 +66,14 @@ export default async function ArticleDetailPage({
   });
 
   return (
-    <article className="bg-background relative">
+    <article className="relative bg-background">
       <ArticleHero article={article} />
 
       <div className="mx-auto max-w-7xl px-6 py-12 lg:px-8 lg:py-16">
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-12">
           <div className="min-w-0">
             {article.contentHtml ? (
-              <div
-                className="wp-content prose prose-neutral max-w-none text-foreground"
-                dangerouslySetInnerHTML={{ __html: article.contentHtml }}
-              />
+              <ArticleContent html={article.contentHtml} />
             ) : (
               <p className="text-sm text-muted">No content available.</p>
             )}

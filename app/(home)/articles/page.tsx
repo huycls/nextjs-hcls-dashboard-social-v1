@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { ArticlesArchive } from "@/components/home/articles-archive";
-import { MarketingPageHeader } from "@/components/home/marketing-page-header";
-import { RelatedArticlesSidebar } from "@/components/home/related-articles-sidebar";
+import { ArticlesArchive } from "@/components/templates/home/articles-archive";
+import { MarketingPageHeader } from "@/components/templates/home/marketing-page-header";
+import { RelatedArticlesSidebar } from "@/components/templates/home/related-articles-sidebar";
 import {
   parseArticlesCategoryParam,
   parseArticlesPageParam,
@@ -48,7 +48,10 @@ export default async function ArticlesPage({
         />
 
         <div className="mt-14 grid gap-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-12">
-          <ArticlesArchive pageData={pageData} categories={articleCategories} />
+          <ArticlesArchive
+            pageData={pageData}
+            categories={articleCategories}
+          />
           <RelatedArticlesSidebar
             articles={sidebarArticles}
             title="Related articles"

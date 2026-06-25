@@ -1,8 +1,8 @@
-import { AiProcessingMetrics } from "@/components/dashboard/ai-processing-metrics";
-import { DashboardHeader } from "@/components/dashboard/dashboard-header";
-import { IntegrationStatus } from "@/components/dashboard/integration-status";
-import { KpiCards } from "@/components/dashboard/kpi-cards";
-import { RecentWorkflows } from "@/components/dashboard/recent-workflows";
+import { AiProcessingMetrics } from "@/components/templates/dashboard/ai-processing-metrics";
+import { DashboardHeader } from "@/components/templates/dashboard/dashboard-header";
+import { IntegrationStatus } from "@/components/templates/dashboard/integration-status";
+import { KpiCards } from "@/components/templates/dashboard/kpi-cards";
+import { RecentWorkflows } from "@/components/templates/dashboard/recent-workflows";
 
 export default function DashboardPage() {
   return (

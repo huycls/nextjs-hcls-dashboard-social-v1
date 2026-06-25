@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { FaqSection } from "@/components/home/faq-section";
-import { PricingSection } from "@/components/home/pricing-section";
+import { FaqSection } from "@/components/templates/home/faq-section";
+import { PricingSection } from "@/components/templates/home/pricing-section";
 
 export const metadata: Metadata = {
   title: "Pricing — Avispark",

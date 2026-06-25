@@ -11,14 +11,6 @@ export function ArticleHero({ article }: ArticleHeroProps) {
   return (
     <header className="border-b border-border bg-surface">
       <div className="mx-auto max-w-7xl px-6 py-10 lg:px-8 lg:py-14">
-        <Link
-          href="/articles"
-          className="inline-flex items-center gap-2 text-sm font-medium text-muted transition hover:text-heading"
-        >
-          <ArrowLeft className="h-4 w-4" />
-          Back to archives
-        </Link>
-
         <div className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-center lg:gap-12">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-3 text-sm text-muted">

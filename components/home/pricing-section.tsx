@@ -74,7 +74,7 @@ function BillingToggle({
     <div className="flex items-center justify-center gap-3">
       <span
         className={`text-sm font-medium ${
-          !isYearly ? "text-heading" : "text-[#333333]d"
+          !isYearly ? "text-primary" : "text-[#333333]"
         }`}>
         Monthly
       </span>
@@ -84,18 +84,18 @@ function BillingToggle({
         aria-checked={isYearly}
         aria-label="Toggle yearly billing"
         onClick={() => onChange(isYearly ? "monthly" : "yearly")}
-        className={`relative h-7 w-12 rounded-full transition ${
-          isYearly ? "bg-primary" : "bg-surface-elevated"
+        className={`cursor-pointer transition-all duration-300 ease-in-out relative shadow-sm top-0.5 bg-primary h-7 w-12 rounded-full ${
+          isYearly ? "bg-primary" : "bg-surface"
         }`}>
         <span
-          className={`absolute top-0.5 h-6 w-6 rounded-full bg-heading shadow transition ${
-            isYearly ? "left-5" : "left-0.5"
+          className={`absolute top-[3px] h-[22px] w-[22px] transition-all duration-300 ease-in-out rounded-full  shadow ${
+            isYearly ? "left-6 bg-white" : "left-0.5 bg-[#525252]"
           }`}
         />
       </button>
       <span
         className={`text-sm font-medium ${
-          isYearly ? "text-heading" : "text-[#333333]d"
+          isYearly ? "text-primary" : "text-[#333333]"
         }`}>
         Yearly
       </span>

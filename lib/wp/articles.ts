@@ -71,7 +71,9 @@ function encodeArticlesCursor(cursor: ArticlesMergeCursor): string {
   return Buffer.from(JSON.stringify(cursor)).toString("base64url");
 }
 
-function decodeArticlesCursor(cursor: string | null): ArticlesMergeCursor | null {
+function decodeArticlesCursor(
+  cursor: string | null,
+): ArticlesMergeCursor | null {
   if (!cursor) return null;
 
   try {
@@ -109,7 +111,7 @@ async function getSingleCategoryArticlesPage(
     name: categorySlug,
     postPerPage: perPage,
     after: cursor,
-    size: "MEDIUM",
+    size: "LARGE",
     fetchOptions: FETCH_OPTIONS,
   });
 
@@ -157,7 +159,7 @@ async function getMergedArticlesPage(
           name: slug,
           postPerPage: perPage,
           after: state.cursors[slug],
-          size: "MEDIUM",
+          size: "LARGE",
           fetchOptions: FETCH_OPTIONS,
         });
 
@@ -244,13 +246,18 @@ export async function getArticlesPageForNumber(
   };
 }
 
-export async function getArticlesPage(options: {
-  categorySlug?: string;
-  perPage?: number;
-  cursor?: string | null;
-} = {}): Promise<ArticlesPageResult> {
-  const { categorySlug = "all", perPage = ARTICLES_PER_PAGE, cursor = null } =
-    options;
+export async function getArticlesPage(
+  options: {
+    categorySlug?: string;
+    perPage?: number;
+    cursor?: string | null;
+  } = {},
+): Promise<ArticlesPageResult> {
+  const {
+    categorySlug = "all",
+    perPage = ARTICLES_PER_PAGE,
+    cursor = null,
+  } = options;
 
   if (categorySlug !== "all") {
     return getSingleCategoryArticlesPage(categorySlug, perPage, cursor);
@@ -327,8 +334,7 @@ function mapDetailToArticle(detail: WpPostDetail): Article | null {
   const category = resolveCategory(detail.categories, "articles");
   const contentHtml = sanitizeWpHtml(detail.content ?? "");
   const excerpt =
-    stripHtml(detail.excerpt ?? "") ||
-    stripHtml(contentHtml).slice(0, 160);
+    stripHtml(detail.excerpt ?? "") || stripHtml(contentHtml).slice(0, 160);
   const featured = getFeaturedImage(detail);
 
   return {
@@ -380,20 +386,28 @@ export async function getArticles(): Promise<Article[]> {
 }
 
 export async function getLatestArticles(limit = 3): Promise<Article[]> {
-  const { articles } = await getArticlesPage({ perPage: limit, categorySlug: "all" });
+  const { articles } = await getArticlesPage({
+    perPage: limit,
+    categorySlug: "all",
+  });
   return articles;
 }
 
-export async function getRelatedArticles(options: {
-  slug?: string;
-  categorySlug?: string;
-  limit?: number;
-} = {}): Promise<Article[]> {
+export async function getRelatedArticles(
+  options: {
+    slug?: string;
+    categorySlug?: string;
+    limit?: number;
+  } = {},
+): Promise<Article[]> {
   const { slug, categorySlug, limit = 5 } = options;
   const articles = await getArticles();
 
   if (!slug) {
-    const { articles } = await getArticlesPage({ perPage: limit, categorySlug: "all" });
+    const { articles } = await getArticlesPage({
+      perPage: limit,
+      categorySlug: "all",
+    });
     return articles;
   }
 

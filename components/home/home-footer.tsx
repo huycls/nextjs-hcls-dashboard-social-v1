@@ -28,14 +28,14 @@ type FooterLinks = {
 const footerLinks: FooterLinks = {
   product: [
     { label: "Features", href: "#" },
-    { label: "Pricing", href: "#" },
+    { label: "Pricing", href: "/pricing" },
     { label: "Documentation", href: "#" },
     { label: "API", href: "#" },
   ],
   company: [
-    { label: "About Us", href: "#" },
+    { label: "About Us", href: "/about-us" },
     { label: "Careers", href: "#" },
-    { label: "Blog", href: "#" },
+    { label: "Blog", href: "/articles" },
     { label: "Press", href: "#" },
     { label: "Partners", href: "#" },
   ],

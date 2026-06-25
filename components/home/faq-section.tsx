@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { cn } from "@/lib/utils/tailwind-merge";
 
 type FaqItem = {
   question: string;
@@ -51,24 +52,36 @@ function FaqAccordionItem({
         type="button"
         onClick={onToggle}
         aria-expanded={isOpen}
-        className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left sm:px-6 sm:py-5">
-        <span className="text-sm font-medium text-heading sm:text-base">
+        className="flex w-full cursor-pointer group items-center justify-between gap-4 px-5 py-4 text-left sm:px-6 sm:py-5">
+        <span
+          className={cn(
+            "text-sm group-hover:text-primary transition-colors duration-300 ease-in-out font-medium sm:text-base",
+            isOpen ? "text-primary" : "text-heading",
+          )}>
           {item.question}
         </span>
         <ChevronDown
-          className={`h-5 w-5 shrink-0 text-[#333333]d transition ${
+          className={`h-5 w-5 shrink-0 text-[#333333]d transition-transform duration-300 ease-out ${
             isOpen ? "rotate-180" : ""
           }`}
         />
       </button>
 
-      {isOpen && (
-        <div className="border-t border-border/30 px-5 pb-5 pt-0 sm:px-6 sm:pb-6">
-          <p className="pt-4 text-sm leading-relaxed text-[#333333]d">
-            {item.answer}
-          </p>
+      <div
+        className={`grid transition-[grid-template-rows] duration-300 ease-out ${
+          isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+        }`}>
+        <div className="overflow-hidden">
+          <div className="border-t border-border/30 px-5 pb-5 pt-0 sm:px-6 sm:pb-6">
+            <p
+              className={`pt-4 text-sm leading-relaxed text-[#333333]d transition-opacity duration-300 ${
+                isOpen ? "opacity-100" : "opacity-0"
+              }`}>
+              {item.answer}
+            </p>
+          </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

@@ -5,6 +5,10 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { BrandLogo } from "@/components/home/brand-logo";
+import { AnimatedThemeToggler } from "../atoms/AnimatedThemeToggler";
+import { ScrollProgress } from "../atoms/ScrollProgress";
+import ShinyText from "../atoms/ShinyText";
+import { useTheme } from "../theme/theme-provider";
 
 type NavDropdown = {
   label: string;
@@ -70,11 +74,13 @@ function NavDropdownMenu({ label, items }: NavDropdown) {
   }, []);
 
   return (
-    <div ref={ref} className="relative">
+    <div
+      ref={ref}
+      className="relative">
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-foreground transition hover:text-heading"
+        className="inline-flex items-center gap-1 rounded-lg px-3 py-2 text-sm font-medium text-foreground transition hover:text-primary cursor-pointer"
         aria-expanded={open}>
         {label}
         <ChevronDown
@@ -107,39 +113,74 @@ function NavDropdownMenu({ label, items }: NavDropdown) {
 }
 
 export function HomeNavbar() {
+  const { isDark } = useTheme();
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-surface/95 backdrop-blur-lg">
+      <ScrollProgress className="bottom-0 top-auto" />
       <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-6 lg:px-10">
-        <Link href="/" className="flex items-center gap-2.5">
+        <Link
+          href="/"
+          className="flex items-center gap-2.5">
           <BrandLogo className="h-5 w-5 shrink-0" />
-          <span className="text-lg font-bold tracking-tight text-heading">
-            Avispark
-          </span>
+          <ShinyText
+            text="Avispark"
+            speed={2}
+            delay={0}
+            className="text-2xl font-bold"
+            color={isDark ? "#ffffff" : "#333333"}
+            shineColor="#00a73e"
+            spread={120}
+            direction="left"
+            yoyo={false}
+            pauseOnHover={false}
+            disabled={false}
+          />
         </Link>
 
         <div className="flex items-center gap-1 sm:gap-2">
           <nav className="hidden items-center md:flex">
             {navDropdowns.map((dropdown) => (
-              <NavDropdownMenu key={dropdown.label} {...dropdown} />
+              <NavDropdownMenu
+                key={dropdown.label}
+                {...dropdown}
+              />
             ))}
             <Link
+              href="/about-us"
+              className="rounded-lg px-3 py-2 text-sm font-medium text-foreground transition hover:text-primary cursor-pointer">
+              About
+            </Link>
+            <Link
+              href="/pricing"
+              className="rounded-lg px-3 py-2 text-sm font-medium text-foreground transition hover:text-primary cursor-pointer">
+              Pricing
+            </Link>
+            <Link
               href="/articles"
-              className="rounded-lg px-3 py-2 text-sm font-medium text-foreground transition hover:text-heading">
+              className="rounded-lg px-3 py-2 text-sm font-medium text-foreground transition hover:text-primary cursor-pointer">
               Blog
             </Link>
           </nav>
 
           <div className="ml-2 flex items-center gap-2 sm:ml-4">
-            <ThemeToggle variant="icon" />
+            {/* <ThemeToggle variant="icon" /> */}
+            <AnimatedThemeToggler
+              variant="hexagon"
+              duration={600}
+              className="cursor-pointer hover:text-primary"
+            />
             <Link
               href="/login"
-              className="inline-flex h-10 items-center rounded-lg border border-border bg-surface px-4 text-sm font-medium text-heading transition hover:bg-surface-elevated">
+              className="inline-flex h-10 items-center rounded-lg border border-border bg-surface px-4 text-sm font-medium text-foreground hover:bg-primary transition-colors duration-300 ease-in-out cursor-pointer hover:text-background">
               Login
             </Link>
             <Link
               href="/dashboard"
               className="inline-flex h-10 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-background transition hover:bg-primary-hover">
-              <BrandLogo className="h-3.5 w-3.5 shrink-0" variant="light" />
+              <BrandLogo
+                className="h-3.5 w-3.5 shrink-0"
+                variant="light"
+              />
               <span className="hidden sm:inline">Get Started for Free</span>
               <span className="sm:hidden">Get Started</span>
             </Link>

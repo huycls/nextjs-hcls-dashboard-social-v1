@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FileText } from "lucide-react";
 import type { Article } from "@/lib/wp/articles";
+import { buildArticleHref } from "@/lib/wp/article-routes";
 
 type RelatedArticlesSidebarProps = {
   articles: Article[];
@@ -63,7 +64,7 @@ export function RelatedArticlesSidebar({
           {items.slice(0, 5).map((article) => (
             <li key={article.slug}>
               <Link
-                href={`/articles/${article.slug}`}
+                href={buildArticleHref(article.slug)}
                 className="group flex gap-3 transition"
               >
                 <RelatedArticleThumb

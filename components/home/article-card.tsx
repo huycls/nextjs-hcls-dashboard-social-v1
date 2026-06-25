@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Laptop } from "lucide-react";
 import type { Article } from "@/lib/wp/articles";
+import { buildArticleHref } from "@/lib/wp/article-routes";
 
 function ArticleThumbnail({
   title,
@@ -47,7 +48,7 @@ type ArticleCardProps = {
 export function ArticleCard({ article }: ArticleCardProps) {
   return (
     <article className="surface-card surface-card-hover group rounded-2xl bg-surface p-4 transition sm:p-5">
-      <Link href={`/articles/${article.slug}`} className="block">
+      <Link href={buildArticleHref(article.slug)} className="block">
         <ArticleThumbnail
           title={article.title}
           imageUrl={article.featuredImageUrl}

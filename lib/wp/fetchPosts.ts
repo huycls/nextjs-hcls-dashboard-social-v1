@@ -50,7 +50,7 @@ function sanitizeMediaSize(size: string): string {
 async function wpGraphqlRequest(
   body: { query: string; variables?: Record<string, unknown> },
   locale: string | undefined,
-  fetchOptions: RequestInit | undefined
+  fetchOptions: RequestInit | undefined,
 ): Promise<unknown> {
   const headers: HeadersInit = {
     "Content-Type": "application/json",
@@ -122,7 +122,7 @@ export async function fetchPosts({
   postPerPage = 10,
   variables = [],
   gqlNode = "",
-  featuredImage: featuredImageSize = "THUMBNAIL",
+  featuredImage: featuredImageSize = "LARGE",
   prev = [],
   fetchAll = false,
   hasExcerpt = true,
@@ -203,7 +203,7 @@ export async function fetchPosts({
       variables: variablesGql,
     },
     locale,
-    fetchOptions
+    fetchOptions,
   )) as {
     data?: Record<
       string,
@@ -304,8 +304,7 @@ export async function fetchPostDetail({
   locale,
   fetchOptions,
 }: FetchPostDetailArgs): Promise<WpPostDetail | null> {
-  const format =
-    contentFormat === "RAW" ? "RAW" : "RENDERED";
+  const format = contentFormat === "RAW" ? "RAW" : "RENDERED";
   const detailSize = featuredImageSize
     ? sanitizeMediaSize(featuredImageSize)
     : "";
@@ -348,7 +347,7 @@ export async function fetchPostDetail({
       variables: { id, idType },
     },
     locale,
-    fetchOptions
+    fetchOptions,
   )) as { data?: { post?: WpPostDetail | null } };
 
   return json.data?.post ?? null;

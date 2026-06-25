@@ -37,7 +37,10 @@ export function getWordpressSiteUrl(): string {
 export function wpSlugFromUri(uri: string | null | undefined): string {
   const raw = uri?.trim() ?? "";
   if (!raw) return "";
-  const parts = raw.replace(/^\/+|\/+$/g, "").split("/").filter(Boolean);
+  const parts = raw
+    .replace(/^\/+|\/+$/g, "")
+    .split("/")
+    .filter(Boolean);
   return parts[parts.length - 1] ?? "";
 }
 
@@ -95,10 +98,7 @@ function isEmptyUri(uri: string | null | undefined): boolean {
   return uri == null || uri === "";
 }
 
-function unionByName(
-  a: GqlVariable[],
-  b: GqlVariable[]
-): GqlVariable[] {
+function unionByName(a: GqlVariable[], b: GqlVariable[]): GqlVariable[] {
   const map = new Map<string, GqlVariable>();
   for (const item of a) map.set(item.name, item);
   for (const item of b) {
@@ -169,7 +169,9 @@ export async function fetchCategoryPostsPage({
   locale?: string;
   fetchOptions?: RequestInit;
 }): Promise<CategoryPostsPageResult> {
-  const variables: GqlVariable[] = [{ name: "first", type: "Int", value: postPerPage }];
+  const variables: GqlVariable[] = [
+    { name: "first", type: "Int", value: postPerPage },
+  ];
   if (after) {
     variables.push({ name: "after", type: "String", value: after });
   }
@@ -190,7 +192,7 @@ async function fetchCategoryPostsConnection({
   name,
   postPerPage = 12,
   variables = [],
-  size = "THUMBNAIL",
+  size = "LARGE",
   gqlNode = "",
   prevPosts = [],
   fetchAll = false,
@@ -203,7 +205,8 @@ async function fetchCategoryPostsConnection({
     wpEnvNumber("PUBLIC_READING_POSTS_PER_PAGE") ?? NaN;
 
   const perPage = fetchAll
-    ? !Number.isNaN(readingSettingsPostsPerPage) && readingSettingsPostsPerPage > 0
+    ? !Number.isNaN(readingSettingsPostsPerPage) &&
+      readingSettingsPostsPerPage > 0
       ? readingSettingsPostsPerPage
       : postPerPage
     : postPerPage;
@@ -303,7 +306,7 @@ async function fetchCategoryPostsConnection({
   for (const node of nodes) {
     if (!isEmptyUri(node?.uri)) {
       const getParentCategory = node.categories.nodes.find(
-        (item) => item.parent === null
+        (item) => item.parent === null,
       );
 
       if (getParentCategory?.name.toLowerCase() === "articles") {

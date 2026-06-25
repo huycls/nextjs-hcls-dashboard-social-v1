@@ -1,5 +1,23 @@
 import { WP_CATEGORY_NAV } from "./categoryNav";
 
+/** Static app routes — must not be handled as article slugs. */
+const RESERVED_ARTICLE_SLUGS = new Set([
+  "about-us",
+  "pricing",
+  "articles",
+  "dashboard",
+  "login",
+  "api",
+]);
+
+export function isReservedArticleSlug(slug: string): boolean {
+  return RESERVED_ARTICLE_SLUGS.has(slug);
+}
+
+export function buildArticleHref(slug: string): string {
+  return `/${slug}`;
+}
+
 export function parseArticlesPageParam(pageParam?: string): number {
   const parsed = Number(pageParam);
   if (!Number.isFinite(parsed) || parsed < 1) return 1;

@@ -1,6 +1,6 @@
 import type { AppId } from "@/lib/automations/data";
 
-const appStyles: Record<AppId, { bg: string; label: string }> = {
+export const APP_ICON_STYLES: Record<AppId, { bg: string; label: string }> = {
   notion: { bg: "bg-background ring-1 ring-border", label: "N" },
   trello: { bg: "bg-blue-600", label: "T" },
   google: { bg: "bg-surface-elevated ring-1 ring-border", label: "G" },
@@ -21,7 +21,7 @@ export function AppIcons({ apps }: AppIconsProps) {
   return (
     <div className="flex items-center -space-x-1.5">
       {apps.map((app) => {
-        const style = appStyles[app];
+        const style = APP_ICON_STYLES[app];
 
         return (
           <span

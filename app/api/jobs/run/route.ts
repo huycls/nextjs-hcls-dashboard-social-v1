@@ -41,11 +41,9 @@ export async function POST(request: Request) {
     );
   }
 
-  if (!topic) {
-    return NextResponse.json(
-      { ok: false, status: 400, message: "Topic is required." },
-      { status: 400 },
-    );
+  const payload: { workflowId: string; topic?: string } = { workflowId };
+  if (topic) {
+    payload.topic = topic;
   }
 
   const url = getJobsRunUrl();
@@ -54,21 +52,37 @@ export async function POST(request: Request) {
     const response = await fetch(url, {
       method: JOBS_API.method,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ workflowId, topic }),
+      body: JSON.stringify(payload),
       cache: "no-store",
     });
 
     if (response.ok) {
-      const data = await response.json().catch(() => null);
+      const data = (await response.json().catch(() => null)) as {
+        job?: unknown;
+        workflow?: unknown;
+      } | null;
+
       return NextResponse.json({
         ok: true,
         status: response.status,
         message: "Workflow job started successfully.",
-        job: data,
+        job: data?.job ?? data,
+        workflow: data?.workflow ?? null,
       });
     }
 
     const errorText = await response.text().catch(() => "");
+    let errorPayload: {
+      message?: string;
+      job?: unknown;
+      workflow?: unknown;
+    } | null = null;
+
+    try {
+      errorPayload = JSON.parse(errorText) as typeof errorPayload;
+    } catch {
+      // not JSON
+    }
 
     return NextResponse.json({
       ok: false,
@@ -76,6 +90,8 @@ export async function POST(request: Request) {
       message: errorText
         ? `Backend returned ${response.status}: ${parseErrorMessage(errorText).slice(0, 200)}`
         : `Request failed with status ${response.status} at ${url}`,
+      job: errorPayload?.job ?? null,
+      workflow: errorPayload?.workflow ?? null,
     });
   } catch (error) {
     const hint =

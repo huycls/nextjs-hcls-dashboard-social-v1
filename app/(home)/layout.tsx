@@ -3,7 +3,7 @@ import { HomeFooter } from "@/components/home/home-footer";
 import { HomeNavbar } from "@/components/home/home-navbar";
 
 export const metadata: Metadata = {
-  title: "Flowaxon — Automate your workflows",
+  title: "Avispark — Automate your workflows",
   description: "Build, monitor, and scale automation workflows in one place",
 };
 

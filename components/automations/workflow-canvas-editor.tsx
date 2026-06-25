@@ -9,11 +9,14 @@ import {
 } from "@/components/automations/credentials-config-panel";
 import { WebhookConfigPanel } from "@/components/automations/webhook-config-panel";
 import { WorkflowCanvasViewport } from "@/components/automations/workflow-canvas-viewport";
+import { WorkflowStatusBadge } from "@/components/automations/workflow-status-badge";
 import {
   DEFAULT_WORKFLOW_CONFIG,
   type WorkflowNodeConfig,
   type WorkflowType,
 } from "@/lib/automations/data";
+import { useWorkflowPolling } from "@/lib/automations/use-workflow-polling";
+import { useWorkflow } from "@/lib/automations/use-workflow-store";
 import {
   WORKFLOW_TEMPLATES,
   type CanvasNode,
@@ -52,9 +55,10 @@ function buildConnectionPath(
 function isNodeConfigured(
   nodeId: ConfigurableNodeId,
   config: WorkflowNodeConfig,
+  requiresTopic: boolean,
 ): boolean {
   if (nodeId === "webhook") {
-    return Boolean(config.topic.trim());
+    return requiresTopic ? Boolean(config.topic.trim()) : true;
   }
 
   const creds = config.credentials[nodeId];
@@ -77,6 +81,8 @@ export function WorkflowCanvasEditor({
   initialConfig = DEFAULT_WORKFLOW_CONFIG,
 }: WorkflowCanvasEditorProps) {
   const template = WORKFLOW_TEMPLATES[workflowType];
+  const workflow = useWorkflow(workflowId);
+  useWorkflowPolling(workflowId);
   const [testingMode, setTestingMode] = useState(true);
   const [selectedNodeId, setSelectedNodeId] =
     useState<ConfigurableNodeId | null>("webhook");
@@ -92,7 +98,7 @@ export function WorkflowCanvasEditor({
   );
 
   const configuredCount = template.configurableNodes.filter((nodeId) =>
-    isNodeConfigured(nodeId, config),
+    isNodeConfigured(nodeId, config, template.requiresTopic),
   ).length;
 
   function handleConfigChange(next: WorkflowNodeConfig) {
@@ -136,9 +142,12 @@ export function WorkflowCanvasEditor({
             Back to list
           </Link>
           <div>
-            <h1 className="text-lg font-semibold text-heading">
-              {workflowName}
-            </h1>
+            <div className="flex items-center gap-2">
+              <h1 className="text-lg font-semibold text-heading">
+                {workflowName}
+              </h1>
+              {workflow && <WorkflowStatusBadge status={workflow.status} />}
+            </div>
             <p className="text-xs text-muted">
               {workflowTypeLabel} · n8n workflow · {configuredCount}/
               {template.configurableNodes.length} nodes configured
@@ -253,7 +262,11 @@ export function WorkflowCanvasEditor({
               node.configurableId && selectedNodeId === node.configurableId;
             const isConfigured =
               node.configurableId &&
-              isNodeConfigured(node.configurableId, config);
+              isNodeConfigured(
+                node.configurableId,
+                config,
+                template.requiresTopic,
+              );
             const nodeStyle = getNodeClasses(
               node,
               Boolean(isSelected),
@@ -394,6 +407,7 @@ export function WorkflowCanvasEditor({
           <WebhookConfigPanel
             appWorkflowId={workflowId}
             config={config}
+            requiresTopic={template.requiresTopic}
             onChange={handleConfigChange}
             onClose={() => setSelectedNodeId(null)}
           />

@@ -40,16 +40,11 @@ export function Sidebar() {
   return (
     <aside className="flex h-screen w-[240px] shrink-0 flex-col border-r border-border bg-sidebar px-4 py-6">
       <div className="mb-8 px-2">
-        <Link
-          href="/dashboard"
-          className="flex items-center gap-2.5">
-          <BrandLogo
-            className="h-5 w-5 shrink-0"
-            variant="primary"
-          />
+        <Link href="/dashboard" className="flex items-center gap-2.5">
+          <BrandLogo className="h-5 w-5 shrink-0" variant="primary" />
           <div className="min-w-0">
             <p className="truncate text-sm font-semibold text-sidebar-heading">
-              Flowaxon
+              Avispark
             </p>
             <p className="truncate text-[11px] text-sidebar-foreground">
               AI Copilot

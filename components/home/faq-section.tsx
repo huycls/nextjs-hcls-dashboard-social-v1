@@ -10,27 +10,27 @@ type FaqItem = {
 
 const faqs: FaqItem[] = [
   {
-    question: "What is Flowaxon?",
+    question: "What is Avispark?",
     answer:
-      "Flowaxon is an automation workflow platform that helps teams build, deploy, and monitor AI-driven workflows — from simple triggers to complex multi-step pipelines.",
+      "Avispark is an automation workflow platform that helps teams build, deploy, and monitor AI-driven workflows — from simple triggers to complex multi-step pipelines.",
   },
   {
-    question: "How can I get started with Flowaxon?",
+    question: "How can I get started with Avispark?",
     answer:
       "Create a free account, connect your integrations, and use the visual workflow builder to design your first automation. Most teams ship their first workflow in under a day.",
   },
   {
-    question: "What types of AI models does Flowaxon support?",
+    question: "What types of AI models does Avispark support?",
     answer:
-      "Flowaxon supports popular LLM providers and custom API endpoints. You can plug in models for classification, summarization, extraction, and more within your workflow nodes.",
+      "Avispark supports popular LLM providers and custom API endpoints. You can plug in models for classification, summarization, extraction, and more within your workflow nodes.",
   },
   {
-    question: "Is Flowaxon suitable for beginners in AI development?",
+    question: "Is Avispark suitable for beginners in AI development?",
     answer:
       "Yes. The drag-and-drop canvas requires no code to get started. Advanced users can still customize nodes, webhooks, and API calls when they need more control.",
   },
   {
-    question: "What kind of support does Flowaxon provide?",
+    question: "What kind of support does Avispark provide?",
     answer:
       "All plans include documentation and community support. Pro and Enterprise plans add priority and 24/7 premium support with dedicated onboarding assistance.",
   },
@@ -106,9 +106,9 @@ export function FaqSection() {
         <p className="mt-10 text-center text-sm text-[#333333]d">
           Still have questions? Email us at{" "}
           <a
-            href="mailto:support@flowaxon.com"
+            href="mailto:support@Avispark.com"
             className="font-medium text-heading underline underline-offset-2">
-            support@flowaxon.com
+            support@Avispark.com
           </a>
         </p>
       </div>

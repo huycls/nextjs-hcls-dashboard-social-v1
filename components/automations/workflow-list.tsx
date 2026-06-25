@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -14,14 +14,17 @@ import {
 } from "lucide-react";
 import { AppIcons } from "@/components/automations/app-icons";
 import { CreateWorkflowDialog } from "@/components/automations/create-workflow-dialog";
+import { WorkflowStatusCell } from "@/components/automations/workflow-status-cell";
 import {
   DEFAULT_PAGE_SIZE,
   PAGE_SIZE_OPTIONS,
   WORKFLOW_TYPE_LABELS,
   type WorkflowItem,
 } from "@/lib/automations/data";
+import { useRunningWorkflowsPolling } from "@/lib/automations/use-workflow-polling";
 import {
   deleteWorkflowById,
+  fetchWorkflows,
   loadWorkflows,
   saveWorkflows,
 } from "@/lib/automations/workflow-store";
@@ -59,37 +62,9 @@ function getVisiblePages(currentPage: number, totalPages: number) {
   return pages;
 }
 
-function StatusToggle({
-  checked,
-  label,
-  onChange,
-}: {
-  checked: boolean;
-  label: string;
-  onChange: (checked: boolean) => void;
-}) {
-  return (
-    <button
-      type="button"
-      role="switch"
-      aria-checked={checked}
-      aria-label={label}
-      onClick={() => onChange(!checked)}
-      className={`relative h-6 w-11 shrink-0 rounded-full transition ${
-        checked ? "bg-secondary" : "bg-border"
-      }`}>
-      <span className="sr-only">{label}</span>
-      <span
-        className={`absolute top-0.5 h-5 w-5 rounded-full bg-surface-elevated shadow transition ${
-          checked ? "left-5" : "left-0.5"
-        }`}
-      />
-    </button>
-  );
-}
-
 export function WorkflowList() {
   const workflows = useWorkflows();
+  useRunningWorkflowsPolling();
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState<number>(DEFAULT_PAGE_SIZE);
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -97,6 +72,36 @@ export function WorkflowList() {
     null,
   );
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetchWorkflows()
+      .then(() => {
+        if (!cancelled) {
+          notifyWorkflowStoreUpdated();
+          setLoadError(null);
+        }
+      })
+      .catch((error: unknown) => {
+        if (!cancelled) {
+          setLoadError(
+            error instanceof Error
+              ? error.message
+              : "Failed to load workflows.",
+          );
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const totalPages = Math.max(1, Math.ceil(workflows.length / pageSize));
   const effectivePage = Math.min(page, totalPages);
@@ -209,6 +214,12 @@ export function WorkflowList() {
       </div>
 
       <div className="flex-1 overflow-y-auto p-6 lg:p-8">
+        {loadError && (
+          <div className="mb-4 rounded-xl border border-rose-500/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-500">
+            {loadError}
+          </div>
+        )}
+
         <div className="surface-card overflow-hidden rounded-2xl bg-surface-elevated">
           <div className="flex items-center justify-between border-b border-border px-5 py-4">
             <div className="flex items-center gap-2">
@@ -247,7 +258,15 @@ export function WorkflowList() {
                 </tr>
               </thead>
               <tbody>
-                {pageItems.length === 0 ? (
+                {loading ? (
+                  <tr>
+                    <td
+                      colSpan={7}
+                      className="px-4 py-12 text-center text-sm text-muted">
+                      Loading workflows...
+                    </td>
+                  </tr>
+                ) : pageItems.length === 0 ? (
                   <tr>
                     <td
                       colSpan={7}
@@ -258,7 +277,6 @@ export function WorkflowList() {
                 ) : (
                   pageItems.map((workflow) => {
                     const isSelected = selectedIds.has(workflow.id);
-                    const isActive = workflow.status === "Active";
 
                     return (
                       <tr
@@ -300,10 +318,9 @@ export function WorkflowList() {
                         </td>
 
                         <td className="px-4 py-4">
-                          <StatusToggle
-                            checked={isActive}
-                            label={`Toggle status for ${workflow.name}`}
-                            onChange={(enabled) =>
+                          <WorkflowStatusCell
+                            workflow={workflow}
+                            onToggle={(enabled) =>
                               handleToggleStatus(workflow.id, enabled)
                             }
                           />

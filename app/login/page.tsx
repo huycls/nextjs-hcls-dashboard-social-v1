@@ -3,8 +3,8 @@ import { LoginForm } from "@/components/auth/login-form";
 import { LoginPreview } from "@/components/auth/login-preview";
 
 export const metadata: Metadata = {
-  title: "Flowaxon — Login",
-  description: "Login to your Flowaxon account",
+  title: "Avispark — Login",
+  description: "Login to your Avispark account",
 };
 
 export default function LoginPage() {

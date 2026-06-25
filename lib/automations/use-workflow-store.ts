@@ -3,7 +3,7 @@
 import { useSyncExternalStore } from "react";
 import type { WorkflowItem } from "@/lib/automations/data";
 
-const STORAGE_KEY = "flowaxon-workflows";
+const STORAGE_KEY = "Avispark-workflows";
 const EMPTY_WORKFLOWS: WorkflowItem[] = [];
 
 let cachedRaw: string | null = null;
@@ -48,11 +48,11 @@ function subscribe(callback: () => void) {
   };
 
   window.addEventListener("storage", handleChange);
-  window.addEventListener("flowaxon-workflows-updated", handleChange);
+  window.addEventListener("Avispark-workflows-updated", handleChange);
 
   return () => {
     window.removeEventListener("storage", handleChange);
-    window.removeEventListener("flowaxon-workflows-updated", handleChange);
+    window.removeEventListener("Avispark-workflows-updated", handleChange);
   };
 }
 
@@ -78,5 +78,5 @@ export function useWorkflow(id: string): WorkflowItem | null {
 
 export function notifyWorkflowStoreUpdated() {
   invalidateCache();
-  window.dispatchEvent(new Event("flowaxon-workflows-updated"));
+  window.dispatchEvent(new Event("Avispark-workflows-updated"));
 }

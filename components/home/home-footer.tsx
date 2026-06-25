@@ -73,12 +73,10 @@ export function HomeFooter() {
   return (
     <footer className="border-t border-border bg-surface">
       <div className="mx-auto max-w-7xl px-6 py-14 lg:px-10 lg:py-16">
-        <Link
-          href="/"
-          className="inline-flex items-center gap-2.5">
+        <Link href="/" className="inline-flex items-center gap-2.5">
           <BrandLogo className="h-5 w-5 shrink-0" />
           <span className="text-lg font-bold tracking-tight text-heading">
-            Flowaxon
+            Avispark
           </span>
         </Link>
 
@@ -135,7 +133,7 @@ export function HomeFooter() {
 
         <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-border pt-8 sm:flex-row sm:items-center">
           <p className="text-sm text-[#333333]d">
-            Copyright © {year} Flowaxon — Automate your workflow with AI
+            Copyright © {year} Avispark — Automate your workflow with AI
           </p>
 
           <div className="flex items-center gap-6">

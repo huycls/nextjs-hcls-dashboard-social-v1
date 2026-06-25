@@ -32,7 +32,7 @@ export function HeroSection() {
           </span>
         </h1>
         <p className="mx-auto mt-6 max-w-xl text-lg text-foreground">
-          Flowaxon helps teams build, deploy, and monitor automation workflows —
+          Avispark helps teams build, deploy, and monitor automation workflows —
           from simple triggers to complex multi-step pipelines.
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">

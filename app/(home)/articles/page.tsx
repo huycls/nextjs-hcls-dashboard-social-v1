@@ -13,7 +13,7 @@ import {
 } from "@/lib/wp/articles";
 
 export const metadata: Metadata = {
-  title: "Articles — Flowaxon",
+  title: "Articles — Avispark",
   description: "Latest news and guides from WordPress headless CMS.",
 };
 
@@ -26,7 +26,9 @@ type ArticlesPageProps = {
   }>;
 };
 
-export default async function ArticlesPage({ searchParams }: ArticlesPageProps) {
+export default async function ArticlesPage({
+  searchParams,
+}: ArticlesPageProps) {
   const params = await searchParams;
   const categorySlug = parseArticlesCategoryParam(params.category);
   const page = parseArticlesPageParam(params.page);
@@ -46,10 +48,7 @@ export default async function ArticlesPage({ searchParams }: ArticlesPageProps) 
         />
 
         <div className="mt-14 grid gap-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-12">
-          <ArticlesArchive
-            pageData={pageData}
-            categories={articleCategories}
-          />
+          <ArticlesArchive pageData={pageData} categories={articleCategories} />
           <RelatedArticlesSidebar
             articles={sidebarArticles}
             title="Related articles"

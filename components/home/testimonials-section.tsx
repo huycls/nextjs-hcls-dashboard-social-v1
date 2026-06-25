@@ -20,7 +20,7 @@ const testimonials: Testimonial[] = [
   },
   {
     quote:
-      "Flowaxon cut our manual workflow time in half. The visual builder made it easy for our ops team to automate without waiting on engineering — we shipped our first automation in under a day.",
+      "Avispark cut our manual workflow time in half. The visual builder made it easy for our ops team to automate without waiting on engineering — we shipped our first automation in under a day.",
     company: "Spotify",
     name: "Michael Chen",
     role: "Operations Lead",

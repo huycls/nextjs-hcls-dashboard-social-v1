@@ -11,7 +11,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Flowaxon",
+  title: "Avispark",
   description: "Automation workflow platform",
 };
 
@@ -25,8 +25,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${inter.className} h-full antialiased`}
       data-theme="dark"
-      suppressHydrationWarning
-    >
+      suppressHydrationWarning>
       <body className="min-h-full bg-background font-sans text-foreground">
         <ThemeScript />
         <ThemeProvider>{children}</ThemeProvider>

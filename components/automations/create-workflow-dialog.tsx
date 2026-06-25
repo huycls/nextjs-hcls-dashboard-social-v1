@@ -31,6 +31,8 @@ export function CreateWorkflowDialog({
   const [step, setStep] = useState<"type" | "name">("type");
   const [selectedType, setSelectedType] = useState<WorkflowType | null>(null);
   const [workflowName, setWorkflowName] = useState("");
+  const [creating, setCreating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   if (!open) return null;
 
@@ -38,6 +40,8 @@ export function CreateWorkflowDialog({
     setStep("type");
     setSelectedType(null);
     setWorkflowName("");
+    setCreating(false);
+    setError(null);
     onClose();
   }
 
@@ -52,15 +56,27 @@ export function CreateWorkflowDialog({
     setWorkflowName("");
   }
 
-  function handleCreate(event: React.FormEvent) {
+  async function handleCreate(event: React.FormEvent) {
     event.preventDefault();
-    if (!selectedType || !workflowName.trim()) return;
+    if (!selectedType || !workflowName.trim() || creating) return;
 
-    const workflow = createWorkflow(workflowName, selectedType);
-    notifyWorkflowStoreUpdated();
-    onCreated();
-    handleClose();
-    router.push(`/dashboard/automations/${workflow.id}/edit`);
+    setCreating(true);
+    setError(null);
+
+    try {
+      const workflow = await createWorkflow(workflowName, selectedType);
+      notifyWorkflowStoreUpdated();
+      onCreated();
+      handleClose();
+      router.push(`/dashboard/automations/${workflow.id}/edit`);
+    } catch (createError) {
+      setError(
+        createError instanceof Error
+          ? createError.message
+          : "Failed to create workflow.",
+      );
+      setCreating(false);
+    }
   }
 
   return (
@@ -139,8 +155,13 @@ export function CreateWorkflowDialog({
               onChange={(event) => setWorkflowName(event.target.value)}
               placeholder="Enter workflow name"
               autoFocus
-              className="h-11 w-full rounded-xl border border-border bg-surface px-4 text-sm text-foreground outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
+              disabled={creating}
+              className="h-11 w-full rounded-xl border border-border bg-surface px-4 text-sm text-foreground outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20 disabled:opacity-60"
             />
+
+            {error && (
+              <p className="mt-3 text-sm text-rose-500">{error}</p>
+            )}
 
             <div className="mt-6 flex justify-end gap-3">
               <button
@@ -151,9 +172,9 @@ export function CreateWorkflowDialog({
               </button>
               <button
                 type="submit"
-                disabled={!workflowName.trim()}
+                disabled={!workflowName.trim() || creating}
                 className="rounded-xl bg-primary px-4 py-2 text-sm font-medium text-background transition hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-40">
-                Create workflow
+                {creating ? "Creating..." : "Create workflow"}
               </button>
             </div>
           </form>

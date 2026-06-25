@@ -3,8 +3,14 @@
 import { useEffect, useState } from "react";
 import { Loader2, Zap } from "lucide-react";
 import { triggerWorkflowJob } from "@/lib/automations/trigger-job";
-import type { WorkflowNodeConfig } from "@/lib/automations/data";
-import { incrementWorkflowTriggers } from "@/lib/automations/workflow-store";
+import { WORKFLOW_STATUS_LABELS, type WorkflowNodeConfig } from "@/lib/automations/data";
+import { updateWorkflowFromBackend } from "@/lib/automations/workflow-store";
+import {
+  notifyWorkflowStoreUpdated,
+  useWorkflow,
+} from "@/lib/automations/use-workflow-store";
+import { useWorkflowPolling } from "@/lib/automations/use-workflow-polling";
+import { WorkflowStatusBadge } from "@/components/automations/workflow-status-badge";
 
 type JobApiConfig = {
   runUrl: string;
@@ -15,6 +21,7 @@ type JobApiConfig = {
 type WebhookConfigPanelProps = {
   appWorkflowId: string;
   config: WorkflowNodeConfig;
+  requiresTopic: boolean;
   onChange: (config: WorkflowNodeConfig) => void;
   onClose: () => void;
 };
@@ -22,13 +29,17 @@ type WebhookConfigPanelProps = {
 export function WebhookConfigPanel({
   appWorkflowId,
   config,
+  requiresTopic,
   onChange,
   onClose,
 }: WebhookConfigPanelProps) {
+  const workflow = useWorkflow(appWorkflowId);
+  useWorkflowPolling(appWorkflowId);
   const [triggering, setTriggering] = useState(false);
   const [triggerResult, setTriggerResult] = useState<{
     ok: boolean;
     message: string;
+    workflowStatus?: string;
   } | null>(null);
   const [jobConfig, setJobConfig] = useState<JobApiConfig | null>(null);
 
@@ -43,18 +54,46 @@ export function WebhookConfigPanel({
     (config.workflowId ?? "").trim() || jobConfig?.defaultWorkflowId || "123";
 
   async function handleTrigger() {
-    if (!config.topic.trim() || !jobWorkflowId) return;
+    const topic = config.topic.trim();
+    if (!jobWorkflowId || (requiresTopic && !topic)) return;
 
     setTriggering(true);
     setTriggerResult(null);
 
-    const result = await triggerWorkflowJob(jobWorkflowId, config.topic.trim());
+    const result = await triggerWorkflowJob(
+      jobWorkflowId,
+      requiresTopic ? topic : undefined,
+    );
 
-    if (result.ok) {
-      incrementWorkflowTriggers(appWorkflowId);
+    if (result.workflow) {
+      updateWorkflowFromBackend(result.workflow);
+      notifyWorkflowStoreUpdated();
     }
 
-    setTriggerResult({ ok: result.ok, message: result.message });
+    const statusLabel = result.workflow
+      ? WORKFLOW_STATUS_LABELS[result.workflow.status]
+      : undefined;
+
+    const jobDetail = result.job?.errorMessage
+      ? result.job.errorMessage
+      : result.job?.status
+        ? `Job: ${result.job.status}`
+        : undefined;
+
+    setTriggerResult({
+      ok: result.ok,
+      message: [
+        result.ok
+          ? statusLabel
+            ? `Workflow: ${statusLabel}`
+            : result.message
+          : result.message,
+        jobDetail,
+      ]
+        .filter(Boolean)
+        .join(" — "),
+      workflowStatus: statusLabel,
+    });
     setTriggering(false);
   }
 
@@ -79,6 +118,18 @@ export function WebhookConfigPanel({
             {jobConfig?.runUrl ?? "http://localhost:5000/api/jobs/run"}
           </code>
         </div>
+
+        {workflow && (
+          <div className="mt-4 flex items-center justify-between rounded-xl border border-border bg-surface-elevated px-4 py-3">
+            <div>
+              <p className="text-xs font-medium text-muted">Trạng thái thực hiện</p>
+              <p className="mt-0.5 text-sm text-foreground">
+                {workflow.triggers} lần kích hoạt
+              </p>
+            </div>
+            <WorkflowStatusBadge status={workflow.status} />
+          </div>
+        )}
 
         <div className="mt-5 space-y-4">
           <div>
@@ -116,21 +167,25 @@ export function WebhookConfigPanel({
               className="mb-4 h-11 w-full rounded-xl border border-border bg-surface px-4 text-sm text-foreground outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
             />
 
-            <label
-              htmlFor="job-topic"
-              className="mb-2 block text-sm font-medium text-heading">
-              topic
-            </label>
-            <input
-              id="job-topic"
-              type="text"
-              value={config.topic}
-              onChange={(event) =>
-                onChange({ ...config, topic: event.target.value })
-              }
-              placeholder="AI marketing trends 2026"
-              className="h-11 w-full rounded-xl border border-border bg-surface px-4 text-sm text-foreground outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
-            />
+            {requiresTopic && (
+              <>
+                <label
+                  htmlFor="job-topic"
+                  className="mb-2 block text-sm font-medium text-heading">
+                  topic
+                </label>
+                <input
+                  id="job-topic"
+                  type="text"
+                  value={config.topic}
+                  onChange={(event) =>
+                    onChange({ ...config, topic: event.target.value })
+                  }
+                  placeholder="AI marketing trends 2026"
+                  className="h-11 w-full rounded-xl border border-border bg-surface px-4 text-sm text-foreground outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
+                />
+              </>
+            )}
           </div>
 
           {triggerResult && (
@@ -155,7 +210,9 @@ export function WebhookConfigPanel({
         </button>
         <button
           type="button"
-          disabled={!config.topic.trim() || triggering}
+          disabled={
+            triggering || (requiresTopic && !config.topic.trim()) || !jobWorkflowId
+          }
           onClick={handleTrigger}
           className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-background transition hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-40">
           {triggering ? (

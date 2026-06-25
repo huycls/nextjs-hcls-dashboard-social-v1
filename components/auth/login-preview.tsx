@@ -32,7 +32,7 @@ export function LoginPreview() {
             <div className="flex items-center gap-2">
               <div className="h-7 w-7 rounded-lg bg-primary" />
               <span className="text-sm font-semibold text-heading">
-                Flowaxon
+                Avispark
               </span>
             </div>
             <button

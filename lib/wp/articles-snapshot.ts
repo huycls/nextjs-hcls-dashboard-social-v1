@@ -46,6 +46,65 @@ export function getArticleFromSnapshot(slug: string): Article | null {
   return readArticlesSnapshot().find((article) => article.slug === slug) ?? null;
 }
 
+export function getSnapshotArticleSlugs(): string[] {
+  return readArticlesSnapshot().map((article) => article.slug);
+}
+
+export function getSnapshotLatestArticles(limit = 3): Article[] {
+  return getArticlesPageFromSnapshot(readArticlesSnapshot(), {
+    perPage: limit,
+    categorySlug: "all",
+  }).articles;
+}
+
+export function getSnapshotArticlesPageForNumber(
+  page: number,
+  categorySlug = "all",
+  perPage = 12,
+): ArticlesPageResult {
+  const safePage = Math.max(1, Math.floor(page) || 1);
+  const offset = (safePage - 1) * perPage;
+
+  return getArticlesPageFromSnapshot(readArticlesSnapshot(), {
+    categorySlug,
+    perPage,
+    offset,
+    cursor: null,
+  });
+}
+
+export function getSnapshotRelatedArticles(
+  options: {
+    slug?: string;
+    categorySlug?: string;
+    limit?: number;
+  } = {},
+): Article[] {
+  const { slug, categorySlug, limit = 5 } = options;
+  const articles = readArticlesSnapshot();
+
+  if (!slug) {
+    return getArticlesPageFromSnapshot(articles, {
+      perPage: limit,
+      categorySlug: "all",
+    }).articles;
+  }
+
+  const sameCategory = articles.filter(
+    (article) =>
+      article.slug !== slug &&
+      (!categorySlug || article.categorySlug === categorySlug),
+  );
+  const others = articles.filter(
+    (article) =>
+      article.slug !== slug &&
+      categorySlug &&
+      article.categorySlug !== categorySlug,
+  );
+
+  return [...sameCategory, ...others].slice(0, limit);
+}
+
 export function getArticlesPageFromSnapshot(
   articles: Article[],
   options: {

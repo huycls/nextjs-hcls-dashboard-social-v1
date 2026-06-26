@@ -4,11 +4,15 @@ import {
   parseArticlesCategoryParam,
   parseArticlesPageParam,
 } from "@/lib/wp/article-routes";
+import { articleCategories } from "@/lib/wp/articles";
 import {
-  articleCategories,
-  getArticlesPageForNumber,
-  getRelatedArticles,
-} from "@/lib/wp/articles";
+  getSnapshotArticlesPageForNumber,
+  getSnapshotRelatedArticles,
+} from "@/lib/wp/articles-snapshot";
+// import {
+//   getArticlesPageForNumber,
+//   getRelatedArticles,
+// } from "@/lib/wp/articles";
 
 export const metadata: Metadata = {
   title: "Articles — Avispark",
@@ -31,10 +35,13 @@ export default async function ArticlesPage({
   const categorySlug = parseArticlesCategoryParam(params.category);
   const page = parseArticlesPageParam(params.page);
 
-  const [pageData, sidebarArticles] = await Promise.all([
-    getArticlesPageForNumber(page, categorySlug),
-    getRelatedArticles({ limit: 5 }),
-  ]);
+  // const [pageData, sidebarArticles] = await Promise.all([
+  //   getArticlesPageForNumber(page, categorySlug),
+  //   getRelatedArticles({ limit: 5 }),
+  // ]);
+
+  const pageData = getSnapshotArticlesPageForNumber(page, categorySlug);
+  const sidebarArticles = getSnapshotRelatedArticles({ limit: 5 });
 
   return (
     <ArticlesTemplate

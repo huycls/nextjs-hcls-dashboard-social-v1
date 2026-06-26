@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { getLatestArticles } from "@/lib/wp/articles";
+// import { getLatestArticles } from "@/lib/wp/articles";
 import { ArticleCard } from "@/components/molecules/ArticleCard";
+import { getSnapshotLatestArticles } from "@/lib/wp/articles-snapshot";
 
 export async function ArticlesSection() {
-  const latestArticles = await getLatestArticles(3);
+  const latestArticles = getSnapshotLatestArticles(3);
 
   return (
     <section className="bg-background py-20 lg:py-28">

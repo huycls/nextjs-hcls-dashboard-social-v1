@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getLatestArticles } from "@/lib/wp/articles";
-import { ArticleCard } from "@/components/templates/home/article-card";
+import { ArticleCard } from "@/components/molecules/ArticleCard";
 
 export async function ArticlesSection() {
   const latestArticles = await getLatestArticles(3);
@@ -18,13 +18,16 @@ export async function ArticlesSection() {
         </div>
 
         {latestArticles.length > 0 ? (
-          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {latestArticles.map((article) => (
-              <ArticleCard
-                key={article.slug}
-                article={article}
-              />
-            ))}
+          <div className="-mx-6 mt-14 sm:mx-0">
+            <div className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-1 scrollbar-none sm:grid sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:snap-none sm:px-0 lg:grid-cols-3 [&::-webkit-scrollbar]:hidden">
+              {latestArticles.map((article) => (
+                <div
+                  key={article.slug}
+                  className="w-[min(88vw,340px)] shrink-0 snap-center sm:w-auto sm:shrink">
+                  <ArticleCard article={article} />
+                </div>
+              ))}
+            </div>
           </div>
         ) : (
           <p className="mt-14 text-center text-sm text-muted">

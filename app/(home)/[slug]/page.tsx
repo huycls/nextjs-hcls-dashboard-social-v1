@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ArticleContent } from "@/components/templates/home/article-content";
-import { ArticleHero } from "@/components/templates/home/article-hero";
-import { RelatedArticlesSidebar } from "@/components/templates/home/related-articles-sidebar";
+import { ArticleContent } from "@/components/organisms/ArticleContentDetail";
+import { ArticleHero } from "@/components/organisms/ArticleHero";
+import { RelatedArticlesSidebar } from "@/components/organisms/RelatedArticleSidebar";
 import { isReservedArticleSlug } from "@/lib/wp/article-routes";
 import {
   getArticleBySlug,

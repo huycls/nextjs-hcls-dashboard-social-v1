@@ -1,8 +1,8 @@
 import Link from "next/link";
 import type { ArticleCategory, ArticlesPageResult } from "@/lib/wp/articles";
 import { buildArticlesHref } from "@/lib/wp/article-routes";
-import { ArticleCard } from "@/components/templates/home/article-card";
-import { ArticlesPagination } from "@/components/templates/home/articles-pagination";
+import { ArticleCard } from "@/components/molecules/ArticleCard";
+import { ArticlesPagination } from "@/components/molecules/ArticlePagination";
 
 type ArticlesArchiveProps = {
   pageData: ArticlesPageResult;
@@ -18,7 +18,7 @@ export function ArticlesArchive({
 
   return (
     <div>
-      <div className="flex flex-wrap justify-center gap-2">
+      <div className="flex flex-wrap justify-start gap-2">
         <Link
           href={buildArticlesHref({ category: "all" })}
           prefetch

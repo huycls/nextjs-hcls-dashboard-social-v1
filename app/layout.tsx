@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { cookies } from "next/headers";
 import { ThemeProvider } from "@/components/theme/theme-provider";
-import { ThemeScript } from "@/components/theme/theme-script";
+import { ThemeHeadScript } from "@/components/theme/theme-script";
+import {
+  getThemeFromCookie,
+  THEME_STORAGE_KEY,
+} from "@/lib/theme";
 import "./globals.css";
 
 const inter = Inter({
@@ -15,20 +20,25 @@ export const metadata: Metadata = {
   description: "Automation workflow platform",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = await cookies();
+  const theme = getThemeFromCookie(cookieStore.get(THEME_STORAGE_KEY)?.value);
+
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${inter.className} h-full antialiased`}
-      data-theme="dark"
+      className={`${inter.variable} ${inter.className} h-full antialiased ${theme}`}
+      data-theme={theme}
       suppressHydrationWarning>
+      <head>
+        <ThemeHeadScript />
+      </head>
       <body className="min-h-full bg-background font-sans text-foreground">
-        <ThemeScript />
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider initialTheme={theme}>{children}</ThemeProvider>
       </body>
     </html>
   );

@@ -12,6 +12,7 @@ import {
   Plus,
   Trash2,
 } from "lucide-react";
+import { Loading } from "@/components/atoms/Loading";
 import { AppIcons } from "@/components/templates/automations/app-icons";
 import { CreateWorkflowDialog } from "@/components/templates/automations/create-workflow-dialog";
 import { WorkflowStatusCell } from "@/components/templates/automations/workflow-status-cell";
@@ -193,7 +194,13 @@ export function WorkflowList() {
   }
 
   return (
-    <div className="flex flex-1 flex-col">
+    <div className="relative flex flex-1 flex-col">
+      {loading ? (
+        <Loading
+          label="Loading workflows"
+          message="Loading workflows..."
+        />
+      ) : null}
       <div className="flex items-center justify-between border-b border-border bg-surface px-6 py-5 lg:px-8">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-heading">
@@ -258,15 +265,7 @@ export function WorkflowList() {
                 </tr>
               </thead>
               <tbody>
-                {loading ? (
-                  <tr>
-                    <td
-                      colSpan={7}
-                      className="px-4 py-12 text-center text-sm text-muted">
-                      Loading workflows...
-                    </td>
-                  </tr>
-                ) : pageItems.length === 0 ? (
+                {loading ? null : pageItems.length === 0 ? (
                   <tr>
                     <td
                       colSpan={7}

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, Heart, Lightbulb, Shield, Users, Zap } from "lucide-react";
-import { MarketingPageHeader } from "@/components/templates/home/marketing-page-header";
+import { MarketingPageHeader } from "@/components/organisms/AboutusContent/marketing-page-header";
 import CountUp from "@/components/atoms/CountUp";
 
 const stats = [

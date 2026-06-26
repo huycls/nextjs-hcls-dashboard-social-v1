@@ -9,8 +9,10 @@ import {
   Shield,
   Workflow,
 } from "lucide-react";
-import { BrandLogo } from "@/components/templates/home/brand-logo";
+import { BrandLogo } from "@/components/atoms/BrandLogo";
 import { cn } from "@/lib/utils/tailwind-merge";
+import ShinyText from "@/components/atoms/ShinyText";
+import { useTheme } from "@/components/theme/theme-provider";
 
 const mainNav = [
   {
@@ -42,7 +44,7 @@ type SidebarProps = {
 
 export function Sidebar({ open = false, onClose }: SidebarProps) {
   const pathname = usePathname();
-
+  const { isDark } = useTheme();
   function handleNavClick() {
     onClose?.();
   }
@@ -50,7 +52,7 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
   return (
     <aside
       className={cn(
-        "flex h-screen w-[240px] shrink-0 flex-col border-r border-border bg-sidebar px-4 py-6",
+        "flex h-screen w-[300px] py-10 xl:py-16 shrink-0 flex-col border-r border-border bg-sidebar px-4 py-6",
         "fixed left-0 top-0 z-50 transition-transform duration-300 ease-out",
         "xl:static xl:translate-x-0",
         open ? "translate-x-0" : "-translate-x-full xl:translate-x-0",
@@ -61,13 +63,23 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
           onClick={handleNavClick}
           className="flex items-center gap-2.5">
           <BrandLogo
-            className="h-5 w-5 shrink-0"
+            className="h-10 w-10 shrink-0"
             variant="primary"
           />
           <div className="min-w-0">
-            <p className="truncate text-sm font-semibold text-sidebar-heading">
-              Avispark
-            </p>
+            <ShinyText
+              text="Avispark"
+              speed={2}
+              delay={0}
+              className="text-2xl font-bold"
+              color={isDark ? "#ffffff" : "#333333"}
+              shineColor={isDark ? "#f49e0b" : "#00a73e"}
+              spread={120}
+              direction="left"
+              yoyo={false}
+              pauseOnHover={false}
+              disabled={false}
+            />
             <p className="truncate text-[11px] text-sidebar-foreground">
               AI Copilot
             </p>
@@ -75,7 +87,7 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
         </Link>
       </div>
 
-      <nav className="flex-1 space-y-1">
+      <nav className="flex-1 space-y-1 pt-10 xl:pt-20">
         {mainNav.map(({ label, href, icon: Icon, exact }) => {
           const active = isActivePath(pathname, href, exact);
 

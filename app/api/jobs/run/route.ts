@@ -10,6 +10,12 @@ type RunJobBody = {
   topic?: string;
 };
 
+type BackendErrorPayload = {
+  message?: string;
+  job?: unknown;
+  workflow?: unknown;
+};
+
 function parseErrorMessage(text: string) {
   try {
     const parsed = JSON.parse(text) as { message?: string; error?: string };
@@ -72,14 +78,10 @@ export async function POST(request: Request) {
     }
 
     const errorText = await response.text().catch(() => "");
-    let errorPayload: {
-      message?: string;
-      job?: unknown;
-      workflow?: unknown;
-    } | null = null;
+    let errorPayload: BackendErrorPayload | null = null;
 
     try {
-      errorPayload = JSON.parse(errorText) as typeof errorPayload;
+      errorPayload = JSON.parse(errorText) as BackendErrorPayload;
     } catch {
       // not JSON
     }

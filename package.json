@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "sync:articles": "tsx scripts/sync-articles.ts",
+    "prebuild": "npm run sync:articles",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
@@ -30,6 +32,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
     "tailwindcss": "^4",
+    "tsx": "^4.20.3",
     "typescript": "^5"
   }
 }

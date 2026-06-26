@@ -1,6 +1,6 @@
 import { readFileSync, writeFileSync, mkdirSync, existsSync } from "fs";
 import { join } from "path";
-import type { Article, ArticlesPageResult } from "./articles";
+import type { Article, ArticleCategory, ArticlesPageResult } from "./articles";
 
 export const ARTICLES_SNAPSHOT_PATH = join(
   process.cwd(),
@@ -44,6 +44,18 @@ export function writeArticlesSnapshot(articles: Article[]): void {
 
 export function getArticleFromSnapshot(slug: string): Article | null {
   return readArticlesSnapshot().find((article) => article.slug === slug) ?? null;
+}
+
+export function getSnapshotArticleCategories(): ArticleCategory[] {
+  const seen = new Map<string, string>();
+
+  for (const article of readArticlesSnapshot()) {
+    if (!seen.has(article.categorySlug)) {
+      seen.set(article.categorySlug, article.category);
+    }
+  }
+
+  return [...seen.entries()].map(([slug, label]) => ({ slug, label }));
 }
 
 export function getSnapshotArticleSlugs(): string[] {

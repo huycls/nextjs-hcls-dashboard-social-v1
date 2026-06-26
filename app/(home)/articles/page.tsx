@@ -4,11 +4,12 @@ import {
   parseArticlesCategoryParam,
   parseArticlesPageParam,
 } from "@/lib/wp/article-routes";
-import { articleCategories } from "@/lib/wp/articles";
 import {
   getSnapshotArticlesPageForNumber,
+  getSnapshotArticleCategories,
   getSnapshotRelatedArticles,
 } from "@/lib/wp/articles-snapshot";
+// import { articleCategories } from "@/lib/wp/articles";
 // import {
 //   getArticlesPageForNumber,
 //   getRelatedArticles,
@@ -42,11 +43,12 @@ export default async function ArticlesPage({
 
   const pageData = getSnapshotArticlesPageForNumber(page, categorySlug);
   const sidebarArticles = getSnapshotRelatedArticles({ limit: 5 });
+  const categories = getSnapshotArticleCategories();
 
   return (
     <ArticlesTemplate
       pageData={pageData}
-      categories={articleCategories}
+      categories={categories}
       sidebarArticles={sidebarArticles}
     />
   );

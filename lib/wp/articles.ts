@@ -104,33 +104,59 @@ function createInitialMergeCursor(): ArticlesMergeCursor {
   };
 }
 
+function emptyArticlesPageResult(
+  categorySlug: string,
+  perPage: number,
+  cursor: string | null = null,
+  page = 1,
+): ArticlesPageResult {
+  return {
+    articles: [],
+    perPage,
+    categorySlug,
+    page,
+    hasNextPage: false,
+    hasPreviousPage: Boolean(cursor),
+    cursor,
+    nextCursor: null,
+  };
+}
+
 async function getSingleCategoryArticlesPage(
   categorySlug: string,
   perPage: number,
   cursor: string | null,
 ): Promise<ArticlesPageResult> {
-  const { nodes, pageInfo } = await fetchCategoryPostsPage({
-    name: categorySlug,
-    postPerPage: perPage,
-    after: cursor,
-    size: "LARGE",
-    fetchOptions: FETCH_OPTIONS,
-  });
+  try {
+    const { nodes, pageInfo } = await fetchCategoryPostsPage({
+      name: categorySlug,
+      postPerPage: perPage,
+      after: cursor,
+      size: "LARGE",
+      fetchOptions: FETCH_OPTIONS,
+    });
 
-  const articles = nodes
-    .map((node) => mapCategoryPostToArticle(node, categorySlug))
-    .filter((article): article is Article => Boolean(article));
+    const articles = nodes
+      .map((node) => mapCategoryPostToArticle(node, categorySlug))
+      .filter((article): article is Article => Boolean(article));
 
-  return {
-    articles,
-    perPage,
-    categorySlug,
-    page: 1,
-    hasNextPage: Boolean(pageInfo.hasNextPage),
-    hasPreviousPage: Boolean(cursor),
-    cursor,
-    nextCursor: pageInfo.hasNextPage ? (pageInfo.endCursor ?? null) : null,
-  };
+    return {
+      articles,
+      perPage,
+      categorySlug,
+      page: 1,
+      hasNextPage: Boolean(pageInfo.hasNextPage),
+      hasPreviousPage: Boolean(cursor),
+      cursor,
+      nextCursor: pageInfo.hasNextPage ? (pageInfo.endCursor ?? null) : null,
+    };
+  } catch (error) {
+    console.error(
+      `[lib/wp] getSingleCategoryArticlesPage("${categorySlug}") failed:`,
+      error,
+    );
+    return emptyArticlesPageResult(categorySlug, perPage, cursor);
+  }
 }
 
 async function getMergedArticlesPage(
@@ -157,27 +183,35 @@ async function getMergedArticlesPage(
       WP_CATEGORY_NAV.map(async ({ slug }) => {
         if (exhaustedSet.has(slug)) return;
 
-        const { nodes, pageInfo } = await fetchCategoryPostsPage({
-          name: slug,
-          postPerPage: perPage,
-          after: state.cursors[slug],
-          size: "LARGE",
-          fetchOptions: FETCH_OPTIONS,
-        });
+        try {
+          const { nodes, pageInfo } = await fetchCategoryPostsPage({
+            name: slug,
+            postPerPage: perPage,
+            after: state.cursors[slug],
+            size: "LARGE",
+            fetchOptions: FETCH_OPTIONS,
+          });
 
-        state.cursors[slug] = pageInfo.endCursor ?? null;
-        if (!pageInfo.hasNextPage) {
-          exhaustedSet.add(slug);
-        }
-
-        fetchedInRound += nodes.length;
-
-        for (const node of nodes) {
-          const article = mapCategoryPostToArticle(node, slug);
-          if (article && !seen.has(article.slug)) {
-            seen.add(article.slug);
-            pool.push(article);
+          state.cursors[slug] = pageInfo.endCursor ?? null;
+          if (!pageInfo.hasNextPage) {
+            exhaustedSet.add(slug);
           }
+
+          fetchedInRound += nodes.length;
+
+          for (const node of nodes) {
+            const article = mapCategoryPostToArticle(node, slug);
+            if (article && !seen.has(article.slug)) {
+              seen.add(article.slug);
+              pool.push(article);
+            }
+          }
+        } catch (error) {
+          console.error(
+            `[lib/wp] fetchCategoryPostsPage("${slug}") failed:`,
+            error,
+          );
+          exhaustedSet.add(slug);
         }
       }),
     );
@@ -395,11 +429,16 @@ export async function getArticles(): Promise<Article[]> {
 }
 
 export async function getLatestArticles(limit = 3): Promise<Article[]> {
-  const { articles } = await getArticlesPage({
-    perPage: limit,
-    categorySlug: "all",
-  });
-  return articles;
+  try {
+    const { articles } = await getArticlesPage({
+      perPage: limit,
+      categorySlug: "all",
+    });
+    return articles;
+  } catch (error) {
+    console.error("[lib/wp] getLatestArticles failed:", error);
+    return [];
+  }
 }
 
 export async function getRelatedArticles(

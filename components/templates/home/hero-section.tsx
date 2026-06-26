@@ -24,10 +24,10 @@ export function HeroSection() {
         resistance={750}
         returnDuration={1.5}
       />
-      <div className="relative z-10 px-6 py-16 lg:px-8 lg:py-24">
+      <div className="relative z-10 px-6 py-16 lg:px-8 lg:py-24 2xl:py-48 grid place-items-center">
         {" "}
         <div className="mx-auto max-w-3xl text-center">
-          <p className="mb-4 text-sm font-medium uppercase tracking-wider text-foreground text-primary">
+          <p className="mb-4 text-sm font-medium uppercase tracking-wider text-primary">
             Automation platform
           </p>
           <h1 className="text-4xl font-semibold tracking-tight text-heading sm:text-5xl lg:text-6xl">
@@ -36,8 +36,8 @@ export function HeroSection() {
             <span className="justify-start items-center mt-3 inline-flex">
               Work
               <RotatingText
-                texts={["smarter.", "Faster"]}
-                mainClassName={`${isDark ? "text-black" : "text-white"} px-2 ml-4 sm:px-2 md:px-3 bg-primary overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg`}
+                texts={["smarter", "faster"]}
+                mainClassName={`${isDark ? "text-black" : "text-white"} px-2 ml-4 sm:px-2 md:px-3 bg-primary overflow-hidden py-0.5  sm:py-1 md:py-2 justify-center rounded-lg min-w-[160px] lg:min-w-[260px]`}
                 staggerFrom="last"
                 initial={{ y: "100%" }}
                 animate={{ y: 0 }}
@@ -59,13 +59,13 @@ export function HeroSection() {
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href="/dashboard"
-              className="inline-flex h-12 items-center gap-2 rounded-xl bg-primary px-6 text-sm font-medium text-background transition hover:bg-primary-hover">
+              className="inline-flex group h-12 items-center gap-2 rounded-xl bg-primary px-6 text-sm font-medium text-background transition hover:bg-primary-hover duration-300 ease-in-out">
               Open dashboard
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-all duration-300 ease-in-out" />
             </Link>
             <Link
               href="/login"
-              className="inline-flex h-12 items-center rounded-xl border border-border bg-surface px-6 text-sm font-medium text-heading transition hover:bg-surface-elevated">
+              className="inline-flex h-12 items-center rounded-xl border border-border bg-surface px-6 text-sm font-medium text-heading transition-all hover:bg-primary hover:text-background duration-300 ease-in-out">
               Sign in
             </Link>
           </div>

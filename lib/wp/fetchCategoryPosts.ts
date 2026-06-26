@@ -66,6 +66,7 @@ export type WpCategoryPostNode = {
   title: string;
   uri: string;
   excerpt: string;
+  content?: string;
   date: string;
   categories: {
     nodes: Array<{
@@ -251,6 +252,7 @@ async function fetchCategoryPostsConnection({
               title
               uri
               excerpt
+              content
               date
               categories {
                 nodes {

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Check, Star } from "lucide-react";
+import { BorderBeam } from "@/components/atoms/BorderBeam";
 
 type BillingCycle = "monthly" | "yearly";
 
@@ -114,11 +115,20 @@ function PricingCard({
   const billedLabel =
     billing === "monthly" ? "billed monthly" : "billed yearly";
 
+  console.log(plan);
+
   return (
     <article
       className={`surface-card relative flex flex-col rounded-3xl bg-surface p-6 sm:p-8 ${
-        plan.popular ? "surface-card-accent lg:scale-[1.02]" : ""
+        plan.popular ? "surface-card-accent lg:scale-[1.02] !border-0" : ""
       }`}>
+      {plan.popular && (
+        <BorderBeam
+          duration={8}
+          size={300}
+          borderWidth={2}
+        />
+      )}
       {plan.popular && (
         <div className="absolute right-4 top-4 inline-flex items-center gap-1 rounded-full bg-primary px-2.5 py-1 text-xs font-medium text-background">
           <Star className="h-3 w-3 fill-background" />
@@ -158,10 +168,10 @@ function PricingCard({
 
       <button
         type="button"
-        className={`mt-8 h-11 w-full rounded-xl text-sm font-medium transition ${
+        className={`mt-8 h-11 w-full rounded-xl text-sm font-medium cursor-pointer transition-all duration-300 ease-in-out ${
           plan.popular
             ? "bg-primary text-background hover:bg-primary-hover"
-            : "surface-card bg-surface text-heading hover:bg-surface-elevated hover:shadow-[var(--shadow-card-hover)]"
+            : "surface-card bg-surface text-heading hover:bg-primary hover:text-background hover:shadow-[var(--shadow-card-hover)]"
         }`}>
         Subscribe
       </button>
@@ -182,7 +192,8 @@ export function PricingSection() {
             Pricing
           </p>
           <h2 className="mt-4 text-3xl font-semibold text-heading sm:text-4xl lg:text-5xl">
-            Choose the plan that&apos;s right for you
+            Choose the plan that&apos;s right
+            <br className="hidden 2xl:block" /> for you
           </h2>
 
           <div className="mt-8">
@@ -194,13 +205,15 @@ export function PricingSection() {
         </div>
 
         <div className="mt-14 grid gap-6 lg:grid-cols-3 lg:items-center lg:gap-8">
-          {plans.map((plan) => (
-            <PricingCard
-              key={plan.id}
-              plan={plan}
-              billing={billing}
-            />
-          ))}
+          {plans.map((plan) => {
+            return (
+              <PricingCard
+                key={plan.id}
+                plan={plan}
+                billing={billing}
+              />
+            );
+          })}
         </div>
       </div>
     </section>

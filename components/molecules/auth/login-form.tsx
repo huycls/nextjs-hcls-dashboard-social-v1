@@ -3,6 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Eye, EyeOff, Lock, Mail, Sun } from "lucide-react";
+import ShinyText from "@/components/atoms/ShinyText";
+import { useTheme } from "@/components/theme/theme-provider";
+import { BrandLogo } from "@/components/templates/home/brand-logo";
 
 function GoogleIcon() {
   return (
@@ -43,11 +46,26 @@ function AppleIcon() {
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const { isDark } = useTheme();
 
   return (
     <div className="flex w-full max-w-[420px] flex-col">
-      <div className="mb-8 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-background">
-        <Sun className="h-5 w-5" />
+      <div className="mb-8 flex items-center gap-2">
+        {/* <Sun className="h-5 w-5" /> */}
+        <BrandLogo className="h-6 w-6 shrink-0" />
+        <ShinyText
+          text="Avispark"
+          speed={2}
+          delay={0}
+          className="text-2xl font-bold"
+          color={isDark ? "#ffffff" : "#333333"}
+          shineColor={isDark ? "#f49e0b" : "#00a73e"}
+          spread={120}
+          direction="left"
+          yoyo={false}
+          pauseOnHover={false}
+          disabled={false}
+        />
       </div>
 
       <h1 className="text-[32px] font-semibold tracking-tight text-heading">

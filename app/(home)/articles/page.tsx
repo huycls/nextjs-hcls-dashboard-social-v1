@@ -43,8 +43,8 @@ export default async function ArticlesPage({
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <MarketingPageHeader
           eyebrow="Blog"
-          title="Article archives"
-          description="Posts synced from WordPress via WPGraphQL."
+          title="Articles"
+          description=""
         />
 
         <div className="mt-14 grid gap-10 lg:grid-cols-[minmax(0,1fr)_300px] lg:gap-12">

@@ -48,7 +48,9 @@ type ArticleCardProps = {
 export function ArticleCard({ article }: ArticleCardProps) {
   return (
     <article className="surface-card surface-card-hover group rounded-2xl bg-surface p-4 transition sm:p-5">
-      <Link href={buildArticleHref(article.slug)} className="block">
+      <Link
+        href={buildArticleHref(article.slug)}
+        className="block">
         <ArticleThumbnail
           title={article.title}
           imageUrl={article.featuredImageUrl}
@@ -56,7 +58,7 @@ export function ArticleCard({ article }: ArticleCardProps) {
         />
 
         <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-muted">
-          <span className="rounded-md bg-surface-elevated px-2 py-0.5 font-medium text-foreground">
+          <span className="rounded-md text-primary bg-primary/10 px-2 py-0.5 font-medium">
             {article.category}
           </span>
           <span>
@@ -73,7 +75,9 @@ export function ArticleCard({ article }: ArticleCardProps) {
           {article.excerpt}
         </p>
 
-        <p className="mt-3 text-xs font-medium text-muted">{article.readTime}</p>
+        <p className="mt-3 text-xs font-medium text-muted">
+          {article.readTime}
+        </p>
       </Link>
     </article>
   );

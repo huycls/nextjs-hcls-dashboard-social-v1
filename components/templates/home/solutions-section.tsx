@@ -138,7 +138,8 @@ export function SolutionsSection() {
             Solution
           </p>
           <h2 className="mt-4 text-3xl font-semibold text-heading sm:text-4xl lg:text-5xl">
-            Empower Your Business with AI Workflows
+            Empower Your Business with
+            <br className="hidden 2xl:block" /> AI Workflows
           </h2>
           <p className="mt-4 text-base leading-relaxed text-foreground sm:text-lg">
             Generic AI tools won&apos;t suffice. Our platform is purpose-built

@@ -18,7 +18,7 @@ export function ArticlesArchive({
 
   return (
     <div>
-      <div className="flex flex-wrap justify-center gap-2">
+      <div className="flex flex-wrap justify-start gap-2">
         <Link
           href={buildArticlesHref({ category: "all" })}
           prefetch

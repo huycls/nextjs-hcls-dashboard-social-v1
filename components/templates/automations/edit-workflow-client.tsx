@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Loading } from "@/components/atoms/Loading";
 import { WorkflowCanvasEditor } from "@/components/templates/automations/workflow-canvas-editor";
 import {
   DEFAULT_WORKFLOW_CONFIG,
@@ -51,21 +52,32 @@ export function EditWorkflowClient({ workflowId }: EditWorkflowClientProps) {
     }
   }, [isClient, loading, workflow, router]);
 
-  if (!isClient || loading || !workflow) {
+  if (!isClient) {
     return (
-      <div className="flex flex-1 items-center justify-center text-sm text-foreground">
-        Loading workflow...
-      </div>
+      <Loading
+        label="Loading workflow"
+        message="Loading workflow..."
+      />
     );
   }
 
   return (
-    <WorkflowCanvasEditor
-      workflowId={workflow.id}
-      workflowName={workflow.name}
-      workflowType={workflow.type}
-      workflowTypeLabel={WORKFLOW_TYPE_LABELS[workflow.type]}
-      initialConfig={{ ...DEFAULT_WORKFLOW_CONFIG, ...workflow.config }}
-    />
+    <>
+      {(loading || !workflow) && (
+        <Loading
+          label="Loading workflow"
+          message="Loading workflow..."
+        />
+      )}
+      {workflow ? (
+        <WorkflowCanvasEditor
+          workflowId={workflow.id}
+          workflowName={workflow.name}
+          workflowType={workflow.type}
+          workflowTypeLabel={WORKFLOW_TYPE_LABELS[workflow.type]}
+          initialConfig={{ ...DEFAULT_WORKFLOW_CONFIG, ...workflow.config }}
+        />
+      ) : null}
+    </>
   );
 }

@@ -2,32 +2,74 @@
 
 import { useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Highlighter } from "@/components/atoms/Highlighter";
+
+type QuotePart = {
+  text: string;
+  emphasis?: "underline" | "highlight";
+};
 
 type Testimonial = {
-  quote: string;
+  quote: QuotePart[];
   company: string;
   name: string;
   role: string;
 };
 
+const HIGHLIGHT_COLOR = "#cfebfc";
+const UNDERLINE_COLOR = "#FF9800";
+
 const testimonials: Testimonial[] = [
   {
-    quote:
-      'There is a lot of exciting stuff going on in the stars above us that make astronomy so much fun. The truth is the universe is a constantly changing, moving, some would say "living" thing because you just never know what you are going to see on any given night of stargazing.',
+    quote: [
+      {
+        text: "There is a lot of exciting stuff going on in the stars above us that make ",
+      },
+      { text: "astronomy", emphasis: "underline" },
+      {
+        text: " so much fun. The truth is the universe is a ",
+      },
+      { text: "constantly changing", emphasis: "highlight" },
+      {
+        text: ", moving, some would say ",
+      },
+      { text: "living", emphasis: "underline" },
+      {
+        text: " thing because you just never know what you are going to see on any given night of stargazing.",
+      },
+    ],
     company: "Google",
     name: "Leslie Alexander",
     role: "UI Designer",
   },
   {
-    quote:
-      "Avispark cut our manual workflow time in half. The visual builder made it easy for our ops team to automate without waiting on engineering — we shipped our first automation in under a day.",
+    quote: [
+      { text: "Avispark " },
+      { text: "cut our manual workflow time in half", emphasis: "highlight" },
+      { text: ". The " },
+      { text: "visual builder", emphasis: "underline" },
+      {
+        text: " made it easy for our ops team to automate without waiting on engineering — we shipped our first automation ",
+      },
+      { text: "under a day", emphasis: "underline" },
+      { text: "." },
+    ],
     company: "Spotify",
     name: "Michael Chen",
     role: "Operations Lead",
   },
   {
-    quote:
-      "The execution insights alone are worth it. We catch failures before they hit production and our team finally has a single place to monitor every integration.",
+    quote: [
+      { text: "The " },
+      { text: "execution insights", emphasis: "underline" },
+      { text: " alone are worth it. We catch failures " },
+      { text: "before they hit production", emphasis: "highlight" },
+      {
+        text: " and our team finally has a ",
+      },
+      { text: "single place", emphasis: "underline" },
+      { text: " to monitor every integration." },
+    ],
     company: "Microsoft",
     name: "Sarah Williams",
     role: "Engineering Manager",
@@ -40,6 +82,34 @@ function CompanyLogo({ company }: { company: string }) {
       {company}
     </span>
   );
+}
+
+function renderQuotePart(part: QuotePart, index: number) {
+  if (part.emphasis === "underline") {
+    return (
+      <Highlighter
+        key={index}
+        action="underline"
+        color={UNDERLINE_COLOR}
+        isView>
+        {part.text}
+      </Highlighter>
+    );
+  }
+
+  if (part.emphasis === "highlight") {
+    return (
+      <Highlighter
+        key={index}
+        action="highlight"
+        color={HIGHLIGHT_COLOR}
+        isView>
+        {part.text}
+      </Highlighter>
+    );
+  }
+
+  return <span key={index}>{part.text}</span>;
 }
 
 export function TestimonialsSection() {
@@ -77,16 +147,18 @@ export function TestimonialsSection() {
             &ldquo;
           </span>
 
-          <blockquote className="mx-auto mt-6 max-w-2xl">
+          <blockquote
+            key={activeIndex}
+            className="mx-auto mt-6 min-h-[120px] max-w-2xl">
             <p className="text-base leading-relaxed text-foreground sm:text-lg">
-              {current.quote}
+              {current.quote.map(renderQuotePart)}
             </p>
           </blockquote>
 
           <div className="mt-10 flex flex-col items-center gap-3">
             <CompanyLogo company={current.company} />
             <div>
-              <p className="text-base font-semibold text-heading">
+              <p className="text-base font-semibold text-primary">
                 {current.name}
               </p>
               <p className="mt-0.5 text-sm text-foreground">{current.role}</p>
@@ -99,14 +171,14 @@ export function TestimonialsSection() {
             type="button"
             onClick={goToPrevious}
             aria-label="Previous testimonial"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface text-foreground transition hover:border-muted hover:bg-surface-elevated hover:text-heading">
+            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-border bg-surface text-foreground transition hover:bg-primary/50 hover:text-heading">
             <ChevronLeft className="h-4 w-4" />
           </button>
           <button
             type="button"
             onClick={goToNext}
             aria-label="Next testimonial"
-            className="flex h-10 w-10 items-center justify-center rounded-full border border-border bg-surface text-foreground transition hover:border-muted hover:bg-surface-elevated hover:text-heading">
+            className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-border bg-surface text-foreground transition hover:bg-primary/50 hover:text-heading">
             <ChevronRight className="h-4 w-4" />
           </button>
         </div>

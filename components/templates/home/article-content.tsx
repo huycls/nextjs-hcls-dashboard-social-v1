@@ -14,14 +14,14 @@ export function ArticleContent({ html }: ArticleContentProps) {
 
   useEffect(() => {
     const container = containerRef.current;
-    if (!container) return;
+    if (!container || container === null) return;
 
     function handleTocClick(event: MouseEvent) {
       const link = (event.target as HTMLElement).closest<HTMLAnchorElement>(
         TOC_LINK_SELECTOR,
       );
 
-      if (!link || !container.contains(link)) return;
+      if (!link || !container?.contains(link)) return;
 
       const id = decodeURIComponent(link.getAttribute("href")?.slice(1) ?? "");
       if (!id) return;

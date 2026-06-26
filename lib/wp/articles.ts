@@ -8,9 +8,11 @@ import {
 import { fetchPostDetail, type WpPostDetail } from "./fetchPosts";
 import { sanitizeWpHtml } from "./sanitizeWpContent";
 import {
+  ARTICLE_EXCERPT_MAX_LENGTH,
   estimateReadTime,
   formatArticleDate,
   getDateDistance,
+  normalizeArticleExcerpt,
   stripHtml,
 } from "./utils";
 
@@ -308,7 +310,11 @@ function mapCategoryPostToArticle(
   if (!slug || !title) return null;
 
   const category = resolveCategory(node.categories, categorySlug);
-  const excerpt = stripHtml(node.excerpt ?? "");
+  const excerpt = normalizeArticleExcerpt(
+    node.excerpt ?? "",
+    node.content ?? "",
+    ARTICLE_EXCERPT_MAX_LENGTH,
+  );
   const featured = getFeaturedImage(node);
 
   return {
@@ -333,8 +339,11 @@ function mapDetailToArticle(detail: WpPostDetail): Article | null {
 
   const category = resolveCategory(detail.categories, "articles");
   const contentHtml = sanitizeWpHtml(detail.content ?? "");
-  const excerpt =
-    stripHtml(detail.excerpt ?? "") || stripHtml(contentHtml).slice(0, 160);
+  const excerpt = normalizeArticleExcerpt(
+    detail.excerpt ?? "",
+    contentHtml,
+    ARTICLE_EXCERPT_MAX_LENGTH,
+  );
   const featured = getFeaturedImage(detail);
 
   return {

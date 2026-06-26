@@ -1,6 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
-import { ArrowLeft, Clock } from "lucide-react";
+import { Clock } from "lucide-react";
 import type { Article } from "@/lib/wp/articles";
 
 type ArticleHeroProps = {

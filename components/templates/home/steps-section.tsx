@@ -134,18 +134,18 @@ export function StepsSection() {
                 {index < steps.length - 1 && (
                   <span
                     aria-hidden="true"
-                    className="absolute left-6 top-14 h-[calc(100%+0.5rem)] w-px bg-border"
+                    className="absolute left-6 top-10 h-[calc(100%+0.5rem)] w-px bg-border"
                   />
                 )}
 
-                <div className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-primary/10">
+                <div className="relative z-10 flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-primary/20 bg-background before:content-[''] before:absolute before:inset-0 before:rounded-full before:bg-primary/10">
                   <Icon
                     className="h-5 w-5 text-primary"
                     strokeWidth={1.75}
                   />
                 </div>
 
-                <div className="pt-1">
+                <div className="pt-2">
                   <h3 className="text-lg font-semibold text-heading">
                     {title}
                   </h3>

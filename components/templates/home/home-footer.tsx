@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import type { ComponentType } from "react";
 import { BrandLogo } from "@/components/templates/home/brand-logo";
@@ -6,6 +8,8 @@ import {
   TwitterIcon,
   YoutubeIcon,
 } from "@/components/templates/home/social-icons";
+import ShinyText from "@/components/atoms/ShinyText";
+import { useTheme } from "@/components/theme/theme-provider";
 
 type SocialLink = {
   label: string;
@@ -69,7 +73,7 @@ function FooterColumn({
 
 export function HomeFooter() {
   const year = new Date().getFullYear();
-
+  const { isDark } = useTheme();
   return (
     <footer className="border-t border-border bg-surface">
       <div className="mx-auto max-w-7xl px-6 py-14 lg:px-10 lg:py-16">
@@ -77,9 +81,22 @@ export function HomeFooter() {
           href="/"
           className="inline-flex items-center gap-2.5">
           <BrandLogo className="h-5 w-5 shrink-0" />
-          <span className="text-2xl font-bold tracking-tight text-heading">
+          {/* <span className="text-2xl font-bold tracking-tight text-heading">
             Avispark
-          </span>
+          </span> */}
+          <ShinyText
+            text="Avispark"
+            speed={2}
+            delay={0}
+            className="text-xl font-bold"
+            color={isDark ? "#ffffff" : "#333333"}
+            shineColor={isDark ? "#f49e0b" : "#00a73e"}
+            spread={120}
+            direction="left"
+            yoyo={false}
+            pauseOnHover={false}
+            disabled={false}
+          />
         </Link>
 
         <div className="mt-12 grid grid-cols-2 gap-8 sm:grid-cols-4 lg:gap-12">

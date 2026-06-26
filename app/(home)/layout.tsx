@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { HomeFooter } from "@/components/templates/home/home-footer";
-import { HomeNavbar } from "@/components/templates/home/home-navbar";
+import { HomeFooter } from "@/components/molecules/Footer";
+import { HomeNavbar } from "@/components/molecules/Header";
 
 export const metadata: Metadata = {
   title: "Avispark — Automate your workflows",

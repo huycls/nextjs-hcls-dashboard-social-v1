@@ -9,7 +9,7 @@ import {
   Shield,
   Workflow,
 } from "lucide-react";
-import { BrandLogo } from "@/components/templates/home/brand-logo";
+import { BrandLogo } from "@/components/atoms/BrandLogo";
 import { cn } from "@/lib/utils/tailwind-merge";
 import ShinyText from "@/components/atoms/ShinyText";
 import { useTheme } from "@/components/theme/theme-provider";

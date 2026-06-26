@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Eye, EyeOff, Lock, Mail, Sun } from "lucide-react";
 import ShinyText from "@/components/atoms/ShinyText";
 import { useTheme } from "@/components/theme/theme-provider";
-import { BrandLogo } from "@/components/templates/home/brand-logo";
+import { BrandLogo } from "@/components/atoms/BrandLogo";
 
 function GoogleIcon() {
   return (

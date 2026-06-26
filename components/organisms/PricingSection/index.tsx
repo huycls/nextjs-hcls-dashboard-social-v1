@@ -58,7 +58,7 @@ const plans: PricingPlan[] = [
       "Custom Integrations",
       "AI-Powered Insights",
     ],
-    footer: "For large-scale operations and high-volume users",
+    footer: "For large-scale operations and high-volume",
   },
 ];
 
@@ -115,8 +115,6 @@ function PricingCard({
   const billedLabel =
     billing === "monthly" ? "billed monthly" : "billed yearly";
 
-  console.log(plan);
-
   return (
     <article
       className={`surface-card relative flex flex-col rounded-3xl bg-surface p-6 sm:p-8 ${
@@ -132,7 +130,7 @@ function PricingCard({
       {plan.popular && (
         <div className="absolute right-4 top-4 inline-flex items-center gap-1 rounded-full bg-primary px-2.5 py-1 text-xs font-medium text-background">
           <Star className="h-3 w-3 fill-background" />
-          Popular
+          <span className="-mt-0.5">Popular</span>
         </div>
       )}
 
@@ -152,11 +150,11 @@ function PricingCard({
         </p>
       </div>
 
-      <ul className="mt-8 space-y-3">
+      <ul className="mt-8 space-y-3 w-fit max-auto">
         {plan.features.map((feature) => (
           <li
             key={feature}
-            className="flex items-center justify-center gap-2 text-sm text-foreground">
+            className="flex items-center justify-start gap-2 text-sm text-foreground">
             <Check
               className="h-4 w-4 shrink-0 text-primary"
               strokeWidth={2.5}

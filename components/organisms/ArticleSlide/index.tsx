@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getLatestArticles } from "@/lib/wp/articles";
-import { ArticleCard } from "@/components/templates/home/article-card";
+import { ArticleCard } from "@/components/molecules/ArticleCard";
 
 export async function ArticlesSection() {
   const latestArticles = await getLatestArticles(3);

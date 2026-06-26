@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Lottie from "lottie-react";
-import { BrandLogo } from "@/components/templates/home/brand-logo";
+import { BrandLogo } from "@/components/atoms/BrandLogo";
 
 const LOTTIE_SRC = "/assets/lotties/error-404-animate.json";
 

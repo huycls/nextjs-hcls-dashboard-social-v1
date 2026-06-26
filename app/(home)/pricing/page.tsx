@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { FaqSection } from "@/components/templates/home/faq-section";
-import { PricingSection } from "@/components/templates/home/pricing-section";
+import { PricingTemplate } from "@/components/templates/pricing";
 
 export const metadata: Metadata = {
   title: "Pricing — Avispark",
@@ -9,10 +8,5 @@ export const metadata: Metadata = {
 };
 
 export default function PricingPage() {
-  return (
-    <>
-      <PricingSection />
-      <FaqSection />
-    </>
-  );
+  return <PricingTemplate />;
 }

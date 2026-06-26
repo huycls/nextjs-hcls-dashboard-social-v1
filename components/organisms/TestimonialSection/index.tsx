@@ -62,13 +62,14 @@ const testimonials: Testimonial[] = [
     quote: [
       { text: "The " },
       { text: "execution insights", emphasis: "underline" },
-      { text: " alone are worth it. We catch failures " },
-      { text: "before they hit production", emphasis: "highlight" },
+      { text: " alone are worth it. " },
+      { text: "We catch failures ", emphasis: "highlight" },
+      { text: " before they hit production" },
       {
         text: " and our team finally has a ",
       },
-      { text: "single place", emphasis: "underline" },
-      { text: " to monitor every integration." },
+      { text: "single place to monitor " },
+      { text: " every integration.", emphasis: "underline" },
     ],
     company: "Microsoft",
     name: "Sarah Williams",

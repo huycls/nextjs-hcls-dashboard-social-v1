@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { ChevronDown, Menu, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
-import { BrandLogo } from "@/components/templates/home/brand-logo";
+import { BrandLogo } from "@/components/atoms/BrandLogo";
 import { AnimatedThemeToggler } from "../../atoms/AnimatedThemeToggler";
 import { ScrollProgress } from "../../atoms/ScrollProgress";
 import ShinyText from "../../atoms/ShinyText";
@@ -112,7 +112,9 @@ function NavDropdownMenu({ label, items }: NavDropdown) {
   }, []);
 
   return (
-    <div ref={ref} className="relative">
+    <div
+      ref={ref}
+      className="relative">
       <button
         type="button"
         onClick={() => setOpen(!open)}
@@ -264,7 +266,9 @@ export function HomeNavbar() {
     <header className="sticky top-0 z-40 border-b border-border bg-surface/95 backdrop-blur-lg">
       <ScrollProgress className="bottom-0 top-auto" />
       <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-6 lg:px-10">
-        <Link href="/" className="flex items-center gap-2.5">
+        <Link
+          href="/"
+          className="flex items-center gap-2.5">
           <BrandLogo className="h-5 w-5 shrink-0" />
           <ShinyText
             text="Avispark"
@@ -289,7 +293,10 @@ export function HomeNavbar() {
               About
             </Link>
             {navDropdowns.map((dropdown) => (
-              <NavDropdownMenu key={dropdown.label} {...dropdown} />
+              <NavDropdownMenu
+                key={dropdown.label}
+                {...dropdown}
+              />
             ))}
             <Link
               href="/pricing"
@@ -319,7 +326,10 @@ export function HomeNavbar() {
               <Link
                 href="/dashboard"
                 className="inline-flex h-10 items-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-background transition hover:bg-primary-hover">
-                <BrandLogo className="h-3.5 w-3.5 shrink-0" variant="light" />
+                <BrandLogo
+                  className="h-3.5 w-3.5 shrink-0"
+                  variant="light"
+                />
                 <span className="hidden sm:inline">Get Started for Free</span>
                 <span className="sm:hidden">Get Started</span>
               </Link>
@@ -332,7 +342,9 @@ export function HomeNavbar() {
               aria-controls="home-mobile-nav"
               onClick={() => setMobileOpen((current) => !current)}
               className="inline-flex h-10 w-10 cursor-pointer items-center justify-center rounded-lg border border-border text-heading transition hover:bg-surface-elevated lg:hidden">
-              <AnimatePresence mode="wait" initial={false}>
+              <AnimatePresence
+                mode="wait"
+                initial={false}>
                 {mobileOpen ? (
                   <motion.span
                     key="close"
@@ -440,7 +452,10 @@ export function HomeNavbar() {
                   href="/dashboard"
                   onClick={closeMobileMenu}
                   className="inline-flex h-11 items-center justify-center gap-2 rounded-lg bg-primary px-4 text-sm font-medium text-background transition hover:bg-primary-hover">
-                  <BrandLogo className="h-3.5 w-3.5 shrink-0" variant="light" />
+                  <BrandLogo
+                    className="h-3.5 w-3.5 shrink-0"
+                    variant="light"
+                  />
                   Get Started for Free
                 </Link>
               </motion.div>

@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import type { ComponentType } from "react";
-import { BrandLogo } from "@/components/templates/home/brand-logo";
+import { BrandLogo } from "@/components/atoms/BrandLogo";
 import {
   InstagramIcon,
   TwitterIcon,
   YoutubeIcon,
-} from "@/components/templates/home/social-icons";
+} from "@/components/organisms/SocialIcons";
 import ShinyText from "@/components/atoms/ShinyText";
 import { useTheme } from "@/components/theme/theme-provider";
 

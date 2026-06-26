@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { LoginForm } from "@/components/molecules/auth/login-form";
-import { LoginPreview } from "@/components/molecules/auth/login-preview";
+import { LoginForm } from "@/components/molecules/LoginParts/login-form";
+import { LoginPreview } from "@/components/molecules/LoginParts/login-preview";
 
 export const metadata: Metadata = {
   title: "Avispark — Login",

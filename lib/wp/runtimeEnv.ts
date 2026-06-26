@@ -2,7 +2,8 @@
  * Đọc biến PUBLIC_* / NEXT_PUBLIC_* (Next.js) hoặc process.env.
  */
 
-export const DEFAULT_WORDPRESS_GRAPHQL = "https://avispark.com/graphql";
+export const DEFAULT_WORDPRESS_GRAPHQL =
+  process.env.NEXT_PUBLIC_WORDPRESS_GRAPHQL_URL || "";
 
 function envKeys(name: string): string[] {
   const keys = [name];

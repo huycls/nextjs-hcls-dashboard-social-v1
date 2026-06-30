@@ -27,7 +27,7 @@ const mainNav = [
     icon: Workflow,
   },
   { label: "Pre-Authorization", href: "#", icon: Shield },
-  { label: "Log Activity", href: "#", icon: FileText },
+  { label: "Log Activity", href: "/dashboard/activity", icon: FileText },
   { label: "Integrations", href: "#", icon: Plug },
 ];
 

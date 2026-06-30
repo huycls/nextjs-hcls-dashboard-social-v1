@@ -1,15 +1,13 @@
 import type { WorkflowType } from "@/lib/automations/data";
 
 export type NodeIconType =
-  | "webhook"
-  | "sparkles"
-  | "gemini"
-  | "openrouter"
-  | "code"
-  | "split"
-  | "sheets"
-  | "form"
-  | "condition";
+  | "trigger"
+  | "process"
+  | "ai"
+  | "integration"
+  | "output"
+  | "complete"
+  | "review";
 
 export type ConfigurableNodeId =
   | "webhook"
@@ -17,294 +15,217 @@ export type ConfigurableNodeId =
   | "openrouter-model"
   | "add-to-sheet";
 
+export type CanvasLabelPosition = "right" | "below";
+
+export type CanvasNodeStyle = "placeholder" | "active" | "accent";
+
 export type CanvasNode = {
   id: string;
   label: string;
-  subtitle?: string;
   x: number;
   y: number;
-  width: number;
-  height: number;
-  variant:
-    | "zone"
-    | "webhook"
-    | "ai-agent"
-    | "sub-node"
-    | "action"
-    | "form"
-    | "condition";
+  icon: NodeIconType;
+  labelPosition: CanvasLabelPosition;
+  nodeStyle: CanvasNodeStyle;
   configurableId?: ConfigurableNodeId;
-  icon?: NodeIconType;
-  zoneColor?: "blue" | "green" | "orange";
-  tone?: "green" | "orange" | "blue";
+};
+
+export type CanvasConnection = {
+  from: string;
+  to: string;
+  dashed?: boolean;
 };
 
 export type WorkflowTemplate = {
   canvasWidth: number;
   canvasHeight: number;
   nodes: CanvasNode[];
-  connections: Array<[string, string]>;
+  connections: CanvasConnection[];
   configurableNodes: ConfigurableNodeId[];
   requiresTopic: boolean;
 };
 
-const IDEA_POSTS_NODES: CanvasNode[] = [
-  {
-    id: "zone-generate",
-    label: "Generate Topics",
-    x: 24,
-    y: 48,
-    width: 200,
-    height: 200,
-    variant: "zone",
-    zoneColor: "blue",
+type WorkflowTypeConfig = {
+  configurableNodes: ConfigurableNodeId[];
+  requiresTopic: boolean;
+};
+
+const WORKFLOW_TYPE_CONFIG: Record<WorkflowType, WorkflowTypeConfig> = {
+  "generate-idea-posts": {
+    configurableNodes: [
+      "webhook",
+      "gemini-model",
+      "openrouter-model",
+      "add-to-sheet",
+    ],
+    requiresTopic: true,
   },
-  {
-    id: "webhook",
-    label: "Webhook",
-    subtitle: "POST",
-    x: 56,
-    y: 108,
-    width: 136,
-    height: 72,
-    variant: "webhook",
-    configurableId: "webhook",
-    icon: "webhook",
+  "generate-content-post": {
+    configurableNodes: ["webhook", "gemini-model", "add-to-sheet"],
+    requiresTopic: false,
   },
+};
+
+const ICON_SIZE = 44;
+const CANVAS_WIDTH = 520;
+const SPINE_X = CANVAS_WIDTH / 2 - ICON_SIZE / 2;
+
+type BranchStep = {
+  id: string;
+  label: string;
+  icon: NodeIconType;
+  configurableId: ConfigurableNodeId;
+};
+
+const BRANCH_STEPS: BranchStep[] = [
   {
-    id: "ai-generate-topics",
-    label: "Generate Blog Topics AI",
-    x: 248,
-    y: 72,
-    width: 200,
-    height: 88,
-    variant: "ai-agent",
-    icon: "sparkles",
-  },
-  {
-    id: "gemini-model",
-    label: "Google Gemini Chat Model",
-    x: 248,
-    y: 176,
-    width: 200,
-    height: 48,
-    variant: "sub-node",
+    id: "ai-settings",
+    label: "AI Settings",
+    icon: "ai",
     configurableId: "gemini-model",
-    icon: "gemini",
   },
   {
-    id: "openrouter-model",
-    label: "OpenRouter Chat Model",
-    x: 248,
-    y: 232,
-    width: 200,
-    height: 48,
-    variant: "sub-node",
+    id: "integration",
+    label: "Integration",
+    icon: "integration",
     configurableId: "openrouter-model",
-    icon: "openrouter",
   },
   {
-    id: "parse-output",
-    label: "Parse AI Topic Output",
-    x: 248,
-    y: 288,
-    width: 200,
-    height: 48,
-    variant: "sub-node",
-    icon: "code",
-  },
-  {
-    id: "split-topics",
-    label: "Split Topics",
-    x: 488,
-    y: 108,
-    width: 136,
-    height: 72,
-    variant: "action",
-    icon: "split",
-  },
-  {
-    id: "zone-sheet",
-    label: "Add to Sheet",
-    x: 656,
-    y: 48,
-    width: 200,
-    height: 200,
-    variant: "zone",
-    zoneColor: "blue",
-  },
-  {
-    id: "add-to-sheet",
-    label: "Add Ideas to Sheet",
-    subtitle: "append: sheet",
-    x: 688,
-    y: 108,
-    width: 136,
-    height: 72,
-    variant: "action",
+    id: "output",
+    label: "Output",
+    icon: "output",
     configurableId: "add-to-sheet",
-    icon: "sheets",
-  },
-  {
-    id: "zone-add-more",
-    label: "Add More?",
-    x: 888,
-    y: 48,
-    width: 180,
-    height: 200,
-    variant: "zone",
-    zoneColor: "blue",
-  },
-  {
-    id: "form-add-more",
-    label: "Form: Add More Topics?",
-    x: 908,
-    y: 108,
-    width: 140,
-    height: 72,
-    variant: "form",
-    icon: "form",
-  },
-  {
-    id: "zone-decision",
-    label: "Start Over or End",
-    x: 1104,
-    y: 48,
-    width: 200,
-    height: 240,
-    variant: "zone",
-    zoneColor: "green",
-  },
-  {
-    id: "if-add-more",
-    label: "If Add More Topics",
-    x: 1136,
-    y: 108,
-    width: 136,
-    height: 72,
-    variant: "condition",
-    icon: "condition",
-  },
-  {
-    id: "form-end",
-    label: "Form: End Idea Generation",
-    x: 1136,
-    y: 200,
-    width: 136,
-    height: 72,
-    variant: "form",
-    icon: "form",
   },
 ];
 
-const IDEA_POSTS_CONNECTIONS: Array<[string, string]> = [
-  ["webhook", "ai-generate-topics"],
-  ["ai-generate-topics", "split-topics"],
-  ["split-topics", "add-to-sheet"],
-  ["add-to-sheet", "form-add-more"],
-  ["form-add-more", "if-add-more"],
-  ["if-add-more", "form-end"],
-];
+function buildVerticalTemplate(type: WorkflowType): WorkflowTemplate {
+  const { configurableNodes, requiresTopic } = WORKFLOW_TYPE_CONFIG[type];
 
-export const IDEA_POSTS_TEMPLATE: WorkflowTemplate = {
-  canvasWidth: 1320,
-  canvasHeight: 380,
-  nodes: IDEA_POSTS_NODES,
-  connections: IDEA_POSTS_CONNECTIONS,
-  configurableNodes: [
-    "webhook",
-    "gemini-model",
-    "openrouter-model",
-    "add-to-sheet",
-  ],
-  requiresTopic: true,
-};
+  const visibleBranch = BRANCH_STEPS.filter((step) =>
+    configurableNodes.includes(step.configurableId),
+  );
 
-export const CONTENT_POST_TEMPLATE: WorkflowTemplate = {
-  canvasWidth: 900,
-  canvasHeight: 320,
-  nodes: [
+  const nodes: CanvasNode[] = [
     {
-      id: "webhook",
-      label: "Webhook",
-      subtitle: "POST",
-      x: 80,
-      y: 120,
-      width: 136,
-      height: 72,
-      variant: "webhook",
+      id: "trigger",
+      label: "Trigger",
+      x: SPINE_X,
+      y: 40,
+      icon: "trigger",
+      labelPosition: "right",
+      nodeStyle: "placeholder",
       configurableId: "webhook",
-      icon: "webhook",
     },
     {
-      id: "generate-content",
-      label: "Generate Content Post AI",
-      x: 280,
-      y: 112,
-      width: 200,
-      height: 88,
-      variant: "ai-agent",
-      icon: "sparkles",
+      id: "process",
+      label: "Process",
+      x: SPINE_X,
+      y: 132,
+      icon: "process",
+      labelPosition: "right",
+      nodeStyle: "accent",
+    },
+  ];
+
+  const branchY = 248;
+  const branchGap = 112;
+  const branchTotalWidth =
+    visibleBranch.length * ICON_SIZE + (visibleBranch.length - 1) * branchGap;
+  const branchStartX = (CANVAS_WIDTH - branchTotalWidth) / 2;
+
+  visibleBranch.forEach((step, index) => {
+    nodes.push({
+      id: step.id,
+      label: step.label,
+      x: branchStartX + index * (ICON_SIZE + branchGap),
+      y: branchY,
+      icon: step.icon,
+      labelPosition: "below",
+      nodeStyle: "placeholder",
+      configurableId: step.configurableId,
+    });
+  });
+
+  const footerY = 400;
+  const footerGap = 120;
+  const footerStartX =
+    (CANVAS_WIDTH - (ICON_SIZE * 2 + footerGap)) / 2;
+
+  nodes.push(
+    {
+      id: "complete",
+      label: "Complete",
+      x: footerStartX,
+      y: footerY,
+      icon: "complete",
+      labelPosition: "below",
+      nodeStyle: "active",
     },
     {
-      id: "gemini-model",
-      label: "Google Gemini Chat Model",
-      x: 280,
-      y: 220,
-      width: 200,
-      height: 48,
-      variant: "sub-node",
-      configurableId: "gemini-model",
-      icon: "gemini",
+      id: "review",
+      label: "Review",
+      x: footerStartX + ICON_SIZE + footerGap,
+      y: footerY,
+      icon: "review",
+      labelPosition: "below",
+      nodeStyle: "active",
     },
-    {
-      id: "publish",
-      label: "Publish to Channels",
-      x: 520,
-      y: 120,
-      width: 160,
-      height: 72,
-      variant: "action",
-      configurableId: "add-to-sheet",
-      icon: "sheets",
-    },
-  ],
-  connections: [
-    ["webhook", "generate-content"],
-    ["generate-content", "publish"],
-  ],
-  configurableNodes: ["webhook", "gemini-model", "add-to-sheet"],
-  requiresTopic: false,
-};
+  );
+
+  const connections: CanvasConnection[] = [
+    { from: "trigger", to: "process" },
+  ];
+
+  for (const step of visibleBranch) {
+    connections.push({ from: "process", to: step.id });
+  }
+
+  const midBranch = visibleBranch[Math.floor(visibleBranch.length / 2)];
+  if (midBranch) {
+    connections.push({ from: midBranch.id, to: "complete" });
+  }
+
+  connections.push({ from: "complete", to: "review", dashed: true });
+
+  return {
+    canvasWidth: CANVAS_WIDTH,
+    canvasHeight: 520,
+    nodes,
+    connections,
+    configurableNodes,
+    requiresTopic,
+  };
+}
 
 export const WORKFLOW_TEMPLATES: Record<WorkflowType, WorkflowTemplate> = {
-  "generate-idea-posts": IDEA_POSTS_TEMPLATE,
-  "generate-content-post": CONTENT_POST_TEMPLATE,
+  "generate-idea-posts": buildVerticalTemplate("generate-idea-posts"),
+  "generate-content-post": buildVerticalTemplate("generate-content-post"),
 };
+
+export const CANVAS_ICON_SIZE = ICON_SIZE;
 
 export const CONFIGURABLE_NODE_META: Record<
   ConfigurableNodeId,
   { title: string; description: string; kind: "webhook" | "credentials" }
 > = {
   webhook: {
-    title: "Webhook",
-    description:
-      "Trigger this workflow via POST. Send form field Topic in the request body.",
+    title: "Trigger",
+    description: "Configure when and how this workflow starts.",
     kind: "webhook",
   },
   "gemini-model": {
-    title: "Google Gemini Chat Model",
-    description: "API credentials for Google Gemini chat model.",
+    title: "AI Settings",
+    description: "Configure credentials for automated processing.",
     kind: "credentials",
   },
   "openrouter-model": {
-    title: "OpenRouter Chat Model",
-    description: "API credentials for OpenRouter chat model.",
+    title: "Integration",
+    description: "Configure external service connection.",
     kind: "credentials",
   },
   "add-to-sheet": {
-    title: "Add Ideas to Sheet",
-    description: "Google Sheets credentials and spreadsheet configuration.",
+    title: "Output",
+    description: "Configure where results are delivered.",
     kind: "credentials",
   },
 };

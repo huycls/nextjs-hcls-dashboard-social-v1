@@ -1,0 +1,184 @@
+{
+  "generatedAt": "2026-06-30T00:00:00.000Z",
+  "logs": [
+    {
+      "id": "log-pas-1",
+      "workflowId": "wf-payment-ack-success",
+      "timestamp": "2025-07-10T09:20:00.000Z",
+      "level": "success",
+      "title": "Workflow completed",
+      "message": "Payment acknowledgment email delivered to customer."
+    },
+    {
+      "id": "log-pas-2",
+      "workflowId": "wf-payment-ack-success",
+      "timestamp": "2025-07-10T09:19:42.000Z",
+      "level": "running",
+      "title": "Processing payment data",
+      "message": "Validating transaction and preparing notification."
+    },
+    {
+      "id": "log-pas-3",
+      "workflowId": "wf-payment-ack-success",
+      "timestamp": "2025-07-10T09:19:30.000Z",
+      "level": "info",
+      "title": "Workflow triggered",
+      "message": "Webhook received a new payment event."
+    },
+    {
+      "id": "log-paf-1",
+      "workflowId": "wf-payment-ack-failed",
+      "timestamp": "2025-07-10T09:20:00.000Z",
+      "level": "failed",
+      "title": "Delivery failed",
+      "message": "Could not send acknowledgment — SMTP connection timed out.",
+      "detail": "Error code: SMTP_TIMEOUT · Retry scheduled in 15 minutes."
+    },
+    {
+      "id": "log-paf-2",
+      "workflowId": "wf-payment-ack-failed",
+      "timestamp": "2025-07-10T09:19:55.000Z",
+      "level": "warning",
+      "title": "Retry attempt",
+      "message": "First delivery attempt failed, retrying automatically."
+    },
+    {
+      "id": "log-paf-3",
+      "workflowId": "wf-payment-ack-failed",
+      "timestamp": "2025-07-10T09:19:30.000Z",
+      "level": "info",
+      "title": "Workflow triggered",
+      "message": "Webhook received a new payment event."
+    },
+    {
+      "id": "log-crm-1",
+      "workflowId": "wf-crm-lead-assignment",
+      "timestamp": "2025-07-09T14:35:00.000Z",
+      "level": "success",
+      "title": "Lead assigned",
+      "message": "3 leads routed to sales team via Slack notification."
+    },
+    {
+      "id": "log-crm-2",
+      "workflowId": "wf-crm-lead-assignment",
+      "timestamp": "2025-07-09T14:34:20.000Z",
+      "level": "running",
+      "title": "Scoring leads",
+      "message": "AI model evaluating inbound lead priority."
+    },
+    {
+      "id": "log-crm-3",
+      "workflowId": "wf-crm-lead-assignment",
+      "timestamp": "2025-07-09T14:34:00.000Z",
+      "level": "info",
+      "title": "Workflow triggered",
+      "message": "New form submission received from landing page."
+    },
+    {
+      "id": "log-order-1",
+      "workflowId": "wf-order-confirmation",
+      "timestamp": "2025-07-08T11:12:00.000Z",
+      "level": "running",
+      "title": "Generating confirmation",
+      "message": "Creating personalized order confirmation content."
+    },
+    {
+      "id": "log-order-2",
+      "workflowId": "wf-order-confirmation",
+      "timestamp": "2025-07-08T11:10:00.000Z",
+      "level": "info",
+      "title": "Workflow triggered",
+      "message": "Stripe checkout session completed."
+    },
+    {
+      "id": "log-order-3",
+      "workflowId": "wf-order-confirmation",
+      "timestamp": "2025-07-07T16:45:00.000Z",
+      "level": "success",
+      "title": "Workflow completed",
+      "message": "Order confirmation sent to customer inbox."
+    },
+    {
+      "id": "log-inv-1",
+      "workflowId": "wf-invoice-reconciliation",
+      "timestamp": "2025-07-07T16:45:00.000Z",
+      "level": "failed",
+      "title": "Sync failed",
+      "message": "Spreadsheet API returned 403 — credentials may have expired.",
+      "detail": "Please update integration credentials in Settings."
+    },
+    {
+      "id": "log-inv-2",
+      "workflowId": "wf-invoice-reconciliation",
+      "timestamp": "2025-07-07T16:44:10.000Z",
+      "level": "warning",
+      "title": "Partial match",
+      "message": "2 of 5 invoices could not be matched automatically."
+    },
+    {
+      "id": "log-inv-3",
+      "workflowId": "wf-invoice-reconciliation",
+      "timestamp": "2025-07-07T16:43:00.000Z",
+      "level": "info",
+      "title": "Workflow triggered",
+      "message": "Scheduled monthly reconciliation started."
+    },
+    {
+      "id": "log-content-1",
+      "workflowId": "wf-content-post-generator",
+      "timestamp": "2025-07-06T08:05:00.000Z",
+      "level": "success",
+      "title": "Posts published",
+      "message": "8 content drafts pushed to connected channels."
+    },
+    {
+      "id": "log-content-2",
+      "workflowId": "wf-content-post-generator",
+      "timestamp": "2025-07-06T08:02:00.000Z",
+      "level": "running",
+      "title": "Generating content",
+      "message": "AI pipeline processing topic batch."
+    },
+    {
+      "id": "log-content-3",
+      "workflowId": "wf-content-post-generator",
+      "timestamp": "2025-07-06T08:00:00.000Z",
+      "level": "info",
+      "title": "Workflow triggered",
+      "message": "Manual run initiated from dashboard."
+    },
+    {
+      "id": "log-onboard-1",
+      "workflowId": "wf-customer-onboarding",
+      "timestamp": "2025-07-05T10:30:00.000Z",
+      "level": "info",
+      "title": "Draft saved",
+      "message": "Workflow configuration updated — not yet activated."
+    },
+    {
+      "id": "log-support-1",
+      "workflowId": "wf-support-ticket-routing",
+      "timestamp": "2025-07-04T13:15:00.000Z",
+      "level": "failed",
+      "title": "Routing error",
+      "message": "Unable to assign ticket — no available agent in queue.",
+      "detail": "Ticket #4821 left in unassigned state."
+    },
+    {
+      "id": "log-support-2",
+      "workflowId": "wf-support-ticket-routing",
+      "timestamp": "2025-07-04T13:14:30.000Z",
+      "level": "warning",
+      "title": "High priority detected",
+      "message": "Ticket flagged as urgent based on keyword analysis."
+    },
+    {
+      "id": "log-support-3",
+      "workflowId": "wf-support-ticket-routing",
+      "timestamp": "2025-07-04T13:14:00.000Z",
+      "level": "info",
+      "title": "Workflow triggered",
+      "message": "New Zendesk ticket created."
+    }
+  ]
+}

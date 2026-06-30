@@ -4,6 +4,7 @@ import {
   getAutomationsListUrl,
 } from "@/lib/automations/automations-server";
 import { parseApiError } from "@/lib/automations/automations-api";
+import { readAutomationsSnapshot } from "@/lib/automations/automations-snapshot";
 import type { WorkflowType } from "@/lib/automations/data";
 import { WORKFLOW_TYPES } from "@/lib/automations/data";
 
@@ -14,6 +15,19 @@ type CreateWorkflowBody = {
   type?: WorkflowType;
 };
 
+function getSnapshotFallback() {
+  const workflows = readAutomationsSnapshot();
+
+  if (workflows.length === 0) {
+    return null;
+  }
+
+  console.warn(
+    "[api/automations] Using automations.json snapshot fallback for GET",
+  );
+  return workflows;
+}
+
 export async function GET() {
   const url = getAutomationsListUrl();
 
@@ -21,6 +35,11 @@ export async function GET() {
     const response = await fetch(url, { cache: "no-store" });
 
     if (!response.ok) {
+      const snapshot = getSnapshotFallback();
+      if (snapshot) {
+        return NextResponse.json(snapshot);
+      }
+
       return NextResponse.json(
         {
           ok: false,
@@ -33,6 +52,11 @@ export async function GET() {
     const workflows = await response.json();
     return NextResponse.json(workflows);
   } catch (error) {
+    const snapshot = getSnapshotFallback();
+    if (snapshot) {
+      return NextResponse.json(snapshot);
+    }
+
     const hint =
       error instanceof Error ? error.message : "Unknown connection error";
 

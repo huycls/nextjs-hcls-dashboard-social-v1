@@ -2,12 +2,18 @@
 
 import { useEffect, useState } from "react";
 import { Loader2, Zap } from "lucide-react";
+import { WorkflowEnvironmentBadge } from "@/components/templates/automations/workflow-environment-badge";
 import { WorkflowStatusBadge } from "@/components/templates/automations/workflow-status-badge";
 import {
   WORKFLOW_STATUS_LABELS,
   type WorkflowNodeConfig,
 } from "@/lib/automations/data";
 import { isWorkflowStepConfigured } from "@/lib/automations/workflow-config";
+import {
+  getRunEnvironmentDescription,
+  getWorkflowRunEnvironment,
+  shouldUseProductionWebhook,
+} from "@/lib/automations/workflow-environment";
 import { triggerWorkflowJob } from "@/lib/automations/trigger-job";
 import {
   CONFIGURABLE_NODE_META,
@@ -139,6 +145,11 @@ export function WorkflowSettingsPanel({
     isWorkflowStepConfigured(nodeId, config, requiresTopic),
   ).length;
 
+  const runEnvironment = getWorkflowRunEnvironment(workflow?.status);
+  const useProductionWebhook = shouldUseProductionWebhook(workflow?.status);
+  const runButtonLabel =
+    runEnvironment === "production" ? "Run in production" : "Run test";
+
   useEffect(() => {
     fetch("/api/jobs/config")
       .then((res) => res.json())
@@ -159,6 +170,7 @@ export function WorkflowSettingsPanel({
     const result = await triggerWorkflowJob(
       jobWorkflowId,
       requiresTopic ? topic : undefined,
+      { useProductionWebhook },
     );
 
     if (result.workflow) {
@@ -179,6 +191,7 @@ export function WorkflowSettingsPanel({
     setTriggerResult({
       ok: result.ok,
       message: [
+        `${runEnvironment === "production" ? "Production" : "Test"} run`,
         result.ok
           ? statusLabel
             ? `Workflow: ${statusLabel}`
@@ -211,14 +224,26 @@ export function WorkflowSettingsPanel({
           </div>
 
           {workflow && (
-            <div className="mb-4 flex items-center justify-between rounded-xl border border-border bg-surface-elevated px-4 py-3">
-              <div>
-                <p className="text-xs font-medium text-muted">Run status</p>
-                <p className="mt-0.5 text-sm text-foreground">
-                  {workflow.triggers} runs
+            <div className="mb-4 space-y-3">
+              <div className="flex items-center justify-between rounded-xl border border-border bg-surface-elevated px-4 py-3">
+                <div>
+                  <p className="text-xs font-medium text-muted">Run status</p>
+                  <p className="mt-0.5 text-sm text-foreground">
+                    {workflow.triggers} runs
+                  </p>
+                </div>
+                <WorkflowStatusBadge status={workflow.status} />
+              </div>
+
+              <div className="rounded-xl border border-border bg-surface-elevated px-4 py-3">
+                <div className="flex items-center justify-between gap-3">
+                  <p className="text-xs font-medium text-muted">Environment</p>
+                  <WorkflowEnvironmentBadge environment={runEnvironment} />
+                </div>
+                <p className="mt-2 text-xs leading-5 text-foreground">
+                  {getRunEnvironmentDescription(workflow.status)}
                 </p>
               </div>
-              <WorkflowStatusBadge status={workflow.status} />
             </div>
           )}
 
@@ -305,7 +330,7 @@ export function WorkflowSettingsPanel({
           ) : (
             <Zap className="h-4 w-4" />
           )}
-          Run workflow
+          {runButtonLabel}
         </button>
       </div>
     </aside>

@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { WorkflowCanvasDiagram } from "@/components/templates/automations/workflow-canvas-diagram";
 import { WorkflowCanvasViewport } from "@/components/templates/automations/workflow-canvas-viewport";
+import { WorkflowEnvironmentBadge } from "@/components/templates/automations/workflow-environment-badge";
 import { WorkflowSettingsPanel } from "@/components/templates/automations/workflow-settings-panel";
 import { WorkflowStatusBadge } from "@/components/templates/automations/workflow-status-badge";
 import {
@@ -20,6 +21,7 @@ import {
   type WorkflowType,
 } from "@/lib/automations/data";
 import { isWorkflowStepConfigured } from "@/lib/automations/workflow-config";
+import { getWorkflowRunEnvironment } from "@/lib/automations/workflow-environment";
 import { useWorkflowPolling } from "@/lib/automations/use-workflow-polling";
 import { useWorkflow } from "@/lib/automations/use-workflow-store";
 import { WORKFLOW_TEMPLATES } from "@/lib/automations/workflow-templates";
@@ -43,9 +45,9 @@ export function WorkflowCanvasEditor({
   const template = WORKFLOW_TEMPLATES[workflowType];
   const workflow = useWorkflow(workflowId);
   useWorkflowPolling(workflowId);
-  const [testingMode, setTestingMode] = useState(true);
   const [settingsOpen, setSettingsOpen] = useState(true);
   const [config, setConfig] = useState<WorkflowNodeConfig>(initialConfig);
+  const runEnvironment = getWorkflowRunEnvironment(workflow?.status);
 
   const configuredCount = template.configurableNodes.filter((nodeId) =>
     isWorkflowStepConfigured(nodeId, config, template.requiresTopic),
@@ -72,38 +74,17 @@ export function WorkflowCanvasEditor({
                 {workflowName}
               </h1>
               {workflow && <WorkflowStatusBadge status={workflow.status} />}
+              <WorkflowEnvironmentBadge environment={runEnvironment} />
             </div>
             <p className="text-xs text-muted">
               {workflowTypeLabel} · {configuredCount}/
-              {template.configurableNodes.length} steps configured
+              {template.configurableNodes.length} steps configured ·{" "}
+              {runEnvironment === "test" ? "Test webhook" : "Production webhook"}
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <span
-              id="testing-mode-label"
-              className="text-sm text-muted">
-              Testing mode
-            </span>
-            <button
-              type="button"
-              role="switch"
-              aria-checked={testingMode}
-              aria-labelledby="testing-mode-label"
-              onClick={() => setTestingMode(!testingMode)}
-              className={`relative h-6 w-11 rounded-full transition ${
-                testingMode ? "bg-secondary" : "bg-border"
-              }`}>
-              <span
-                className={`absolute top-0.5 h-5 w-5 rounded-full bg-surface-elevated shadow transition ${
-                  testingMode ? "left-5" : "left-0.5"
-                }`}
-              />
-            </button>
-          </div>
-
           <button
             type="button"
             aria-label="Workflow settings"

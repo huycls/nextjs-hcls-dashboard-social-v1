@@ -32,13 +32,22 @@ function mapWorkflowFromResponse(
 export async function triggerWorkflowJob(
   workflowId: string,
   topic?: string,
+  options?: { useProductionWebhook?: boolean },
 ): Promise<TriggerJobResult> {
   try {
-    const payload: { workflowId: string; topic?: string } = { workflowId };
+    const payload: {
+      workflowId: string;
+      topic?: string;
+      useProductionWebhook?: boolean;
+    } = { workflowId };
     const trimmedTopic = topic?.trim();
 
     if (trimmedTopic) {
       payload.topic = trimmedTopic;
+    }
+
+    if (options?.useProductionWebhook !== undefined) {
+      payload.useProductionWebhook = options.useProductionWebhook;
     }
 
     const response = await fetch("/api/jobs/run", {

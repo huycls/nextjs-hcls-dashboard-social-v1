@@ -8,6 +8,7 @@ import {
 type RunJobBody = {
   workflowId?: string;
   topic?: string;
+  useProductionWebhook?: boolean;
 };
 
 type BackendErrorPayload = {
@@ -47,9 +48,16 @@ export async function POST(request: Request) {
     );
   }
 
-  const payload: { workflowId: string; topic?: string } = { workflowId };
+  const payload: {
+    workflowId: string;
+    topic?: string;
+    useProductionWebhook?: boolean;
+  } = { workflowId };
   if (topic) {
     payload.topic = topic;
+  }
+  if (typeof body.useProductionWebhook === "boolean") {
+    payload.useProductionWebhook = body.useProductionWebhook;
   }
 
   const url = getJobsRunUrl();

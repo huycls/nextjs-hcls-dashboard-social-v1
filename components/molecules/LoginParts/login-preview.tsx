@@ -135,14 +135,9 @@ export function LoginPreview() {
               Automations
             </h2>
             <div className="flex items-center gap-2">
-              <span className="text-xs text-foreground">Testing mode</span>
-              <div
-                role="switch"
-                aria-checked="true"
-                aria-label="Testing mode"
-                className="relative h-5 w-9 rounded-full bg-secondary">
-                <span className="absolute right-0.5 top-0.5 h-4 w-4 rounded-full bg-background shadow" />
-              </div>
+              <span className="rounded-lg border border-[var(--node-blue-border)] bg-[var(--node-blue-bg)] px-2 py-0.5 text-[10px] font-medium text-[var(--node-blue)]">
+                Test
+              </span>
             </div>
           </div>
 

@@ -3,6 +3,7 @@
 import { useMemo } from "react";
 import { Check } from "lucide-react";
 import { WorkflowCanvasIcon } from "@/components/templates/automations/workflow-canvas-icon";
+import { AnimatedBeam } from "@/registry/magicui/animated-beam";
 import type { WorkflowNodeConfig } from "@/lib/automations/data";
 import { isWorkflowStepConfigured } from "@/lib/automations/workflow-config";
 import {
@@ -28,11 +29,11 @@ function resolveNodeBorder(node: CanvasNode, isConfigured: boolean): string {
 
   if (node.configurableId) {
     return isConfigured
-      ? "border-border bg-surface-elevated"
-      : "border-dashed border-border bg-surface";
+      ? "border-primary bg-surface text-primary"
+      : "border-dashed border-border bg-surface text-muted";
   }
 
-  return "border-border bg-surface-elevated";
+  return "border-primary bg-surface text-primary";
 }
 
 function CanvasNodeView({
@@ -45,7 +46,7 @@ function CanvasNodeView({
   const borderClass = resolveNodeBorder(node, isConfigured);
   const iconBox = (
     <div
-      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] border text-muted ${borderClass}`}>
+      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-[10px] border ${isConfigured ? "text-muted" : "text-primary border-primary"} ${borderClass}`}>
       <WorkflowCanvasIcon icon={node.icon} />
     </div>
   );
@@ -95,21 +96,18 @@ export function WorkflowCanvasDiagram({
 
   return (
     <>
-      <svg
-        className="pointer-events-none absolute inset-0 h-full w-full"
-        viewBox={`0 0 ${template.canvasWidth} ${template.canvasHeight}`}
-        aria-hidden="true">
-        {connectionPaths.map(({ id, d, dashed }) => (
-          <path
-            key={id}
-            d={d}
-            fill="none"
-            stroke="var(--border)"
-            strokeWidth="1.5"
-            strokeDasharray={dashed ? "5 4" : undefined}
-          />
-        ))}
-      </svg>
+      {connectionPaths.map(({ id, d, dashed }, index) => (
+        <AnimatedBeam
+          key={id}
+          pathD={d}
+          viewBoxWidth={template.canvasWidth}
+          viewBoxHeight={template.canvasHeight}
+          dashed={dashed}
+          duration={3}
+          delay={index * 0.18}
+          pathOpacity={0.9}
+        />
+      ))}
 
       {template.nodes.map((node) => {
         const isConfigured = node.configurableId

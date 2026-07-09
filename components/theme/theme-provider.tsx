@@ -11,8 +11,8 @@ import {
 import {
   applyTheme,
   DEFAULT_THEME,
+  getResolvedTheme,
   persistTheme,
-  readStoredTheme,
   type Theme,
 } from "@/lib/theme";
 
@@ -30,13 +30,21 @@ function syncTheme(theme: Theme) {
   persistTheme(theme);
 }
 
-export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>(DEFAULT_THEME);
+type ThemeProviderProps = {
+  children: React.ReactNode;
+  initialTheme?: Theme;
+};
+
+export function ThemeProvider({
+  children,
+  initialTheme = DEFAULT_THEME,
+}: ThemeProviderProps) {
+  const [theme, setThemeState] = useState<Theme>(initialTheme);
 
   useLayoutEffect(() => {
-    const storedTheme = readStoredTheme();
-    setThemeState(storedTheme);
-    syncTheme(storedTheme);
+    const resolved = getResolvedTheme();
+    setThemeState(resolved);
+    syncTheme(resolved);
   }, []);
 
   const setTheme = useCallback((nextTheme: Theme) => {

@@ -1,0 +1,165 @@
+{
+  "generatedAt": "2026-06-30T00:00:00.000Z",
+  "workflows": [
+    {
+      "id": "wf-payment-ack-success",
+      "name": "Payment Acknowledgment Workflow",
+      "type": "generate-content-post",
+      "status": "Active",
+      "triggers": 1,
+      "updatedAt": "2025-07-10T09:20:00.000Z",
+      "lastModified": "Jul 10, 2025",
+      "apps": ["trello", "google", "notion"],
+      "runStatus": "success",
+      "runTimestamp": "Jul 10, 2025 09:20 am",
+      "taskCount": 1,
+      "userAvatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=payment-success",
+      "config": {
+        "topic": "Payment acknowledgment emails",
+        "useProductionWebhook": false,
+        "webhookTestUrl": "https://n8n.example.com/webhook-test/payment-ack",
+        "webhookProductionUrl": "https://n8n.example.com/webhook/payment-ack"
+      }
+    },
+    {
+      "id": "wf-payment-ack-failed",
+      "name": "Payment Acknowledgment Workflow",
+      "type": "generate-content-post",
+      "status": "Failed",
+      "triggers": 1,
+      "updatedAt": "2025-07-10T09:20:00.000Z",
+      "lastModified": "Jul 10, 2025",
+      "apps": ["trello", "google", "notion"],
+      "runStatus": "failed",
+      "runTimestamp": "Jul 10, 2025 09:20 am",
+      "taskCount": 1,
+      "userAvatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=payment-failed",
+      "config": {
+        "topic": "Payment acknowledgment emails",
+        "useProductionWebhook": false,
+        "webhookTestUrl": "https://n8n.example.com/webhook-test/payment-ack",
+        "webhookProductionUrl": "https://n8n.example.com/webhook/payment-ack"
+      }
+    },
+    {
+      "id": "wf-crm-lead-assignment",
+      "name": "CRM Lead Assignment",
+      "type": "generate-idea-posts",
+      "status": "Active",
+      "triggers": 3,
+      "updatedAt": "2025-07-09T14:35:00.000Z",
+      "lastModified": "Jul 9, 2025",
+      "apps": ["hubspot", "slack", "notion"],
+      "runStatus": "success",
+      "runTimestamp": "Jul 9, 2025 02:35 pm",
+      "taskCount": 3,
+      "userAvatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=crm-lead",
+      "config": {
+        "topic": "Inbound lead routing",
+        "useProductionWebhook": true,
+        "webhookTestUrl": "https://n8n.example.com/webhook-test/crm-lead",
+        "webhookProductionUrl": "https://n8n.example.com/webhook/crm-lead"
+      }
+    },
+    {
+      "id": "wf-order-confirmation",
+      "name": "Order Confirmation",
+      "type": "generate-content-post",
+      "status": "Running",
+      "triggers": 2,
+      "updatedAt": "2025-07-08T11:10:00.000Z",
+      "lastModified": "Jul 8, 2025",
+      "apps": ["stripe", "mailchimp", "google"],
+      "runStatus": "success",
+      "runTimestamp": "Jul 8, 2025 11:10 am",
+      "taskCount": 2,
+      "userAvatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=order-confirm",
+      "config": {
+        "topic": "E-commerce order confirmations",
+        "useProductionWebhook": false,
+        "webhookTestUrl": "https://n8n.example.com/webhook-test/order-confirm",
+        "webhookProductionUrl": "https://n8n.example.com/webhook/order-confirm"
+      }
+    },
+    {
+      "id": "wf-invoice-reconciliation",
+      "name": "Invoice Reconciliation",
+      "type": "generate-idea-posts",
+      "status": "Paused",
+      "triggers": 5,
+      "updatedAt": "2025-07-07T16:45:00.000Z",
+      "lastModified": "Jul 7, 2025",
+      "apps": ["google", "dropbox", "zendesk"],
+      "runStatus": "failed",
+      "runTimestamp": "Jul 7, 2025 04:45 pm",
+      "taskCount": 5,
+      "userAvatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=invoice",
+      "config": {
+        "topic": "Monthly invoice sync",
+        "useProductionWebhook": false,
+        "webhookTestUrl": "https://n8n.example.com/webhook-test/invoice",
+        "webhookProductionUrl": "https://n8n.example.com/webhook/invoice"
+      }
+    },
+    {
+      "id": "wf-content-post-generator",
+      "name": "Content Post Generator",
+      "type": "generate-content-post",
+      "status": "Active",
+      "triggers": 8,
+      "updatedAt": "2025-07-06T08:00:00.000Z",
+      "lastModified": "Jul 6, 2025",
+      "apps": ["notion", "discord", "google"],
+      "runStatus": "success",
+      "runTimestamp": "Jul 6, 2025 08:00 am",
+      "taskCount": 8,
+      "userAvatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=content-gen",
+      "config": {
+        "topic": "AI social content pipeline",
+        "useProductionWebhook": true,
+        "webhookTestUrl": "https://n8n.example.com/webhook-test/content-gen",
+        "webhookProductionUrl": "https://n8n.example.com/webhook/content-gen"
+      }
+    },
+    {
+      "id": "wf-customer-onboarding",
+      "name": "Customer Onboarding Sequence",
+      "type": "generate-idea-posts",
+      "status": "Draft",
+      "triggers": 0,
+      "updatedAt": "2025-07-05T10:30:00.000Z",
+      "lastModified": "Jul 5, 2025",
+      "apps": ["mailchimp", "hubspot"],
+      "runStatus": "success",
+      "runTimestamp": "Jul 5, 2025 10:30 am",
+      "taskCount": 0,
+      "userAvatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=onboarding",
+      "config": {
+        "topic": "New customer welcome series",
+        "useProductionWebhook": false,
+        "webhookTestUrl": "https://n8n.example.com/webhook-test/onboarding",
+        "webhookProductionUrl": "https://n8n.example.com/webhook/onboarding"
+      }
+    },
+    {
+      "id": "wf-support-ticket-routing",
+      "name": "Support Ticket Routing",
+      "type": "generate-content-post",
+      "status": "Failed",
+      "triggers": 4,
+      "updatedAt": "2025-07-04T13:15:00.000Z",
+      "lastModified": "Jul 4, 2025",
+      "apps": ["zendesk", "slack", "trello"],
+      "runStatus": "failed",
+      "runTimestamp": "Jul 4, 2025 01:15 pm",
+      "taskCount": 4,
+      "userAvatarUrl": "https://api.dicebear.com/7.x/avataaars/svg?seed=support-ticket",
+      "config": {
+        "topic": "Priority-based ticket assignment",
+        "useProductionWebhook": false,
+        "webhookTestUrl": "https://n8n.example.com/webhook-test/support-ticket",
+        "webhookProductionUrl": "https://n8n.example.com/webhook/support-ticket"
+      }
+    }
+  ]
+}

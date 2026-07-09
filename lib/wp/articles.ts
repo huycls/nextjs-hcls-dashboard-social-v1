@@ -1,3 +1,8 @@
+import {
+  getArticleFromSnapshot,
+  getArticlesPageFromSnapshot,
+  readArticlesSnapshot,
+} from "./articles-snapshot";
 import { WP_CATEGORY_NAV } from "./categoryNav";
 import {
   fetchCategoryPosts,
@@ -8,9 +13,11 @@ import {
 import { fetchPostDetail, type WpPostDetail } from "./fetchPosts";
 import { sanitizeWpHtml } from "./sanitizeWpContent";
 import {
+  ARTICLE_EXCERPT_MAX_LENGTH,
   estimateReadTime,
   formatArticleDate,
   getDateDistance,
+  normalizeArticleExcerpt,
   stripHtml,
 } from "./utils";
 
@@ -102,33 +109,59 @@ function createInitialMergeCursor(): ArticlesMergeCursor {
   };
 }
 
+function emptyArticlesPageResult(
+  categorySlug: string,
+  perPage: number,
+  cursor: string | null = null,
+  page = 1,
+): ArticlesPageResult {
+  return {
+    articles: [],
+    perPage,
+    categorySlug,
+    page,
+    hasNextPage: false,
+    hasPreviousPage: Boolean(cursor),
+    cursor,
+    nextCursor: null,
+  };
+}
+
 async function getSingleCategoryArticlesPage(
   categorySlug: string,
   perPage: number,
   cursor: string | null,
 ): Promise<ArticlesPageResult> {
-  const { nodes, pageInfo } = await fetchCategoryPostsPage({
-    name: categorySlug,
-    postPerPage: perPage,
-    after: cursor,
-    size: "LARGE",
-    fetchOptions: FETCH_OPTIONS,
-  });
+  try {
+    const { nodes, pageInfo } = await fetchCategoryPostsPage({
+      name: categorySlug,
+      postPerPage: perPage,
+      after: cursor,
+      size: "LARGE",
+      fetchOptions: FETCH_OPTIONS,
+    });
 
-  const articles = nodes
-    .map((node) => mapCategoryPostToArticle(node, categorySlug))
-    .filter((article): article is Article => Boolean(article));
+    const articles = nodes
+      .map((node) => mapCategoryPostToArticle(node, categorySlug))
+      .filter((article): article is Article => Boolean(article));
 
-  return {
-    articles,
-    perPage,
-    categorySlug,
-    page: 1,
-    hasNextPage: Boolean(pageInfo.hasNextPage),
-    hasPreviousPage: Boolean(cursor),
-    cursor,
-    nextCursor: pageInfo.hasNextPage ? (pageInfo.endCursor ?? null) : null,
-  };
+    return {
+      articles,
+      perPage,
+      categorySlug,
+      page: 1,
+      hasNextPage: Boolean(pageInfo.hasNextPage),
+      hasPreviousPage: Boolean(cursor),
+      cursor,
+      nextCursor: pageInfo.hasNextPage ? (pageInfo.endCursor ?? null) : null,
+    };
+  } catch (error) {
+    console.error(
+      `[lib/wp] getSingleCategoryArticlesPage("${categorySlug}") failed:`,
+      error,
+    );
+    return emptyArticlesPageResult(categorySlug, perPage, cursor);
+  }
 }
 
 async function getMergedArticlesPage(
@@ -155,27 +188,35 @@ async function getMergedArticlesPage(
       WP_CATEGORY_NAV.map(async ({ slug }) => {
         if (exhaustedSet.has(slug)) return;
 
-        const { nodes, pageInfo } = await fetchCategoryPostsPage({
-          name: slug,
-          postPerPage: perPage,
-          after: state.cursors[slug],
-          size: "LARGE",
-          fetchOptions: FETCH_OPTIONS,
-        });
+        try {
+          const { nodes, pageInfo } = await fetchCategoryPostsPage({
+            name: slug,
+            postPerPage: perPage,
+            after: state.cursors[slug],
+            size: "LARGE",
+            fetchOptions: FETCH_OPTIONS,
+          });
 
-        state.cursors[slug] = pageInfo.endCursor ?? null;
-        if (!pageInfo.hasNextPage) {
-          exhaustedSet.add(slug);
-        }
-
-        fetchedInRound += nodes.length;
-
-        for (const node of nodes) {
-          const article = mapCategoryPostToArticle(node, slug);
-          if (article && !seen.has(article.slug)) {
-            seen.add(article.slug);
-            pool.push(article);
+          state.cursors[slug] = pageInfo.endCursor ?? null;
+          if (!pageInfo.hasNextPage) {
+            exhaustedSet.add(slug);
           }
+
+          fetchedInRound += nodes.length;
+
+          for (const node of nodes) {
+            const article = mapCategoryPostToArticle(node, slug);
+            if (article && !seen.has(article.slug)) {
+              seen.add(article.slug);
+              pool.push(article);
+            }
+          }
+        } catch (error) {
+          console.error(
+            `[lib/wp] fetchCategoryPostsPage("${slug}") failed:`,
+            error,
+          );
+          exhaustedSet.add(slug);
         }
       }),
     );
@@ -246,6 +287,46 @@ export async function getArticlesPageForNumber(
   };
 }
 
+async function fetchArticlesPageLive(
+  categorySlug: string,
+  perPage: number,
+  cursor: string | null,
+): Promise<ArticlesPageResult> {
+  if (categorySlug !== "all") {
+    return getSingleCategoryArticlesPage(categorySlug, perPage, cursor);
+  }
+
+  return getMergedArticlesPage(perPage, cursor);
+}
+
+function withSnapshotArticlesPageFallback(
+  live: ArticlesPageResult,
+  options: {
+    categorySlug: string;
+    perPage: number;
+    cursor: string | null;
+  },
+): ArticlesPageResult {
+  if (live.articles.length > 0) {
+    return live;
+  }
+
+  const snapshot = readArticlesSnapshot();
+  if (snapshot.length === 0) {
+    return live;
+  }
+
+  console.warn("[lib/wp] Using articles.json snapshot fallback for getArticlesPage");
+
+  const state = decodeArticlesCursor(options.cursor);
+  return getArticlesPageFromSnapshot(snapshot, {
+    categorySlug: options.categorySlug,
+    perPage: options.perPage,
+    offset: state?.offset ?? 0,
+    cursor: options.cursor,
+  });
+}
+
 export async function getArticlesPage(
   options: {
     categorySlug?: string;
@@ -259,11 +340,8 @@ export async function getArticlesPage(
     cursor = null,
   } = options;
 
-  if (categorySlug !== "all") {
-    return getSingleCategoryArticlesPage(categorySlug, perPage, cursor);
-  }
-
-  return getMergedArticlesPage(perPage, cursor);
+  const live = await fetchArticlesPageLive(categorySlug, perPage, cursor);
+  return withSnapshotArticlesPageFallback(live, { categorySlug, perPage, cursor });
 }
 
 export const articleCategories: ArticleCategory[] = WP_CATEGORY_NAV.map(
@@ -308,7 +386,11 @@ function mapCategoryPostToArticle(
   if (!slug || !title) return null;
 
   const category = resolveCategory(node.categories, categorySlug);
-  const excerpt = stripHtml(node.excerpt ?? "");
+  const excerpt = normalizeArticleExcerpt(
+    node.excerpt ?? "",
+    node.content ?? "",
+    ARTICLE_EXCERPT_MAX_LENGTH,
+  );
   const featured = getFeaturedImage(node);
 
   return {
@@ -333,8 +415,11 @@ function mapDetailToArticle(detail: WpPostDetail): Article | null {
 
   const category = resolveCategory(detail.categories, "articles");
   const contentHtml = sanitizeWpHtml(detail.content ?? "");
-  const excerpt =
-    stripHtml(detail.excerpt ?? "") || stripHtml(contentHtml).slice(0, 160);
+  const excerpt = normalizeArticleExcerpt(
+    detail.excerpt ?? "",
+    contentHtml,
+    ARTICLE_EXCERPT_MAX_LENGTH,
+  );
   const featured = getFeaturedImage(detail);
 
   return {
@@ -352,7 +437,7 @@ function mapDetailToArticle(detail: WpPostDetail): Article | null {
   };
 }
 
-export async function getArticles(): Promise<Article[]> {
+async function fetchArticlesLive(): Promise<Article[]> {
   const bySlug = new Map<string, Article>();
 
   for (const { slug: categorySlug } of WP_CATEGORY_NAV) {
@@ -385,12 +470,66 @@ export async function getArticles(): Promise<Article[]> {
   });
 }
 
+export async function getArticles(): Promise<Article[]> {
+  const live = await fetchArticlesLive();
+  if (live.length > 0) {
+    return live;
+  }
+
+  const snapshot = readArticlesSnapshot();
+  if (snapshot.length > 0) {
+    console.warn("[lib/wp] Using articles.json snapshot fallback for getArticles");
+  }
+
+  return snapshot;
+}
+
+const SNAPSHOT_FETCH_OPTIONS: RequestInit = {
+  cache: "no-store",
+};
+
+export async function buildArticlesFromWordPressForSnapshot(): Promise<Article[]> {
+  const list = await fetchArticlesLive();
+
+  const enriched = await Promise.all(
+    list.map(async (article) => {
+      try {
+        const detail = await fetchPostDetail({
+          id: article.slug,
+          idType: "SLUG",
+          featuredImageSize: "LARGE",
+          fetchOptions: SNAPSHOT_FETCH_OPTIONS,
+        });
+
+        if (!detail) {
+          return article;
+        }
+
+        return mapDetailToArticle(detail) ?? article;
+      } catch (error) {
+        console.error(
+          `[lib/wp] buildArticlesFromWordPressForSnapshot("${article.slug}") failed:`,
+          error,
+        );
+        return article;
+      }
+    }),
+  );
+
+  return enriched;
+}
+
 export async function getLatestArticles(limit = 3): Promise<Article[]> {
-  const { articles } = await getArticlesPage({
-    perPage: limit,
-    categorySlug: "all",
-  });
-  return articles;
+  try {
+    const { articles } = await getArticlesPage({
+      perPage: limit,
+      categorySlug: "all",
+    });
+    return articles;
+  } catch (error) {
+    console.error("[lib/wp] getLatestArticles failed:", error);
+    return [];
+  }
 }
 
 export async function getRelatedArticles(
@@ -435,12 +574,25 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
       fetchOptions: FETCH_OPTIONS,
     });
 
-    if (!detail) return null;
-    return mapDetailToArticle(detail);
+    if (detail) {
+      const article = mapDetailToArticle(detail);
+      if (article) {
+        return article;
+      }
+    }
   } catch (error) {
     console.error(`[lib/wp] getArticleBySlug("${slug}") failed:`, error);
-    return null;
   }
+
+  const snapshot = getArticleFromSnapshot(slug);
+  if (snapshot) {
+    console.warn(
+      `[lib/wp] Using articles.json snapshot fallback for getArticleBySlug("${slug}")`,
+    );
+    return snapshot;
+  }
+
+  return null;
 }
 
 export async function getArticleSlugs(): Promise<string[]> {

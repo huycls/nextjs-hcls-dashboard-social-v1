@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "sync:articles": "tsx scripts/sync-articles.ts",
+    "prebuild": "npm run sync:articles",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
@@ -19,6 +21,7 @@
     "react": "19.2.4",
     "react-dom": "19.2.4",
     "recharts": "^3.8.1",
+    "rough-notation": "^0.5.1",
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
@@ -29,6 +32,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
     "tailwindcss": "^4",
+    "tsx": "^4.20.3",
     "typescript": "^5"
   }
 }

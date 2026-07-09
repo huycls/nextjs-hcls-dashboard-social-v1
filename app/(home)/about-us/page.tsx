@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { AboutUsContent } from "@/components/templates/home/about-us-content";
+import { AboutUsContent } from "@/components/organisms/AboutusContent";
 
 export const metadata: Metadata = {
   title: "About Us — Avispark",

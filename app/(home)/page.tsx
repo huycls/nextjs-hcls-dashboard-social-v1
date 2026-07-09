@@ -1,12 +1,12 @@
-import { HeroSection } from "@/components/templates/home/hero-section";
-import { ProblemSection } from "@/components/templates/home/problem-section";
-import { SolutionsSection } from "@/components/templates/home/solutions-section";
-import { StepsSection } from "@/components/templates/home/steps-section";
-import { ArticlesSection } from "@/components/templates/home/articles-section";
-import { FaqSection } from "@/components/templates/home/faq-section";
-import { PricingSection } from "@/components/templates/home/pricing-section";
-import { TestimonialsSection } from "@/components/templates/home/testimonials-section";
-import { TrustedBySection } from "@/components/templates/home/trusted-by-section";
+import { HeroSection } from "@/components/organisms/HeroSectionHome";
+import { ProblemSection } from "@/components/organisms/ProblemSection";
+import { SolutionsSection } from "@/components/organisms/SolutionSection";
+import { StepsSection } from "@/components/organisms/StepSection";
+import { ArticlesSection } from "@/components/organisms/ArticleSlide";
+import { FaqSection } from "@/components/organisms/FaqSection";
+import { PricingSection } from "@/components/organisms/PricingSection";
+import { TestimonialsSection } from "@/components/organisms/TestimonialSection";
+import { TrustedBySection } from "@/components/organisms/TrustedBySection";
 
 export default function HomePage() {
   return (

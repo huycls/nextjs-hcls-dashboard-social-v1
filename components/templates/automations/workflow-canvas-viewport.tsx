@@ -211,9 +211,6 @@ export function WorkflowCanvasViewport({
               width: canvasWidth,
               minHeight: canvasHeight,
               backgroundColor: "var(--canvas)",
-              backgroundImage:
-                "radial-gradient(circle, var(--border) 1px, transparent 1px)",
-              backgroundSize: "20px 20px",
             }}>
             {children}
           </div>

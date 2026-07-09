@@ -1,5 +1,5 @@
-import { WorkflowList } from "@/components/templates/automations/workflow-list";
+import { AutomationsPage } from "@/components/templates/automations/automations-page";
 
-export default function AutomationsPage() {
-  return <WorkflowList />;
+export default function Page() {
+  return <AutomationsPage />;
 }

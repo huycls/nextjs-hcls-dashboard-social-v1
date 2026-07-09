@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { ArticleContent } from "@/components/templates/home/article-content";
-import { ArticleHero } from "@/components/templates/home/article-hero";
-import { RelatedArticlesSidebar } from "@/components/templates/home/related-articles-sidebar";
+import { ArticleContent } from "@/components/organisms/ArticleContentDetail";
+import { ArticleHero } from "@/components/organisms/ArticleHero";
+import { RelatedArticlesSidebar } from "@/components/organisms/RelatedArticleSidebar";
 import { isReservedArticleSlug } from "@/lib/wp/article-routes";
 import {
-  getArticleBySlug,
-  getArticleSlugs,
-  getRelatedArticles,
-} from "@/lib/wp/articles";
+  getArticleFromSnapshot,
+  getSnapshotArticleSlugs,
+  getSnapshotRelatedArticles,
+} from "@/lib/wp/articles-snapshot";
+// import {
+//   getArticleBySlug,
+//   getArticleSlugs,
+//   getRelatedArticles,
+// } from "@/lib/wp/articles";
 
 type ArticleDetailPageProps = {
   params: Promise<{ slug: string }>;
@@ -17,7 +22,9 @@ type ArticleDetailPageProps = {
 export const revalidate = 300;
 
 export async function generateStaticParams() {
-  const slugs = await getArticleSlugs();
+  // const slugs = await getArticleSlugs();
+  const slugs = getSnapshotArticleSlugs();
+
   return slugs
     .filter((slug) => !isReservedArticleSlug(slug))
     .map((slug) => ({ slug }));
@@ -32,7 +39,8 @@ export async function generateMetadata({
     return { title: "Not found — Avispark" };
   }
 
-  const article = await getArticleBySlug(slug);
+  // const article = await getArticleBySlug(slug);
+  const article = getArticleFromSnapshot(slug);
 
   if (!article) {
     return { title: "Article not found — Avispark" };
@@ -53,13 +61,19 @@ export default async function ArticleDetailPage({
     notFound();
   }
 
-  const article = await getArticleBySlug(slug);
+  // const article = await getArticleBySlug(slug);
+  const article = getArticleFromSnapshot(slug);
 
   if (!article) {
     notFound();
   }
 
-  const related = await getRelatedArticles({
+  // const related = await getRelatedArticles({
+  //   slug,
+  //   categorySlug: article.categorySlug,
+  //   limit: 5,
+  // });
+  const related = getSnapshotRelatedArticles({
     slug,
     categorySlug: article.categorySlug,
     limit: 5,

@@ -3,6 +3,8 @@ import {
   mapBackendWorkflow,
   type BackendWorkflow,
 } from "@/lib/automations/automations-api";
+import { getJobsRunUrl, JOBS_API } from "@/lib/automations/jobs-server";
+import { getClientAuthHeaders } from "@/lib/auth/auth-client";
 
 export type JobStatusPayload = {
   id: string;
@@ -20,15 +22,27 @@ export type TriggerJobResult = {
   workflow?: WorkflowItem | null;
 };
 
+type BackendErrorPayload = {
+  message?: string;
+  job?: JobStatusPayload | null;
+  workflow?: BackendWorkflow | null;
+};
+
 function mapWorkflowFromResponse(
   workflow: BackendWorkflow | null | undefined,
 ): WorkflowItem | null {
   return workflow ? mapBackendWorkflow(workflow) : null;
 }
 
-/**
- * Gọi qua Next.js API route (same-origin) → backend /api/jobs/run.
- */
+function parseErrorMessage(text: string) {
+  try {
+    const parsed = JSON.parse(text) as { message?: string; error?: string };
+    return parsed.message ?? parsed.error ?? text;
+  } catch {
+    return text;
+  }
+}
+
 export async function triggerWorkflowJob(
   workflowId: string,
   topic?: string,
@@ -50,22 +64,47 @@ export async function triggerWorkflowJob(
       payload.useProductionWebhook = options.useProductionWebhook;
     }
 
-    const response = await fetch("/api/jobs/run", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
+    const response = await fetch(getJobsRunUrl(), {
+      method: JOBS_API.method,
+      headers: {
+        "Content-Type": "application/json",
+        ...getClientAuthHeaders(),
+      },
       body: JSON.stringify(payload),
     });
 
-    const data = (await response.json()) as TriggerJobResult & {
-      workflow?: BackendWorkflow;
-    };
+    if (response.ok) {
+      const data = (await response.json().catch(() => null)) as {
+        job?: JobStatusPayload;
+        workflow?: BackendWorkflow;
+      } | null;
+
+      return {
+        ok: true,
+        status: response.status,
+        message: "Workflow job started successfully.",
+        job: data?.job ?? null,
+        workflow: mapWorkflowFromResponse(data?.workflow),
+      };
+    }
+
+    const errorText = await response.text().catch(() => "");
+    let errorPayload: BackendErrorPayload | null = null;
+
+    try {
+      errorPayload = JSON.parse(errorText) as BackendErrorPayload;
+    } catch {
+      // not JSON
+    }
 
     return {
-      ok: data.ok,
-      status: data.status,
-      message: data.message,
-      job: data.job ?? null,
-      workflow: mapWorkflowFromResponse(data.workflow),
+      ok: false,
+      status: response.status,
+      message: errorText
+        ? `Backend returned ${response.status}: ${parseErrorMessage(errorText).slice(0, 200)}`
+        : `Request failed with status ${response.status}`,
+      job: errorPayload?.job ?? null,
+      workflow: mapWorkflowFromResponse(errorPayload?.workflow),
     };
   } catch {
     return {

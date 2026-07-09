@@ -11,6 +11,9 @@ import {
   type BackendJob,
   type BackendWorkflow,
 } from "@/lib/automations/automations-api";
+import { getAutomationUrl, getAutomationsListUrl } from "@/lib/automations/automations-server";
+import { getJobUrl } from "@/lib/automations/jobs-server";
+import { getClientAuthHeaders } from "@/lib/auth/auth-client";
 
 const STORAGE_KEY = "Avispark-workflows";
 
@@ -52,9 +55,12 @@ function formatLastModified(date: Date) {
   });
 }
 
-/** Sync danh sách automations (jobs) từ NestJS qua Next.js proxy */
+/** Sync danh sách automations (jobs) từ backend */
 export async function fetchWorkflows(): Promise<WorkflowItem[]> {
-  const response = await fetch("/api/automations", { cache: "no-store" });
+  const response = await fetch(getAutomationsListUrl(), {
+    cache: "no-store",
+    headers: getClientAuthHeaders(),
+  });
 
   if (!response.ok) {
     throw new Error(await parseApiError(response));
@@ -79,8 +85,9 @@ export async function fetchWorkflowById(id: string): Promise<WorkflowItem> {
   const cached = getWorkflowById(id);
   if (cached) return cached;
 
-  const response = await fetch(`/api/jobs/${encodeURIComponent(id)}`, {
+  const response = await fetch(getJobUrl(id), {
     cache: "no-store",
+    headers: getClientAuthHeaders(),
   });
 
   if (!response.ok) {
@@ -88,10 +95,10 @@ export async function fetchWorkflowById(id: string): Promise<WorkflowItem> {
   }
 
   const job = (await response.json()) as BackendJob;
-  const workflowResponse = await fetch(
-    `/api/automations/${encodeURIComponent(job.workflowId)}`,
-    { cache: "no-store" },
-  );
+  const workflowResponse = await fetch(getAutomationUrl(job.workflowId), {
+    cache: "no-store",
+    headers: getClientAuthHeaders(),
+  });
 
   if (!workflowResponse.ok) {
     throw new Error(await parseApiError(workflowResponse));
@@ -114,9 +121,12 @@ export async function createWorkflow(
   name: string,
   type: WorkflowType,
 ): Promise<WorkflowItem> {
-  const response = await fetch("/api/automations", {
+  const response = await fetch(getAutomationsListUrl(), {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      ...getClientAuthHeaders(),
+    },
     body: JSON.stringify({ name: name.trim(), type }),
   });
 

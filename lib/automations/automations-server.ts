@@ -1,8 +1,7 @@
-const BACKEND_BASE_URL =
-  process.env.BACKEND_BASE_URL ?? "http://localhost:5000";
+import { BACKEND_BASE_URL } from "@/lib/api/backend-config";
 
 export const AUTOMATIONS_API = {
-  baseUrl: BACKEND_BASE_URL.replace(/\/$/, ""),
+  baseUrl: BACKEND_BASE_URL,
   listPath: "/api/automations",
 };
 

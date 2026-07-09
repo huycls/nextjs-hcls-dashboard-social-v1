@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Loader2, Zap } from "lucide-react";
 import { WorkflowEnvironmentBadge } from "@/components/templates/automations/workflow-environment-badge";
 import { WorkflowStatusBadge } from "@/components/templates/automations/workflow-status-badge";
@@ -26,11 +26,7 @@ import {
   useWorkflow,
 } from "@/lib/automations/use-workflow-store";
 
-type JobApiConfig = {
-  runUrl: string;
-  method: string;
-  defaultWorkflowId: string;
-};
+import { DEFAULT_WORKFLOW_ID } from "@/lib/automations/jobs-server";
 
 type WorkflowSettingsPanelProps = {
   appWorkflowId: string;
@@ -135,7 +131,6 @@ export function WorkflowSettingsPanel({
     ok: boolean;
     message: string;
   } | null>(null);
-  const [jobConfig, setJobConfig] = useState<JobApiConfig | null>(null);
 
   const credentialNodes = configurableNodes.filter(
     (nodeId): nodeId is CredentialNodeId => nodeId !== "webhook",
@@ -150,15 +145,8 @@ export function WorkflowSettingsPanel({
   const runButtonLabel =
     runEnvironment === "production" ? "Run in production" : "Run test";
 
-  useEffect(() => {
-    fetch("/api/jobs/config")
-      .then((res) => res.json())
-      .then((data: JobApiConfig) => setJobConfig(data))
-      .catch(() => null);
-  }, []);
-
   const jobWorkflowId =
-    (config.workflowId ?? "").trim() || jobConfig?.defaultWorkflowId || "123";
+    (config.workflowId ?? "").trim() || DEFAULT_WORKFLOW_ID;
 
   async function handleTrigger() {
     const topic = config.topic.trim();
@@ -261,7 +249,7 @@ export function WorkflowSettingsPanel({
                 onChange={(event) =>
                   onChange({ ...config, workflowId: event.target.value })
                 }
-                placeholder={jobConfig?.defaultWorkflowId ?? "123"}
+                placeholder={DEFAULT_WORKFLOW_ID}
                 className="h-10 w-full rounded-xl border border-border bg-surface-elevated px-4 text-sm text-foreground outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
               />
             </div>

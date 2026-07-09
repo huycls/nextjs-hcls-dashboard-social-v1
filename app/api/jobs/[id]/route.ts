@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getAutomationUrl } from "@/lib/automations/automations-server";
+import { getJobUrl } from "@/lib/automations/jobs-server";
 import { parseApiError } from "@/lib/automations/automations-api";
 import { getAuthHeaders } from "@/lib/auth/auth-server";
 
@@ -9,7 +9,7 @@ type RouteContext = {
 
 export async function GET(_request: Request, context: RouteContext) {
   const { id } = await context.params;
-  const url = getAutomationUrl(id);
+  const url = getJobUrl(id);
   const authHeaders = await getAuthHeaders();
 
   try {

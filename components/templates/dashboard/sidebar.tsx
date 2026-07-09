@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   FileText,
   LayoutDashboard,
+  LogOut,
   Plug,
   Shield,
   Workflow,
@@ -13,6 +14,7 @@ import { BrandLogo } from "@/components/atoms/BrandLogo";
 import { cn } from "@/lib/utils/tailwind-merge";
 import ShinyText from "@/components/atoms/ShinyText";
 import { useTheme } from "@/components/theme/theme-provider";
+import { logout } from "@/lib/auth/auth-client";
 
 const mainNav = [
   {
@@ -44,7 +46,15 @@ type SidebarProps = {
 
 export function Sidebar({ open = false, onClose }: SidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const { isDark } = useTheme();
+
+  async function handleLogout() {
+    await logout();
+    onClose?.();
+    router.replace("/login");
+    router.refresh();
+  }
   function handleNavClick() {
     onClose?.();
   }
@@ -108,6 +118,14 @@ export function Sidebar({ open = false, onClose }: SidebarProps) {
           );
         })}
       </nav>
+
+      <button
+        type="button"
+        onClick={handleLogout}
+        className="mt-4 flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-sidebar-foreground transition hover:bg-sidebar-hover hover:text-sidebar-heading">
+        <LogOut className="h-4 w-4 shrink-0" />
+        Logout
+      </button>
     </aside>
   );
 }

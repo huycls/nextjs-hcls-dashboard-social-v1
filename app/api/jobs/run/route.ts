@@ -4,6 +4,7 @@ import {
   getJobsRunUrl,
   JOBS_API,
 } from "@/lib/automations/jobs-server";
+import { getAuthHeaders } from "@/lib/auth/auth-server";
 
 type RunJobBody = {
   workflowId?: string;
@@ -53,11 +54,15 @@ export async function POST(request: Request) {
   }
 
   const url = getJobsRunUrl();
+  const authHeaders = await getAuthHeaders();
 
   try {
     const response = await fetch(url, {
       method: JOBS_API.method,
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...authHeaders,
+      },
       body: JSON.stringify(payload),
       cache: "no-store",
     });

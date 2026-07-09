@@ -6,9 +6,18 @@ export const DEFAULT_WORKFLOW_ID =
 
 export const JOBS_API = {
   method: "POST" as const,
+  listPath: "/api/jobs",
   runPath: "/api/jobs/run",
   baseUrl: BACKEND_BASE_URL.replace(/\/$/, ""),
 };
+
+export function getJobsListUrl() {
+  return `${JOBS_API.baseUrl}${JOBS_API.listPath}`;
+}
+
+export function getJobUrl(id: string) {
+  return `${getJobsListUrl()}/${encodeURIComponent(id)}`;
+}
 
 export function getJobsRunUrl() {
   return `${JOBS_API.baseUrl}${JOBS_API.runPath}`;

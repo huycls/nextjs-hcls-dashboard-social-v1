@@ -1,15 +1,10 @@
 import { NextResponse } from "next/server";
-import { getAutomationUrl } from "@/lib/automations/automations-server";
+import { getJobsListUrl } from "@/lib/automations/jobs-server";
 import { parseApiError } from "@/lib/automations/automations-api";
 import { getAuthHeaders } from "@/lib/auth/auth-server";
 
-type RouteContext = {
-  params: Promise<{ id: string }>;
-};
-
-export async function GET(_request: Request, context: RouteContext) {
-  const { id } = await context.params;
-  const url = getAutomationUrl(id);
+export async function GET() {
+  const url = getJobsListUrl();
   const authHeaders = await getAuthHeaders();
 
   try {

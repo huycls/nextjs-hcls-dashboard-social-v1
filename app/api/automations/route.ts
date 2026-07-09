@@ -7,6 +7,7 @@ import { parseApiError } from "@/lib/automations/automations-api";
 import { readAutomationsSnapshot } from "@/lib/automations/automations-snapshot";
 import type { WorkflowType } from "@/lib/automations/data";
 import { WORKFLOW_TYPES } from "@/lib/automations/data";
+import { getAuthHeaders } from "@/lib/auth/auth-server";
 
 const VALID_TYPES = new Set(WORKFLOW_TYPES.map((item) => item.id));
 
@@ -30,9 +31,13 @@ function getSnapshotFallback() {
 
 export async function GET() {
   const url = getAutomationsListUrl();
+  const authHeaders = await getAuthHeaders();
 
   try {
-    const response = await fetch(url, { cache: "no-store" });
+    const response = await fetch(url, {
+      cache: "no-store",
+      headers: authHeaders,
+    });
 
     if (!response.ok) {
       const snapshot = getSnapshotFallback();
@@ -100,11 +105,15 @@ export async function POST(request: Request) {
   }
 
   const url = getAutomationsListUrl();
+  const authHeaders = await getAuthHeaders();
 
   try {
     const response = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        ...authHeaders,
+      },
       body: JSON.stringify({ name, type }),
       cache: "no-store",
     });

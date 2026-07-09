@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Eye, EyeOff, Lock, Mail, Sun } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { Eye, EyeOff, Loader2, Lock, Mail } from "lucide-react";
 import ShinyText from "@/components/atoms/ShinyText";
 import { useTheme } from "@/components/theme/theme-provider";
 import { BrandLogo } from "@/components/atoms/BrandLogo";
+import { loginWithCredentials } from "@/lib/auth/auth-client";
 
 function GoogleIcon() {
   return (
@@ -45,13 +47,37 @@ function AppleIcon() {
 }
 
 export function LoginForm() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
   const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const { isDark } = useTheme();
+
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    const result = await loginWithCredentials(email.trim(), password, rememberMe);
+
+    if (!result.ok) {
+      setError(result.message ?? "Login failed. Please try again.");
+      setLoading(false);
+      return;
+    }
+
+    const redirectTo = searchParams.get("redirect") ?? "/dashboard";
+    router.replace(redirectTo);
+    router.refresh();
+  }
 
   return (
     <div className="flex w-full max-w-[420px] flex-col">
       <div className="mb-8 flex items-center gap-2">
-        {/* <Sun className="h-5 w-5" /> */}
         <BrandLogo className="h-6 w-6 shrink-0" />
         <ShinyText
           text="Avispark"
@@ -77,7 +103,7 @@ export function LoginForm() {
 
       <form
         className="mt-8 space-y-5"
-        onSubmit={(e) => e.preventDefault()}>
+        onSubmit={handleSubmit}>
         <div>
           <label
             htmlFor="email"
@@ -89,8 +115,11 @@ export function LoginForm() {
             <input
               id="email"
               type="email"
-              defaultValue="below@gmail.com"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              placeholder="admin@hcls.local"
               autoComplete="email"
+              required
               className="h-12 w-full rounded-xl border border-border bg-surface-elevated pl-11 pr-4 text-sm text-heading outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
             />
           </div>
@@ -107,8 +136,11 @@ export function LoginForm() {
             <input
               id="password"
               type={showPassword ? "text" : "password"}
-              defaultValue="password123"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              placeholder="••••••••"
               autoComplete="current-password"
+              required
               className="h-12 w-full rounded-xl border border-border bg-surface-elevated pl-11 pr-12 text-sm text-heading outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
             />
             <button
@@ -129,7 +161,8 @@ export function LoginForm() {
           <label className="flex cursor-pointer items-center gap-2 text-sm text-foreground">
             <input
               type="checkbox"
-              defaultChecked
+              checked={rememberMe}
+              onChange={(event) => setRememberMe(event.target.checked)}
               className="h-4 w-4 rounded border-border bg-surface-elevated text-primary focus:ring-primary/30"
             />
             Remember me
@@ -141,9 +174,17 @@ export function LoginForm() {
           </Link>
         </div>
 
+        {error && (
+          <div className="rounded-xl border border-rose-500/20 bg-rose-500/10 px-4 py-3 text-sm text-rose-500">
+            {error}
+          </div>
+        )}
+
         <button
           type="submit"
-          className="h-12 w-full rounded-xl bg-primary text-sm font-medium text-background shadow-sm transition hover:bg-primary-hover">
+          disabled={loading}
+          className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary text-sm font-medium text-background shadow-sm transition hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-60">
+          {loading && <Loader2 className="h-4 w-4 animate-spin" />}
           Login
         </button>
       </form>
@@ -162,13 +203,15 @@ export function LoginForm() {
       <div className="grid grid-cols-2 gap-3">
         <button
           type="button"
-          className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-border bg-surface-elevated text-sm font-medium text-heading transition hover:bg-surface">
+          disabled
+          className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-border bg-surface-elevated text-sm font-medium text-heading opacity-50">
           <GoogleIcon />
           Sign in with Google
         </button>
         <button
           type="button"
-          className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-border bg-surface-elevated text-sm font-medium text-heading transition hover:bg-surface">
+          disabled
+          className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-border bg-surface-elevated text-sm font-medium text-heading opacity-50">
           <AppleIcon />
           Sign in with Apple
         </button>

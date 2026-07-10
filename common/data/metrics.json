@@ -7,31 +7,36 @@
       "id": "automation-success-rate",
       "label": "Automation Success Rate",
       "value": 94,
-      "unit": "%"
+      "unit": "%",
+      "tooltip": "Percentage of workflow runs that completed successfully without errors in the selected period."
     },
     {
       "id": "document-processing",
       "label": "Document Processing",
       "value": 87,
-      "unit": "%"
+      "unit": "%",
+      "tooltip": "Share of documents that were parsed, enriched, and routed by AI within the expected SLA."
     },
     {
       "id": "webhook-delivery-rate",
       "label": "Webhook Delivery Rate",
       "value": 72,
-      "unit": "%"
+      "unit": "%",
+      "tooltip": "Successful outbound webhook deliveries versus total attempts, including retries."
     },
     {
       "id": "ai-response-accuracy",
       "label": "AI Response Accuracy",
       "value": 91,
-      "unit": "%"
+      "unit": "%",
+      "tooltip": "Estimated accuracy of AI-generated outputs based on validation checks and review feedback."
     },
     {
       "id": "queue-throughput",
       "label": "Queue Throughput",
       "value": 68,
-      "unit": "%"
+      "unit": "%",
+      "tooltip": "How close the job queue is to target throughput capacity under current load."
     }
   ]
 }

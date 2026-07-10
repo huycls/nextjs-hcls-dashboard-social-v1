@@ -1,0 +1,102 @@
+{
+  "admin": {
+    "id": "user-admin",
+    "name": "Huy Nguyen",
+    "email": "admin@hcls.local",
+    "role": "admin",
+    "title": "Workspace Admin"
+  },
+  "members": [
+    {
+      "id": "user-lan",
+      "name": "Lan Pham",
+      "email": "lan.pham@hcls.local",
+      "role": "member",
+      "title": "Content Ops",
+      "status": "active"
+    },
+    {
+      "id": "user-minh",
+      "name": "Minh Tran",
+      "email": "minh.tran@hcls.local",
+      "role": "member",
+      "title": "Growth Associate",
+      "status": "active"
+    },
+    {
+      "id": "user-an",
+      "name": "An Vo",
+      "email": "an.vo@hcls.local",
+      "role": "member",
+      "title": "Support Specialist",
+      "status": "invited"
+    },
+    {
+      "id": "user-khoa",
+      "name": "Khoa Le",
+      "email": "khoa.le@hcls.local",
+      "role": "member",
+      "title": "Automation Engineer",
+      "status": "active"
+    }
+  ],
+  "workflows": [
+    {
+      "id": "wf-payment-ack-success",
+      "name": "Payment Acknowledgment Workflow"
+    },
+    {
+      "id": "wf-crm-lead-assignment",
+      "name": "CRM Lead Assignment"
+    },
+    {
+      "id": "wf-order-confirmation",
+      "name": "Order Confirmation"
+    },
+    {
+      "id": "wf-content-post-generator",
+      "name": "Content Post Generator"
+    },
+    {
+      "id": "wf-invoice-reminder",
+      "name": "Invoice Reminder Sequence"
+    }
+  ],
+  "grants": [
+    {
+      "userId": "user-lan",
+      "workflowId": "wf-content-post-generator",
+      "permissions": ["view", "edit", "run"]
+    },
+    {
+      "userId": "user-lan",
+      "workflowId": "wf-crm-lead-assignment",
+      "permissions": ["view", "run"]
+    },
+    {
+      "userId": "user-minh",
+      "workflowId": "wf-order-confirmation",
+      "permissions": ["view", "run"]
+    },
+    {
+      "userId": "user-minh",
+      "workflowId": "wf-invoice-reminder",
+      "permissions": ["view"]
+    },
+    {
+      "userId": "user-khoa",
+      "workflowId": "wf-payment-ack-success",
+      "permissions": ["view", "edit", "run", "manage"]
+    },
+    {
+      "userId": "user-khoa",
+      "workflowId": "wf-crm-lead-assignment",
+      "permissions": ["view", "edit", "run", "manage"]
+    },
+    {
+      "userId": "user-khoa",
+      "workflowId": "wf-content-post-generator",
+      "permissions": ["view", "edit", "run"]
+    }
+  ]
+}

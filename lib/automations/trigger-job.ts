@@ -1,4 +1,7 @@
-import type { WorkflowItem } from "@/lib/automations/data";
+import type {
+  WorkflowCredentials,
+  WorkflowItem,
+} from "@/lib/automations/data";
 import {
   mapBackendWorkflow,
   type BackendWorkflow,
@@ -28,6 +31,15 @@ type BackendErrorPayload = {
   workflow?: BackendWorkflow | null;
 };
 
+type TriggerJobOptions = {
+  useProductionWebhook?: boolean;
+  /** OpenRouter settings only — Google token is resolved on BE (Approach C) */
+  credentials?: Pick<
+    WorkflowCredentials,
+    "openRouterApiKey" | "model" | "spreadsheetId"
+  >;
+};
+
 function mapWorkflowFromResponse(
   workflow: BackendWorkflow | null | undefined,
 ): WorkflowItem | null {
@@ -46,22 +58,39 @@ function parseErrorMessage(text: string) {
 export async function triggerWorkflowJob(
   workflowId: string,
   topic?: string,
-  options?: { useProductionWebhook?: boolean },
+  options?: TriggerJobOptions,
 ): Promise<TriggerJobResult> {
   try {
     const payload: {
       workflowId: string;
       topic?: string;
       useProductionWebhook?: boolean;
+      credentials?: {
+        openRouterApiKey: string;
+        model: string;
+        spreadsheetId?: string;
+      };
     } = { workflowId };
-    const trimmedTopic = topic?.trim();
 
+    const trimmedTopic = topic?.trim();
     if (trimmedTopic) {
       payload.topic = trimmedTopic;
     }
 
     if (options?.useProductionWebhook !== undefined) {
       payload.useProductionWebhook = options.useProductionWebhook;
+    }
+
+    const openRouterApiKey = options?.credentials?.openRouterApiKey?.trim();
+    const model = options?.credentials?.model?.trim();
+    const spreadsheetId = options?.credentials?.spreadsheetId?.trim();
+
+    if (openRouterApiKey && model) {
+      payload.credentials = {
+        openRouterApiKey,
+        model,
+        ...(spreadsheetId ? { spreadsheetId } : {}),
+      };
     }
 
     const response = await fetch(getJobsRunUrl(), {

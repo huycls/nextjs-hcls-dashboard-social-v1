@@ -17,6 +17,7 @@ import { WorkflowSettingsPanel } from "@/components/templates/automations/workfl
 import { WorkflowStatusBadge } from "@/components/templates/automations/workflow-status-badge";
 import {
   DEFAULT_WORKFLOW_CONFIG,
+  normalizeWorkflowCredentials,
   type WorkflowNodeConfig,
   type WorkflowType,
 } from "@/lib/automations/data";
@@ -46,7 +47,11 @@ export function WorkflowCanvasEditor({
   const workflow = useWorkflow(workflowId);
   useWorkflowPolling(workflowId);
   const [settingsOpen, setSettingsOpen] = useState(true);
-  const [config, setConfig] = useState<WorkflowNodeConfig>(initialConfig);
+  const [config, setConfig] = useState<WorkflowNodeConfig>(() => ({
+    ...DEFAULT_WORKFLOW_CONFIG,
+    ...initialConfig,
+    credentials: normalizeWorkflowCredentials(initialConfig.credentials),
+  }));
   const runEnvironment = getWorkflowRunEnvironment(workflow?.status);
 
   const configuredCount = template.configurableNodes.filter((nodeId) =>

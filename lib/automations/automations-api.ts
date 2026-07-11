@@ -4,6 +4,7 @@ import type {
   WorkflowStatus,
   WorkflowType,
 } from "@/lib/automations/data";
+import { DEFAULT_WORKFLOW_CREDENTIALS } from "@/lib/automations/data";
 
 export type BackendJob = {
   id: string;
@@ -119,7 +120,7 @@ export function mapBackendJobToWorkflowItem(
     config: {
       workflowId: workflow.id,
       topic,
-      credentials: {},
+      credentials: { ...DEFAULT_WORKFLOW_CREDENTIALS },
     },
     backendConfig: workflow.config,
     nodeCredentials: workflow.nodeCredentials ?? [],
@@ -139,7 +140,7 @@ export function mapBackendWorkflow(workflow: BackendWorkflow): WorkflowItem {
     config: {
       workflowId: workflow.id,
       topic: workflow.config?.topic ?? "",
-      credentials: {},
+      credentials: { ...DEFAULT_WORKFLOW_CREDENTIALS },
     },
     backendConfig: workflow.config,
     nodeCredentials: workflow.nodeCredentials ?? [],

@@ -88,19 +88,63 @@ export type WorkflowItem = {
   nodeCredentials?: WorkflowNodeCredential[];
 };
 
+/**
+ * Shared workflow credentials (Approach C).
+ * Google OAuth tokens live on BE only — FE keeps connection status cache.
+ */
+export type WorkflowCredentials = {
+  openRouterApiKey: string;
+  model: string;
+  spreadsheetId: string;
+  /** Cached from BE `/integrations/google/status` — never store tokens here */
+  googleConnected: boolean;
+  googleEmail: string;
+};
+
 export type WorkflowNodeConfig = {
   workflowId: string;
   topic: string;
-  credentials: Partial<
-    Record<string, { apiKey: string; secretKey: string }>
-  >;
+  credentials: WorkflowCredentials;
+};
+
+export const DEFAULT_WORKFLOW_CREDENTIALS: WorkflowCredentials = {
+  openRouterApiKey: "",
+  model: "",
+  spreadsheetId: "",
+  googleConnected: false,
+  googleEmail: "",
 };
 
 export const DEFAULT_WORKFLOW_CONFIG: WorkflowNodeConfig = {
   workflowId: "",
   topic: "",
-  credentials: {},
+  credentials: { ...DEFAULT_WORKFLOW_CREDENTIALS },
 };
+
+export function normalizeWorkflowCredentials(
+  value: unknown,
+): WorkflowCredentials {
+  if (!value || typeof value !== "object" || Array.isArray(value)) {
+    return { ...DEFAULT_WORKFLOW_CREDENTIALS };
+  }
+
+  const raw = value as Record<string, unknown>;
+
+  // Legacy per-node shape → ignore secrets, start clean
+  if ("apiKey" in raw || "secretKey" in raw) {
+    return { ...DEFAULT_WORKFLOW_CREDENTIALS };
+  }
+
+  return {
+    openRouterApiKey:
+      typeof raw.openRouterApiKey === "string" ? raw.openRouterApiKey : "",
+    model: typeof raw.model === "string" ? raw.model : "",
+    spreadsheetId:
+      typeof raw.spreadsheetId === "string" ? raw.spreadsheetId : "",
+    googleConnected: Boolean(raw.googleConnected),
+    googleEmail: typeof raw.googleEmail === "string" ? raw.googleEmail : "",
+  };
+}
 
 export const DEFAULT_PAGE_SIZE = 10;
 export const PAGE_SIZE_OPTIONS = [10, 20, 50] as const;

@@ -3,6 +3,7 @@ import type {
   WorkflowNodeConfig,
   WorkflowType,
 } from "@/lib/automations/data";
+import { normalizeWorkflowCredentials } from "@/lib/automations/data";
 import {
   mapBackendJobToWorkflowItem,
   mapBackendWorkflow,
@@ -178,11 +179,16 @@ export function updateWorkflowConfig(
   id: string,
   config: WorkflowNodeConfig,
 ) {
+  const normalized: WorkflowNodeConfig = {
+    ...config,
+    credentials: normalizeWorkflowCredentials(config.credentials),
+  };
+
   const workflows = readStorage().map((workflow) =>
     workflow.id === id
       ? {
           ...workflow,
-          config,
+          config: normalized,
           lastModified: formatLastModified(new Date()),
         }
       : workflow,

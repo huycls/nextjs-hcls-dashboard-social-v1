@@ -7,6 +7,7 @@ import { WorkflowCanvasEditor } from "@/components/templates/automations/workflo
 import {
   DEFAULT_WORKFLOW_CONFIG,
   WORKFLOW_TYPE_LABELS,
+  normalizeWorkflowCredentials,
 } from "@/lib/automations/data";
 import { fetchWorkflowById } from "@/lib/automations/workflow-store";
 import {
@@ -75,7 +76,13 @@ export function EditWorkflowClient({ workflowId }: EditWorkflowClientProps) {
           workflowName={workflow.name}
           workflowType={workflow.type}
           workflowTypeLabel={WORKFLOW_TYPE_LABELS[workflow.type]}
-          initialConfig={{ ...DEFAULT_WORKFLOW_CONFIG, ...workflow.config }}
+          initialConfig={{
+            ...DEFAULT_WORKFLOW_CONFIG,
+            ...workflow.config,
+            credentials: normalizeWorkflowCredentials(
+              workflow.config?.credentials,
+            ),
+          }}
         />
       ) : null}
     </>

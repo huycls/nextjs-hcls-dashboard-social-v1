@@ -354,17 +354,17 @@ export const CONFIGURABLE_NODE_META: Record<
   },
   "gemini-model": {
     title: "AI Settings",
-    description: "Configure credentials for automated processing.",
+    description: "OpenRouter API key and model for content generation.",
     kind: "credentials",
   },
   "openrouter-model": {
     title: "Integration",
-    description: "Configure external service connection.",
+    description: "OpenRouter connection shared with AI Settings.",
     kind: "credentials",
   },
   "add-to-sheet": {
     title: "Output",
-    description: "Configure where results are delivered.",
+    description: "Connect Google and choose the spreadsheet for results.",
     kind: "credentials",
   },
 };

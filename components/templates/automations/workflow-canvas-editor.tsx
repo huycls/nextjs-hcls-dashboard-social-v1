@@ -79,8 +79,7 @@ export function WorkflowCanvasEditor({
     [selectedNodeId, template.nodes],
   );
 
-  const jobWorkflowId =
-    (config.workflowId ?? "").trim() || DEFAULT_WORKFLOW_ID;
+  const jobWorkflowId = (config.workflowId ?? "").trim() || DEFAULT_WORKFLOW_ID;
 
   function handleConfigChange(next: WorkflowNodeConfig) {
     setConfig(next);

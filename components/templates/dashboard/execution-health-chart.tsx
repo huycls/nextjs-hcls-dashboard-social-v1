@@ -41,7 +41,7 @@ export function ExecutionHealthChart() {
         </ResponsiveContainer>
 
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-          <span className="text-3xl font-semibold tracking-tight text-heading">
+          <span className="2xl:text-3xl text-2xl font-semibold tracking-tight text-heading">
             96.3%
           </span>
           <span className="mt-1 inline-flex items-center gap-0.5 text-xs font-medium text-[var(--node-green)]">

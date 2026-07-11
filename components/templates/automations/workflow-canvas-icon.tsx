@@ -1,21 +1,25 @@
 import {
   CheckCircle2,
   MessageSquare,
+  Play,
   Plus,
   Send,
   Settings2,
   Sparkles,
   Split,
+  Webhook,
   Zap,
 } from "lucide-react";
 import type { NodeIconType } from "@/lib/automations/workflow-templates";
 
-const ICON_CLASS = "h-[18px] w-[18px]";
+const ICON_CLASS = "h-4 w-4";
 
 export function WorkflowCanvasIcon({ icon }: { icon: NodeIconType }) {
   switch (icon) {
+    case "start":
+      return <Play className={ICON_CLASS} strokeWidth={2} fill="currentColor" />;
     case "trigger":
-      return <Plus className={ICON_CLASS} strokeWidth={1.75} />;
+      return <Webhook className={ICON_CLASS} strokeWidth={1.75} />;
     case "process":
       return <Sparkles className={ICON_CLASS} strokeWidth={1.75} />;
     case "ai":
@@ -28,6 +32,8 @@ export function WorkflowCanvasIcon({ icon }: { icon: NodeIconType }) {
       return <CheckCircle2 className={ICON_CLASS} strokeWidth={1.75} />;
     case "review":
       return <MessageSquare className={ICON_CLASS} strokeWidth={1.75} />;
+    case "add":
+      return <Plus className={ICON_CLASS} strokeWidth={2} />;
     default:
       return <Zap className={ICON_CLASS} strokeWidth={1.75} />;
   }

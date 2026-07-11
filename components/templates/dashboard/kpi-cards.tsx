@@ -68,7 +68,7 @@ export function KpiCards() {
           </div>
 
           <div className="flex items-end gap-2">
-            <p className="text-3xl font-semibold tracking-tight text-heading">
+            <p className="2xl:text-3xl text-2xl font-semibold tracking-tight text-heading">
               {value}
             </p>
             <span

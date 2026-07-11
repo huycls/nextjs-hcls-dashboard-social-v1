@@ -1,6 +1,11 @@
 import { parseApiError } from "@/lib/automations/automations-api";
 import { BACKEND_BASE_URL } from "@/lib/api/backend-config";
 import { AUTH_COOKIE_NAME } from "@/lib/auth/constants";
+import {
+  clearUserProfile,
+  mergeUserProfile,
+  readUserProfile,
+} from "@/lib/auth/user-profile";
 
 const ONE_DAY_SECONDS = 60 * 60 * 24;
 const THIRTY_DAYS_SECONDS = ONE_DAY_SECONDS * 30;
@@ -100,6 +105,13 @@ export async function loginWithCredentials(
 
     setAuthCookie(token, rememberMe);
 
+    const current = readUserProfile();
+    mergeUserProfile({
+      id: data.user?.id ?? current.id,
+      name: data.user?.name?.trim() || current.name,
+      email: data.user?.email?.trim() || email.trim() || current.email,
+    });
+
     return {
       ok: true,
       user: data.user ?? null,
@@ -117,4 +129,5 @@ export async function loginWithCredentials(
 
 export async function logout() {
   clearAuthCookie();
+  clearUserProfile();
 }

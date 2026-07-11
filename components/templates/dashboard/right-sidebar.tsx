@@ -48,7 +48,11 @@ const toneDot: Record<(typeof recentActivity)[number]["tone"], string> = {
 };
 
 function shouldShowRightSidebar(pathname: string) {
-  return !/\/dashboard\/automations\/[^/]+\/edit$/.test(pathname);
+  if (/\/dashboard\/automations\/[^/]+\/edit$/.test(pathname)) return false;
+  if (pathname === "/dashboard/profile") return false;
+  if (pathname.startsWith("/dashboard/pre-authorization")) return false;
+  if (pathname.startsWith("/dashboard/integrations")) return false;
+  return true;
 }
 
 export function RightSidebar() {

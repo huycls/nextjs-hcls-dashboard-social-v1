@@ -7,7 +7,9 @@ export type NodeIconType =
   | "integration"
   | "output"
   | "complete"
-  | "review";
+  | "review"
+  | "start"
+  | "add";
 
 export type ConfigurableNodeId =
   | "webhook"
@@ -15,25 +17,43 @@ export type ConfigurableNodeId =
   | "openrouter-model"
   | "add-to-sheet";
 
-export type CanvasLabelPosition = "right" | "below";
+export type CanvasNodeStyle =
+  | "start"
+  | "app"
+  | "logic"
+  | "placeholder"
+  | "accent";
 
-export type CanvasNodeStyle = "placeholder" | "active" | "accent";
+export type CanvasAppBrand =
+  | "start"
+  | "webhook"
+  | "ai"
+  | "router"
+  | "sheet"
+  | "complete"
+  | "review"
+  | "add";
 
 export type CanvasNode = {
   id: string;
   label: string;
+  subtitle: string;
   x: number;
   y: number;
   icon: NodeIconType;
-  labelPosition: CanvasLabelPosition;
   nodeStyle: CanvasNodeStyle;
+  brand: CanvasAppBrand;
   configurableId?: ConfigurableNodeId;
+  width?: number;
+  height?: number;
 };
 
 export type CanvasConnection = {
   from: string;
   to: string;
   dashed?: boolean;
+  tone?: "default" | "true" | "false";
+  label?: string;
 };
 
 export type WorkflowTemplate = {
@@ -66,130 +86,251 @@ const WORKFLOW_TYPE_CONFIG: Record<WorkflowType, WorkflowTypeConfig> = {
   },
 };
 
-const ICON_SIZE = 44;
-const CANVAS_WIDTH = 520;
-const SPINE_X = CANVAS_WIDTH / 2 - ICON_SIZE / 2;
+export const CANVAS_NODE_WIDTH = 180;
+export const CANVAS_NODE_HEIGHT = 64;
+export const CANVAS_START_WIDTH = 136;
+export const CANVAS_LOGIC_SIZE = 44;
+export const CANVAS_ADD_SIZE = 52;
 
-type BranchStep = {
-  id: string;
-  label: string;
-  icon: NodeIconType;
-  configurableId: ConfigurableNodeId;
-};
+/** @deprecated use CANVAS_NODE_WIDTH — kept for path helpers */
+export const CANVAS_ICON_SIZE = CANVAS_NODE_HEIGHT;
 
-const BRANCH_STEPS: BranchStep[] = [
-  {
-    id: "ai-settings",
-    label: "AI Settings",
-    icon: "ai",
-    configurableId: "gemini-model",
-  },
-  {
-    id: "integration",
-    label: "Integration",
-    icon: "integration",
-    configurableId: "openrouter-model",
-  },
-  {
-    id: "output",
-    label: "Output",
-    icon: "output",
-    configurableId: "add-to-sheet",
-  },
-];
+const CANVAS_WIDTH = 1580;
+const CANVAS_HEIGHT = 640;
 
-function buildVerticalTemplate(type: WorkflowType): WorkflowTemplate {
+function nodeSize(node: CanvasNode): { width: number; height: number } {
+  if (node.width && node.height) {
+    return { width: node.width, height: node.height };
+  }
+  if (node.nodeStyle === "start") {
+    return { width: CANVAS_START_WIDTH, height: CANVAS_NODE_HEIGHT };
+  }
+  if (node.nodeStyle === "logic") {
+    return { width: CANVAS_LOGIC_SIZE, height: CANVAS_LOGIC_SIZE };
+  }
+  if (node.nodeStyle === "placeholder") {
+    return { width: CANVAS_ADD_SIZE, height: CANVAS_ADD_SIZE };
+  }
+  return { width: CANVAS_NODE_WIDTH, height: CANVAS_NODE_HEIGHT };
+}
+
+export function getCanvasNodeSize(node: CanvasNode) {
+  return nodeSize(node);
+}
+
+function buildFlowTemplate(type: WorkflowType): WorkflowTemplate {
   const { configurableNodes, requiresTopic } = WORKFLOW_TYPE_CONFIG[type];
+  const hasIntegration = configurableNodes.includes("openrouter-model");
 
-  const visibleBranch = BRANCH_STEPS.filter((step) =>
-    configurableNodes.includes(step.configurableId),
-  );
+  const spineY = 220;
+  const startX = 40;
+  const gap = 28;
+  const cardW = CANVAS_NODE_WIDTH;
+  const startW = CANVAS_START_WIDTH;
+
+  const webhookX = startX + startW + gap;
+  const processX = webhookX + cardW + gap;
+  const aiX = processX + cardW + gap;
 
   const nodes: CanvasNode[] = [
     {
+      id: "start",
+      label: "Start",
+      subtitle: "When clicking",
+      x: startX,
+      y: spineY,
+      icon: "start",
+      nodeStyle: "start",
+      brand: "start",
+    },
+    {
       id: "trigger",
-      label: "Trigger",
-      x: SPINE_X,
-      y: 40,
+      label: "Webhook",
+      subtitle: "get: trigger",
+      x: webhookX,
+      y: spineY,
       icon: "trigger",
-      labelPosition: "right",
-      nodeStyle: "placeholder",
+      nodeStyle: "app",
+      brand: "webhook",
       configurableId: "webhook",
     },
     {
       id: "process",
       label: "Process",
-      x: SPINE_X,
-      y: 132,
+      subtitle: "prepare: payload",
+      x: processX,
+      y: spineY,
       icon: "process",
-      labelPosition: "right",
       nodeStyle: "accent",
+      brand: "ai",
+    },
+    {
+      id: "ai-settings",
+      label: "AI Settings",
+      subtitle: "gemini: model",
+      x: aiX,
+      y: spineY,
+      icon: "ai",
+      nodeStyle: "app",
+      brand: "ai",
+      configurableId: "gemini-model",
     },
   ];
-
-  const branchY = 248;
-  const branchGap = 112;
-  const branchTotalWidth =
-    visibleBranch.length * ICON_SIZE + (visibleBranch.length - 1) * branchGap;
-  const branchStartX = (CANVAS_WIDTH - branchTotalWidth) / 2;
-
-  visibleBranch.forEach((step, index) => {
-    nodes.push({
-      id: step.id,
-      label: step.label,
-      x: branchStartX + index * (ICON_SIZE + branchGap),
-      y: branchY,
-      icon: step.icon,
-      labelPosition: "below",
-      nodeStyle: "placeholder",
-      configurableId: step.configurableId,
-    });
-  });
-
-  const footerY = 400;
-  const footerGap = 120;
-  const footerStartX =
-    (CANVAS_WIDTH - (ICON_SIZE * 2 + footerGap)) / 2;
-
-  nodes.push(
-    {
-      id: "complete",
-      label: "Complete",
-      x: footerStartX,
-      y: footerY,
-      icon: "complete",
-      labelPosition: "below",
-      nodeStyle: "active",
-    },
-    {
-      id: "review",
-      label: "Review",
-      x: footerStartX + ICON_SIZE + footerGap,
-      y: footerY,
-      icon: "review",
-      labelPosition: "below",
-      nodeStyle: "active",
-    },
-  );
 
   const connections: CanvasConnection[] = [
+    { from: "start", to: "trigger" },
     { from: "trigger", to: "process" },
+    { from: "process", to: "ai-settings" },
   ];
 
-  for (const step of visibleBranch) {
-    connections.push({ from: "process", to: step.id });
+  let lastId = "ai-settings";
+  let cursorX = aiX + cardW + gap;
+
+  if (hasIntegration) {
+    const logicX = cursorX;
+    const logicY = spineY + (CANVAS_NODE_HEIGHT - CANVAS_LOGIC_SIZE) / 2;
+
+    nodes.push({
+      id: "branch",
+      label: "If",
+      subtitle: "",
+      x: logicX,
+      y: logicY,
+      icon: "integration",
+      nodeStyle: "logic",
+      brand: "router",
+      width: CANVAS_LOGIC_SIZE,
+      height: CANVAS_LOGIC_SIZE,
+    });
+
+    connections.push({ from: "ai-settings", to: "branch" });
+
+    const branchX = logicX + CANVAS_LOGIC_SIZE + gap;
+    const trueY = spineY - 90;
+    const falseY = spineY + 90;
+
+    nodes.push(
+      {
+        id: "integration",
+        label: "Integration",
+        subtitle: "openrouter: model",
+        x: branchX,
+        y: trueY,
+        icon: "integration",
+        nodeStyle: "app",
+        brand: "router",
+        configurableId: "openrouter-model",
+      },
+      {
+        id: "output",
+        label: "Output",
+        subtitle: "add: to sheet",
+        x: branchX,
+        y: falseY,
+        icon: "output",
+        nodeStyle: "app",
+        brand: "sheet",
+        configurableId: "add-to-sheet",
+      },
+    );
+
+    connections.push(
+      {
+        from: "branch",
+        to: "integration",
+        tone: "true",
+        label: "True",
+      },
+      {
+        from: "branch",
+        to: "output",
+        tone: "false",
+        label: "False",
+      },
+    );
+
+    const mergeX = branchX + cardW + gap;
+    nodes.push({
+      id: "complete",
+      label: "Complete",
+      subtitle: "mark: done",
+      x: mergeX,
+      y: spineY,
+      icon: "complete",
+      nodeStyle: "app",
+      brand: "complete",
+    });
+
+    connections.push(
+      { from: "integration", to: "complete", tone: "true" },
+      { from: "output", to: "complete", tone: "false" },
+    );
+
+    lastId = "complete";
+    cursorX = mergeX + cardW + gap;
+  } else {
+    nodes.push({
+      id: "output",
+      label: "Output",
+      subtitle: "add: to sheet",
+      x: cursorX,
+      y: spineY,
+      icon: "output",
+      nodeStyle: "app",
+      brand: "sheet",
+      configurableId: "add-to-sheet",
+    });
+    connections.push({ from: "ai-settings", to: "output" });
+
+    lastId = "output";
+    cursorX += cardW + gap;
+
+    nodes.push({
+      id: "complete",
+      label: "Complete",
+      subtitle: "mark: done",
+      x: cursorX,
+      y: spineY,
+      icon: "complete",
+      nodeStyle: "app",
+      brand: "complete",
+    });
+    connections.push({ from: "output", to: "complete" });
+
+    lastId = "complete";
+    cursorX += cardW + gap;
   }
 
-  const midBranch = visibleBranch[Math.floor(visibleBranch.length / 2)];
-  if (midBranch) {
-    connections.push({ from: midBranch.id, to: "complete" });
-  }
+  nodes.push({
+    id: "review",
+    label: "Review",
+    subtitle: "check: result",
+    x: cursorX,
+    y: spineY,
+    icon: "review",
+    nodeStyle: "app",
+    brand: "review",
+  });
+  connections.push({ from: lastId, to: "review", dashed: true });
 
-  connections.push({ from: "complete", to: "review", dashed: true });
+  const addX = cursorX + cardW + gap;
+  nodes.push({
+    id: "add-step",
+    label: "Add",
+    subtitle: "",
+    x: addX,
+    y: spineY + (CANVAS_NODE_HEIGHT - CANVAS_ADD_SIZE) / 2,
+    icon: "add",
+    nodeStyle: "placeholder",
+    brand: "add",
+    width: CANVAS_ADD_SIZE,
+    height: CANVAS_ADD_SIZE,
+  });
+  connections.push({ from: "review", to: "add-step", dashed: true });
 
   return {
     canvasWidth: CANVAS_WIDTH,
-    canvasHeight: 520,
+    canvasHeight: CANVAS_HEIGHT,
     nodes,
     connections,
     configurableNodes,
@@ -198,11 +339,9 @@ function buildVerticalTemplate(type: WorkflowType): WorkflowTemplate {
 }
 
 export const WORKFLOW_TEMPLATES: Record<WorkflowType, WorkflowTemplate> = {
-  "generate-idea-posts": buildVerticalTemplate("generate-idea-posts"),
-  "generate-content-post": buildVerticalTemplate("generate-content-post"),
+  "generate-idea-posts": buildFlowTemplate("generate-idea-posts"),
+  "generate-content-post": buildFlowTemplate("generate-content-post"),
 };
-
-export const CANVAS_ICON_SIZE = ICON_SIZE;
 
 export const CONFIGURABLE_NODE_META: Record<
   ConfigurableNodeId,
@@ -229,3 +368,63 @@ export const CONFIGURABLE_NODE_META: Record<
     kind: "credentials",
   },
 };
+
+export const LINKABLE_APPS = [
+  {
+    id: "asana",
+    name: "Asana",
+    description: "Track work and manage projects across teams.",
+    color: "#F06A6A",
+    initial: "A",
+  },
+  {
+    id: "figma",
+    name: "Figma",
+    description: "Collaborate on interface design in real time.",
+    color: "#A259FF",
+    initial: "F",
+  },
+  {
+    id: "mailchimp",
+    name: "Mailchimp",
+    description: "Send campaigns and grow your audience.",
+    color: "#FFE01B",
+    initial: "M",
+    darkText: true,
+  },
+  {
+    id: "slack",
+    name: "Slack",
+    description: "Message teammates and automate channel updates.",
+    color: "#4A154B",
+    initial: "S",
+  },
+  {
+    id: "spotify",
+    name: "Spotify",
+    description: "Sync playlists and listening activity.",
+    color: "#1DB954",
+    initial: "Sp",
+  },
+  {
+    id: "vscode",
+    name: "Visual Studio Code",
+    description: "Connect editor events to your workflows.",
+    color: "#007ACC",
+    initial: "V",
+  },
+  {
+    id: "zapier",
+    name: "Zapier",
+    description: "Bridge thousands of apps into one flow.",
+    color: "#FF4A00",
+    initial: "Z",
+  },
+  {
+    id: "zoom",
+    name: "Zoom",
+    description: "Trigger actions from meetings and webinars.",
+    color: "#2D8CFF",
+    initial: "Zo",
+  },
+] as const;

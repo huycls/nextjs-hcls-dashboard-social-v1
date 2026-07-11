@@ -495,9 +495,9 @@ export function WorkflowSettingsPanel({
   }
 
   return (
-    <aside className="flex w-[400px] shrink-0 flex-col border-l border-border bg-surface">
+    <aside className="flex w-[360px] shrink-0 flex-col border-l border-border bg-surface-elevated">
       <div className="border-b border-border px-5 py-4">
-        <h2 className="text-lg font-semibold text-heading">Settings</h2>
+        <h2 className="text-base font-semibold text-heading">Settings</h2>
         <p className="mt-1 text-sm text-muted">
           {configuredCount}/{configurableNodes.length} steps configured
         </p>

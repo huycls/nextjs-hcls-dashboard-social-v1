@@ -58,7 +58,7 @@ export function IntegrationStatus() {
         {integrations.map(({ name, lastSync, status, tone, logo }) => (
           <li
             key={name}
-            className="flex items-center justify-between gap-3 py-4 first:pt-0 last:pb-0">
+            className="flex 2xl:items-center 2xl:flex-row lg:flex-col flex-row justify-between gap-3 py-4 first:pt-0 last:pb-0">
             <div className="flex min-w-0 items-center gap-3">
               <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-background text-[11px] font-bold text-muted">
                 {logo}
@@ -71,7 +71,7 @@ export function IntegrationStatus() {
               </div>
             </div>
 
-            <div className="flex shrink-0 items-center gap-2">
+            <div className="flex justify-end shrink-0 items-center gap-1">
               {tone === "success" ? (
                 <CheckCircle2
                   className={`h-4 w-4 ${iconStyles[tone]}`}

@@ -7,7 +7,6 @@ import {
   type BackendWorkflow,
 } from "@/lib/automations/automations-api";
 import { getJobsRunUrl, JOBS_API } from "@/lib/automations/jobs-server";
-import { getClientAuthHeaders } from "@/lib/auth/auth-client";
 
 export type JobStatusPayload = {
   id: string;
@@ -97,7 +96,6 @@ export async function triggerWorkflowJob(
       method: JOBS_API.method,
       headers: {
         "Content-Type": "application/json",
-        ...getClientAuthHeaders(),
       },
       body: JSON.stringify(payload),
     });

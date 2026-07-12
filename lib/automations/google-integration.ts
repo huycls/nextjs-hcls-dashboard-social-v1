@@ -1,8 +1,7 @@
-import { BACKEND_BASE_URL } from "@/lib/api/backend-config";
+import { getProxyApiUrl } from "@/lib/api/client-api";
 import { parseApiError } from "@/lib/automations/automations-api";
-import { getClientAuthHeaders } from "@/lib/auth/auth-client";
 
-const GOOGLE_INTEGRATION_BASE = `${BACKEND_BASE_URL}/api/integrations/google`;
+const GOOGLE_INTEGRATION_BASE = getProxyApiUrl("/api/integrations/google");
 
 export type GoogleIntegrationStatus = {
   connected: boolean;
@@ -65,7 +64,6 @@ function normalizeStatus(payload: unknown): GoogleIntegrationStatus {
 export async function fetchGoogleIntegrationStatus(): Promise<GoogleIntegrationStatus> {
   const response = await fetch(`${GOOGLE_INTEGRATION_BASE}/status`, {
     cache: "no-store",
-    headers: getClientAuthHeaders(),
   });
 
   if (response.status === 404) {
@@ -83,12 +81,16 @@ export async function fetchGoogleAuthUrl(
   returnUrl: string,
 ): Promise<GoogleAuthUrlResult> {
   try {
-    const url = new URL(`${GOOGLE_INTEGRATION_BASE}/auth-url`);
+    const url = new URL(
+      `${GOOGLE_INTEGRATION_BASE}/auth-url`,
+      typeof window !== "undefined"
+        ? window.location.origin
+        : "http://localhost:3000",
+    );
     url.searchParams.set("returnUrl", returnUrl);
 
     const response = await fetch(url.toString(), {
       cache: "no-store",
-      headers: getClientAuthHeaders(),
     });
 
     if (!response.ok) {
@@ -122,7 +124,6 @@ export async function disconnectGoogleIntegration(): Promise<GoogleMutationResul
   try {
     const response = await fetch(GOOGLE_INTEGRATION_BASE, {
       method: "DELETE",
-      headers: getClientAuthHeaders(),
     });
 
     if (!response.ok) {
@@ -149,7 +150,6 @@ export async function updateGoogleSpreadsheetId(
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
-        ...getClientAuthHeaders(),
       },
       body: JSON.stringify({ spreadsheetId: spreadsheetId.trim() }),
     });

@@ -14,7 +14,6 @@ import {
 } from "@/lib/automations/automations-api";
 import { getAutomationUrl, getAutomationsListUrl } from "@/lib/automations/automations-server";
 import { getJobUrl } from "@/lib/automations/jobs-server";
-import { getClientAuthHeaders } from "@/lib/auth/auth-client";
 
 const STORAGE_KEY = "Avispark-workflows";
 
@@ -60,7 +59,6 @@ function formatLastModified(date: Date) {
 export async function fetchWorkflows(): Promise<WorkflowItem[]> {
   const response = await fetch(getAutomationsListUrl(), {
     cache: "no-store",
-    headers: getClientAuthHeaders(),
   });
 
   if (!response.ok) {
@@ -88,7 +86,6 @@ export async function fetchWorkflowById(id: string): Promise<WorkflowItem> {
 
   const response = await fetch(getJobUrl(id), {
     cache: "no-store",
-    headers: getClientAuthHeaders(),
   });
 
   if (!response.ok) {
@@ -98,7 +95,6 @@ export async function fetchWorkflowById(id: string): Promise<WorkflowItem> {
   const job = (await response.json()) as BackendJob;
   const workflowResponse = await fetch(getAutomationUrl(job.workflowId), {
     cache: "no-store",
-    headers: getClientAuthHeaders(),
   });
 
   if (!workflowResponse.ok) {
@@ -126,7 +122,6 @@ export async function createWorkflow(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      ...getClientAuthHeaders(),
     },
     body: JSON.stringify({ name: name.trim(), type }),
   });
@@ -173,6 +168,20 @@ export function updateWorkflow(
 
 export function deleteWorkflowById(id: string) {
   writeStorage(readStorage().filter((workflow) => workflow.id !== id));
+}
+
+/** Xóa automation (job) trên BE rồi cập nhật cache local */
+export async function deleteWorkflowJob(id: string): Promise<void> {
+  const response = await fetch(getJobUrl(id), {
+    method: "DELETE",
+  });
+
+  // Already gone on BE — still clear local cache
+  if (!response.ok && response.status !== 404) {
+    throw new Error(await parseApiError(response));
+  }
+
+  deleteWorkflowById(id);
 }
 
 export function updateWorkflowConfig(

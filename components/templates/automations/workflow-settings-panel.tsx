@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { Loader2, Unplug, Zap } from "lucide-react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { CheckCircle2, Circle, Loader2, Unplug, Zap } from "lucide-react";
 import { WorkflowEnvironmentBadge } from "@/components/templates/automations/workflow-environment-badge";
 import { WorkflowStatusBadge } from "@/components/templates/automations/workflow-status-badge";
 import {
@@ -41,22 +41,24 @@ import {
   useWorkflow,
 } from "@/lib/automations/use-workflow-store";
 import { DEFAULT_WORKFLOW_ID } from "@/lib/automations/jobs-server";
+import { cn } from "@/lib/utils/tailwind-merge";
+
+export const NODE_CONFIG_SECTION_ID = (nodeId: ConfigurableNodeId) =>
+  `node-config-${nodeId}`;
 
 type WorkflowSettingsPanelProps = {
   appWorkflowId: string;
   config: WorkflowNodeConfig;
   configurableNodes: ConfigurableNodeId[];
   requiresTopic: boolean;
+  focusedNodeId?: ConfigurableNodeId | null;
   onChange: (config: WorkflowNodeConfig) => void;
   onClose: () => void;
 };
 
 function GoogleIcon({ className }: { className?: string }) {
   return (
-    <svg
-      aria-hidden="true"
-      viewBox="0 0 24 24"
-      className={className}>
+    <svg aria-hidden="true" viewBox="0 0 24 24" className={className}>
       <path
         fill="#4285F4"
         d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -77,7 +79,129 @@ function GoogleIcon({ className }: { className?: string }) {
   );
 }
 
-function CredentialsSection({
+function NodeSectionShell({
+  nodeId,
+  title,
+  description,
+  configured,
+  focused,
+  children,
+}: {
+  nodeId: ConfigurableNodeId;
+  title: string;
+  description: string;
+  configured: boolean;
+  focused: boolean;
+  children: ReactNode;
+}) {
+  return (
+    <section
+      id={NODE_CONFIG_SECTION_ID(nodeId)}
+      className={cn(
+        "scroll-mt-4 rounded-xl border p-4 transition",
+        focused ? "border-primary/50 ring-2 ring-primary/20" : "border-border",
+      )}>
+      <div className="mb-4 flex items-start justify-between gap-3">
+        <div>
+          <h3 className="text-sm font-semibold text-heading">{title}</h3>
+          <p className="mt-1 text-xs text-muted">{description}</p>
+        </div>
+        <span
+          className={cn(
+            "inline-flex shrink-0 items-center gap-1 rounded-lg px-2 py-1 text-[11px] font-medium",
+            configured
+              ? "bg-[var(--node-green-bg)] text-[var(--node-green)]"
+              : "bg-amber-500/10 text-amber-500",
+          )}>
+          {configured ? (
+            <CheckCircle2 className="h-3.5 w-3.5" />
+          ) : (
+            <Circle className="h-3.5 w-3.5" />
+          )}
+          {configured ? "Ready" : "Required"}
+        </span>
+      </div>
+      {children}
+    </section>
+  );
+}
+
+function Field({
+  id,
+  label,
+  value,
+  placeholder,
+  onChange,
+  type = "text",
+  autoComplete,
+}: {
+  id: string;
+  label: string;
+  value: string;
+  placeholder: string;
+  onChange: (value: string) => void;
+  type?: string;
+  autoComplete?: string;
+}) {
+  return (
+    <div>
+      <label
+        htmlFor={id}
+        className="mb-2 block text-sm font-medium text-heading">
+        {label}
+      </label>
+      <input
+        id={id}
+        type={type}
+        autoComplete={autoComplete}
+        value={value}
+        onChange={(event) => onChange(event.target.value)}
+        placeholder={placeholder}
+        className="h-10 w-full rounded-xl border border-border bg-surface-elevated px-4 text-sm text-foreground outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
+      />
+    </div>
+  );
+}
+
+function OpenRouterFields({
+  credentials,
+  idPrefix,
+  onPatch,
+}: {
+  credentials: WorkflowCredentials;
+  idPrefix: string;
+  onPatch: (patch: Partial<WorkflowCredentials>) => void;
+}) {
+  return (
+    <div className="space-y-3">
+      <Field
+        id={`${idPrefix}-api-key`}
+        label="OpenRouter API Key"
+        type="password"
+        autoComplete="off"
+        value={credentials.openRouterApiKey}
+        placeholder="sk-or-..."
+        onChange={(value) => onPatch({ openRouterApiKey: value })}
+      />
+      <Field
+        id={`${idPrefix}-model`}
+        label="Model"
+        value={credentials.model}
+        placeholder="openai/gpt-4o-mini"
+        onChange={(value) => onPatch({ model: value })}
+      />
+      {hasOpenRouterCredentials(credentials) ? (
+        <p className="text-xs text-[var(--node-green)]">OpenRouter ready.</p>
+      ) : (
+        <p className="text-xs text-amber-400">
+          OpenRouter API key and model required.
+        </p>
+      )}
+    </div>
+  );
+}
+
+function GoogleSheetFields({
   credentials,
   googleLoading,
   googleMessage,
@@ -94,158 +218,104 @@ function CredentialsSection({
   onDisconnectGoogle: () => void;
   onSaveSpreadsheet: () => void;
 }) {
-  const openRouterReady = hasOpenRouterCredentials(credentials);
-  const googleReady = hasGoogleSheetReady(credentials);
-
   return (
-    <section className="rounded-xl border border-border p-4">
-      <div className="mb-4">
-        <h3 className="text-sm font-semibold text-heading">Credentials</h3>
-        <p className="mt-1 text-xs text-muted">
-          OpenRouter for generation. Google Sheets connection is stored on the
-          backend — tokens never stay in the browser.
-        </p>
-      </div>
-
-      <div className="space-y-3">
-        <div>
-          <label
-            htmlFor="openrouter-api-key"
-            className="mb-2 block text-sm font-medium text-heading">
-            OpenRouter API Key
-          </label>
-          <input
-            id="openrouter-api-key"
-            type="password"
-            autoComplete="off"
-            value={credentials.openRouterApiKey}
-            onChange={(event) =>
-              onPatch({ openRouterApiKey: event.target.value })
-            }
-            placeholder="sk-or-..."
-            className="h-10 w-full rounded-xl border border-border bg-surface-elevated px-4 text-sm text-foreground outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
-          />
-        </div>
-
-        <div>
-          <label
-            htmlFor="openrouter-model"
-            className="mb-2 block text-sm font-medium text-heading">
-            Model
-          </label>
-          <input
-            id="openrouter-model"
-            type="text"
-            value={credentials.model}
-            onChange={(event) => onPatch({ model: event.target.value })}
-            placeholder="openai/gpt-4o-mini"
-            className="h-10 w-full rounded-xl border border-border bg-surface-elevated px-4 text-sm text-foreground outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
-          />
-        </div>
-
-        <div className="rounded-xl border border-border bg-surface-elevated p-3">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="min-w-0">
-              <p className="text-sm font-medium text-heading">Google Sheets</p>
-              {credentials.googleConnected ? (
-                <p className="mt-1 truncate text-xs text-node-green">
-                  Connected
-                  {credentials.googleEmail
-                    ? ` · ${credentials.googleEmail}`
-                    : ""}
-                </p>
-              ) : (
-                <p className="mt-1 text-xs text-muted">
-                  Connect once. Backend keeps the refresh token.
-                </p>
-              )}
-            </div>
-
+    <div className="space-y-3">
+      <div className="rounded-xl border border-border bg-surface-elevated p-3">
+        <div className="flex flex-col gap-3 sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <p className="text-sm font-medium text-heading">Google Sheets</p>
             {credentials.googleConnected ? (
-              <button
-                type="button"
-                disabled={googleLoading}
-                onClick={onDisconnectGoogle}
-                className="inline-flex h-10 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-border px-3 text-sm font-medium text-foreground transition hover:bg-surface disabled:opacity-40">
-                {googleLoading ? (
-                  <Loader2 className="h-4 w-4 shrink-0 animate-spin" />
-                ) : (
-                  <Unplug className="h-4 w-4 shrink-0" />
-                )}
-                Disconnect
-              </button>
+              <p className="mt-1 truncate text-xs text-node-green">
+                Connected
+                {credentials.googleEmail ? ` · ${credentials.googleEmail}` : ""}
+              </p>
             ) : (
-              <button
-                type="button"
-                disabled={googleLoading}
-                onClick={onConnectGoogle}
-                className="inline-flex h-10 w-full shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-border bg-surface px-3 text-sm font-medium text-heading transition hover:bg-background disabled:opacity-40 sm:w-auto">
-                {googleLoading ? (
-                  <Loader2 className="h-4 w-4 shrink-0 animate-spin" />
-                ) : (
-                  <GoogleIcon className="h-4 w-4 shrink-0" />
-                )}
-                Sign in with Google
-              </button>
+              <p className="mt-1 text-xs text-muted">
+                Connect once. Backend keeps the refresh token.
+              </p>
             )}
           </div>
 
-          {credentials.googleConnected && (
-            <div className="mt-3 space-y-2">
-              <label
-                htmlFor="spreadsheet-id"
-                className="block text-xs font-medium text-muted">
-                Spreadsheet ID
-              </label>
-              <div className="flex gap-2">
-                <input
-                  id="spreadsheet-id"
-                  type="text"
-                  value={credentials.spreadsheetId}
-                  onChange={(event) =>
-                    onPatch({ spreadsheetId: event.target.value })
-                  }
-                  placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms"
-                  className="h-9 flex-1 rounded-lg border border-border bg-surface px-3 text-sm text-foreground outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
-                />
-                <button
-                  type="button"
-                  disabled={googleLoading || !credentials.spreadsheetId.trim()}
-                  onClick={onSaveSpreadsheet}
-                  className="h-9 shrink-0 rounded-lg bg-primary px-3 text-xs font-medium text-background transition hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-40">
-                  Save
-                </button>
-              </div>
-              <p className="text-[11px] text-muted">
-                From the sheet URL: docs.google.com/spreadsheets/d/
-                <span className="text-foreground">SPREADSHEET_ID</span>/edit
-              </p>
-            </div>
+          {credentials.googleConnected ? (
+            <button
+              type="button"
+              disabled={googleLoading}
+              onClick={onDisconnectGoogle}
+              className="inline-flex h-10 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-border px-3 text-sm font-medium text-foreground transition hover:bg-surface disabled:opacity-40">
+              {googleLoading ? (
+                <Loader2 className="h-4 w-4 shrink-0 animate-spin" />
+              ) : (
+                <Unplug className="h-4 w-4 shrink-0" />
+              )}
+              Disconnect
+            </button>
+          ) : (
+            <button
+              type="button"
+              disabled={googleLoading}
+              onClick={onConnectGoogle}
+              className="inline-flex h-10 w-full shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-lg border border-border bg-surface px-3 text-sm font-medium text-heading transition hover:bg-background disabled:opacity-40 sm:w-auto">
+              {googleLoading ? (
+                <Loader2 className="h-4 w-4 shrink-0 animate-spin" />
+              ) : (
+                <GoogleIcon className="h-4 w-4 shrink-0" />
+              )}
+              Sign in with Google
+            </button>
           )}
         </div>
 
-        {googleMessage && (
-          <p
-            className={`text-xs ${
-              googleMessage.ok ? "text-[var(--node-green)]" : "text-rose-400"
-            }`}>
-            {googleMessage.text}
-          </p>
-        )}
-
-        {!openRouterReady || !googleReady ? (
-          <p className="text-xs text-amber-400">
-            {!openRouterReady
-              ? "OpenRouter API key and model required."
-              : "Connect Google and set a spreadsheet ID."}
-          </p>
-        ) : (
-          <p className="text-xs text-[var(--node-green)]">
-            Credentials ready.
-          </p>
+        {credentials.googleConnected && (
+          <div className="mt-3 space-y-2">
+            <label
+              htmlFor="spreadsheet-id"
+              className="block text-xs font-medium text-muted">
+              Spreadsheet ID
+            </label>
+            <div className="flex gap-2">
+              <input
+                id="spreadsheet-id"
+                type="text"
+                value={credentials.spreadsheetId}
+                onChange={(event) =>
+                  onPatch({ spreadsheetId: event.target.value })
+                }
+                placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms"
+                className="h-9 flex-1 rounded-lg border border-border bg-surface px-3 text-sm text-foreground outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
+              />
+              <button
+                type="button"
+                disabled={googleLoading || !credentials.spreadsheetId.trim()}
+                onClick={onSaveSpreadsheet}
+                className="h-9 shrink-0 rounded-lg bg-primary px-3 text-xs font-medium text-background transition hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-40">
+                Save
+              </button>
+            </div>
+            <p className="text-[11px] text-muted">
+              From the sheet URL: docs.google.com/spreadsheets/d/
+              <span className="text-foreground">SPREADSHEET_ID</span>/edit
+            </p>
+          </div>
         )}
       </div>
-    </section>
+
+      {googleMessage && (
+        <p
+          className={`text-xs ${
+            googleMessage.ok ? "text-[var(--node-green)]" : "text-rose-400"
+          }`}>
+          {googleMessage.text}
+        </p>
+      )}
+
+      {hasGoogleSheetReady(credentials) ? (
+        <p className="text-xs text-[var(--node-green)]">Google Sheets ready.</p>
+      ) : (
+        <p className="text-xs text-amber-400">
+          Connect Google and set a spreadsheet ID.
+        </p>
+      )}
+    </div>
   );
 }
 
@@ -254,6 +324,7 @@ export function WorkflowSettingsPanel({
   config,
   configurableNodes,
   requiresTopic,
+  focusedNodeId = null,
   onChange,
   onClose,
 }: WorkflowSettingsPanelProps) {
@@ -262,6 +333,7 @@ export function WorkflowSettingsPanel({
   const credentials = normalizeWorkflowCredentials(config.credentials);
   const configRef = useRef(config);
   const onChangeRef = useRef(onChange);
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   configRef.current = config;
   onChangeRef.current = onChange;
 
@@ -280,13 +352,18 @@ export function WorkflowSettingsPanel({
     isWorkflowStepConfigured(nodeId, config, requiresTopic),
   ).length;
 
+  const hasGemini = configurableNodes.includes("gemini-model");
+  const hasOpenRouterNode = configurableNodes.includes("openrouter-model");
+  const openRouterOwner: ConfigurableNodeId = hasGemini
+    ? "gemini-model"
+    : "openrouter-model";
+
   const runEnvironment = getWorkflowRunEnvironment(workflow?.status);
   const useProductionWebhook = shouldUseProductionWebhook(workflow?.status);
   const runButtonLabel =
     runEnvironment === "production" ? "Run in production" : "Run test";
 
-  const jobWorkflowId =
-    (config.workflowId ?? "").trim() || DEFAULT_WORKFLOW_ID;
+  const jobWorkflowId = (config.workflowId ?? "").trim() || DEFAULT_WORKFLOW_ID;
 
   function patchCredentials(patch: Partial<WorkflowCredentials>) {
     const current = configRef.current;
@@ -298,6 +375,14 @@ export function WorkflowSettingsPanel({
       credentials: { ...currentCredentials, ...patch },
     });
   }
+
+  useEffect(() => {
+    if (!focusedNodeId) return;
+    const section = document.getElementById(
+      NODE_CONFIG_SECTION_ID(focusedNodeId),
+    );
+    section?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [focusedNodeId]);
 
   useEffect(() => {
     let cancelled = false;
@@ -370,7 +455,8 @@ export function WorkflowSettingsPanel({
     setGoogleLoading(true);
     setGoogleMessage(null);
 
-    const returnUrl = window.location.href.split("?")[0] ?? window.location.href;
+    const returnUrl =
+      window.location.href.split("?")[0] ?? window.location.href;
     const result = await fetchGoogleAuthUrl(returnUrl);
 
     if (!result.ok || !result.authUrl) {
@@ -494,26 +580,12 @@ export function WorkflowSettingsPanel({
     setTriggering(false);
   }
 
-  return (
-    <aside className="flex w-[360px] shrink-0 flex-col border-l border-border bg-surface-elevated">
-      <div className="border-b border-border px-5 py-4">
-        <h2 className="text-base font-semibold text-heading">Settings</h2>
-        <p className="mt-1 text-sm text-muted">
-          {configuredCount}/{configurableNodes.length} steps configured
-        </p>
-      </div>
-
-      <div className="flex-1 space-y-5 overflow-y-auto px-5 py-5">
-        <section className="rounded-xl border border-border p-4">
-          <div className="mb-4">
-            <h3 className="text-sm font-semibold text-heading">Trigger</h3>
-            <p className="mt-1 text-xs text-muted">
-              {CONFIGURABLE_NODE_META.webhook.description}
-            </p>
-          </div>
-
+  function renderNodeFields(nodeId: ConfigurableNodeId) {
+    if (nodeId === "webhook") {
+      return (
+        <div className="space-y-3">
           {workflow && (
-            <div className="mb-4 space-y-3">
+            <div className="space-y-3">
               <div className="flex items-center justify-between rounded-xl border border-border bg-surface-elevated px-4 py-3">
                 <div>
                   <p className="text-xs font-medium text-muted">Run status</p>
@@ -536,48 +608,69 @@ export function WorkflowSettingsPanel({
             </div>
           )}
 
-          <div className="space-y-3">
-            <div>
-              <label
-                htmlFor="settings-workflow-id"
-                className="mb-2 block text-sm font-medium text-heading">
-                Workflow ID
-              </label>
-              <input
-                id="settings-workflow-id"
-                type="text"
-                value={config.workflowId ?? ""}
-                onChange={(event) =>
-                  onChange({ ...config, workflowId: event.target.value })
-                }
-                placeholder={DEFAULT_WORKFLOW_ID}
-                className="h-10 w-full rounded-xl border border-border bg-surface-elevated px-4 text-sm text-foreground outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
-              />
-            </div>
+          <Field
+            id="settings-workflow-id"
+            label="Workflow ID"
+            value={config.workflowId ?? ""}
+            placeholder={DEFAULT_WORKFLOW_ID}
+            onChange={(value) => onChange({ ...config, workflowId: value })}
+          />
 
-            {requiresTopic && (
-              <div>
-                <label
-                  htmlFor="settings-topic"
-                  className="mb-2 block text-sm font-medium text-heading">
-                  Topic
-                </label>
-                <input
-                  id="settings-topic"
-                  type="text"
-                  value={config.topic}
-                  onChange={(event) =>
-                    onChange({ ...config, topic: event.target.value })
-                  }
-                  placeholder="AI marketing trends 2026"
-                  className="h-10 w-full rounded-xl border border-border bg-surface-elevated px-4 text-sm text-foreground outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20"
-                />
-              </div>
-            )}
+          {requiresTopic && (
+            <Field
+              id="settings-topic"
+              label="Topic"
+              value={config.topic}
+              placeholder="AI marketing trends 2026"
+              onChange={(value) => onChange({ ...config, topic: value })}
+            />
+          )}
+        </div>
+      );
+    }
+
+    if (nodeId === "gemini-model" || nodeId === "openrouter-model") {
+      const isOwner = nodeId === openRouterOwner;
+      const sharesWithOther =
+        hasGemini && hasOpenRouterNode && nodeId !== openRouterOwner;
+
+      if (sharesWithOther) {
+        const ready = hasOpenRouterCredentials(credentials);
+        return (
+          <div className="rounded-xl border border-border bg-surface-elevated px-4 py-3">
+            <p className="text-sm text-foreground">
+              Uses the same OpenRouter credentials as{" "}
+              <span className="font-medium text-heading">
+                {CONFIGURABLE_NODE_META[openRouterOwner].title}
+              </span>
+              .
+            </p>
+            <p
+              className={`mt-2 text-xs ${
+                ready ? "text-[var(--node-green)]" : "text-amber-400"
+              }`}>
+              {ready
+                ? "Shared credentials ready."
+                : "Configure OpenRouter in AI Settings above."}
+            </p>
           </div>
-        </section>
+        );
+      }
 
-        <CredentialsSection
+      if (isOwner) {
+        return (
+          <OpenRouterFields
+            credentials={credentials}
+            idPrefix={nodeId}
+            onPatch={patchCredentials}
+          />
+        );
+      }
+    }
+
+    if (nodeId === "add-to-sheet") {
+      return (
+        <GoogleSheetFields
           credentials={credentials}
           googleLoading={googleLoading}
           googleMessage={googleMessage}
@@ -586,6 +679,42 @@ export function WorkflowSettingsPanel({
           onDisconnectGoogle={handleDisconnectGoogle}
           onSaveSpreadsheet={handleSaveSpreadsheet}
         />
+      );
+    }
+
+    return null;
+  }
+
+  return (
+    <aside className="flex w-[360px] shrink-0 flex-col border-l border-border bg-surface-elevated">
+      <div className="border-b border-border px-5 py-4">
+        <h2 className="text-base font-semibold text-heading">Node config</h2>
+        <p className="mt-1 text-sm text-muted">
+          {configuredCount}/{configurableNodes.length} steps configured
+        </p>
+      </div>
+
+      <div
+        ref={scrollContainerRef}
+        className="flex-1 space-y-4 overflow-y-auto px-5 py-5">
+        {configurableNodes.map((nodeId) => {
+          const meta = CONFIGURABLE_NODE_META[nodeId];
+          return (
+            <NodeSectionShell
+              key={nodeId}
+              nodeId={nodeId}
+              title={meta.title}
+              description={meta.description}
+              configured={isWorkflowStepConfigured(
+                nodeId,
+                config,
+                requiresTopic,
+              )}
+              focused={focusedNodeId === nodeId}>
+              {renderNodeFields(nodeId)}
+            </NodeSectionShell>
+          );
+        })}
 
         {triggerResult && (
           <div

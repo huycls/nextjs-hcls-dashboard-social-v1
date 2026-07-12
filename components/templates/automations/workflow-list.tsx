@@ -24,7 +24,7 @@ import {
 } from "@/lib/automations/data";
 import { useRunningWorkflowsPolling } from "@/lib/automations/use-workflow-polling";
 import {
-  deleteWorkflowById,
+  deleteWorkflowJob,
   fetchWorkflows,
   loadWorkflows,
   saveWorkflows,
@@ -76,6 +76,8 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
   const [workflowToDelete, setWorkflowToDelete] = useState<WorkflowItem | null>(
     null,
   );
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
   const [createDialogOpen, setCreateDialogOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
@@ -167,8 +169,8 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
     notifyWorkflowStoreUpdated();
   }
 
-  function handleDelete(id: string) {
-    deleteWorkflowById(id);
+  async function handleDelete(id: string) {
+    await deleteWorkflowJob(id);
     notifyWorkflowStoreUpdated();
 
     const nextWorkflows = loadWorkflows();
@@ -185,11 +187,24 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
     });
   }
 
-  function confirmDelete() {
-    if (!workflowToDelete) return;
+  async function confirmDelete() {
+    if (!workflowToDelete || deleting) return;
 
-    handleDelete(workflowToDelete.id);
-    setWorkflowToDelete(null);
+    setDeleting(true);
+    setDeleteError(null);
+
+    try {
+      await handleDelete(workflowToDelete.id);
+      setWorkflowToDelete(null);
+    } catch (error) {
+      setDeleteError(
+        error instanceof Error
+          ? error.message
+          : "Failed to delete automation.",
+      );
+    } finally {
+      setDeleting(false);
+    }
   }
 
   function handlePageSizeChange(nextSize: number) {
@@ -346,7 +361,10 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
                             <button
                               type="button"
                               aria-label={`Delete ${workflow.name}`}
-                              onClick={() => setWorkflowToDelete(workflow)}
+                              onClick={() => {
+                                setDeleteError(null);
+                                setWorkflowToDelete(workflow);
+                              }}
                               className="inline-flex h-8 w-8 cursor-pointer items-center justify-center rounded-lg text-muted transition hover:bg-rose-500/10 hover:text-rose-400">
                               <Trash2 className="h-5 w-5" />
                             </button>
@@ -447,7 +465,12 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
       {workflowToDelete && (
         <div
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
-          onClick={() => setWorkflowToDelete(null)}>
+          onClick={() => {
+            if (!deleting) {
+              setWorkflowToDelete(null);
+              setDeleteError(null);
+            }
+          }}>
           <div
             role="dialog"
             aria-modal="true"
@@ -458,7 +481,7 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
             <h2
               id="delete-workflow-title"
               className="text-lg font-semibold text-heading">
-              Delete workflow?
+              Delete automation?
             </h2>
             <p
               id="delete-workflow-description"
@@ -467,21 +490,30 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
               <span className="font-medium text-heading">
                 {workflowToDelete.name}
               </span>
-              ? This action cannot be undone.
+              ? This removes the job from the database and cannot be undone.
             </p>
+
+            {deleteError && (
+              <p className="mt-3 text-sm text-rose-400">{deleteError}</p>
+            )}
 
             <div className="mt-6 flex justify-end gap-3">
               <button
                 type="button"
-                onClick={() => setWorkflowToDelete(null)}
-                className="rounded-xl border border-border px-4 py-2 text-sm font-medium text-foreground transition hover:bg-surface">
+                disabled={deleting}
+                onClick={() => {
+                  setWorkflowToDelete(null);
+                  setDeleteError(null);
+                }}
+                className="rounded-xl border border-border px-4 py-2 text-sm font-medium text-foreground transition hover:bg-surface disabled:opacity-40">
                 Cancel
               </button>
               <button
                 type="button"
+                disabled={deleting}
                 onClick={confirmDelete}
-                className="rounded-xl bg-rose-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-rose-700">
-                Delete workflow
+                className="rounded-xl bg-rose-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-rose-700 disabled:opacity-40">
+                {deleting ? "Deleting..." : "Delete automation"}
               </button>
             </div>
           </div>

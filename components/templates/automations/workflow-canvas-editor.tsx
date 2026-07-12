@@ -15,7 +15,6 @@ import { LinkAnotherAppPanel } from "@/components/templates/automations/link-ano
 import { WorkflowCanvasDiagram } from "@/components/templates/automations/workflow-canvas-diagram";
 import { WorkflowCanvasViewport } from "@/components/templates/automations/workflow-canvas-viewport";
 import { WorkflowEnvironmentBadge } from "@/components/templates/automations/workflow-environment-badge";
-import { WorkflowNodeConfigPopover } from "@/components/templates/automations/workflow-node-config-popover";
 import { WorkflowSettingsPanel } from "@/components/templates/automations/workflow-settings-panel";
 import { WorkflowStatusBadge } from "@/components/templates/automations/workflow-status-badge";
 import {
@@ -36,7 +35,10 @@ import {
   notifyWorkflowStoreUpdated,
   useWorkflow,
 } from "@/lib/automations/use-workflow-store";
-import { WORKFLOW_TEMPLATES } from "@/lib/automations/workflow-templates";
+import {
+  WORKFLOW_TEMPLATES,
+  type ConfigurableNodeId,
+} from "@/lib/automations/workflow-templates";
 import {
   updateWorkflowConfig,
   updateWorkflowFromBackend,
@@ -64,7 +66,7 @@ export function WorkflowCanvasEditor({
   const workflow = useWorkflow(workflowId);
   useWorkflowPolling(workflowId);
 
-  const [rightPanel, setRightPanel] = useState<RightPanel>("apps");
+  const [rightPanel, setRightPanel] = useState<RightPanel>("settings");
   const [config, setConfig] = useState<WorkflowNodeConfig>(initialConfig);
   const [selectedNodeId, setSelectedNodeId] = useState<string | null>(null);
   const [triggering, setTriggering] = useState(false);
@@ -74,16 +76,26 @@ export function WorkflowCanvasEditor({
     isWorkflowStepConfigured(nodeId, config, template.requiresTopic),
   ).length;
 
-  const selectedNode = useMemo(
-    () => template.nodes.find((node) => node.id === selectedNodeId) ?? null,
-    [selectedNodeId, template.nodes],
-  );
+  const focusedConfigurableId = useMemo((): ConfigurableNodeId | null => {
+    const node = template.nodes.find((n) => n.id === selectedNodeId);
+    return node?.configurableId ?? null;
+  }, [selectedNodeId, template.nodes]);
 
   const jobWorkflowId = (config.workflowId ?? "").trim() || DEFAULT_WORKFLOW_ID;
 
   function handleConfigChange(next: WorkflowNodeConfig) {
     setConfig(next);
     updateWorkflowConfig(workflowId, next);
+  }
+
+  function handleSelectNode(nodeId: string | null) {
+    setSelectedNodeId(nodeId);
+    if (!nodeId) return;
+
+    const node = template.nodes.find((n) => n.id === nodeId);
+    if (node?.configurableId) {
+      setRightPanel("settings");
+    }
   }
 
   function togglePanel(panel: Exclude<RightPanel, null>) {
@@ -225,18 +237,8 @@ export function WorkflowCanvasEditor({
             config={config}
             configuredCount={configuredCount}
             selectedNodeId={selectedNodeId}
-            onSelectNode={setSelectedNodeId}
+            onSelectNode={handleSelectNode}
           />
-
-          {selectedNode?.configurableId && (
-            <WorkflowNodeConfigPopover
-              node={selectedNode}
-              config={config}
-              requiresTopic={template.requiresTopic}
-              onChange={handleConfigChange}
-              onClose={() => setSelectedNodeId(null)}
-            />
-          )}
         </WorkflowCanvasViewport>
 
         {rightPanel === "apps" && (
@@ -249,6 +251,7 @@ export function WorkflowCanvasEditor({
             config={config}
             configurableNodes={template.configurableNodes}
             requiresTopic={template.requiresTopic}
+            focusedNodeId={focusedConfigurableId}
             onChange={handleConfigChange}
             onClose={() => setRightPanel(null)}
           />

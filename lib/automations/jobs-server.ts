@@ -1,4 +1,4 @@
-import { BACKEND_BASE_URL } from "@/lib/api/backend-config";
+import { getProxyApiUrl } from "@/lib/api/client-api";
 
 export const DEFAULT_WORKFLOW_ID =
   process.env.NEXT_PUBLIC_DEFAULT_WORKFLOW_ID ??
@@ -9,11 +9,10 @@ export const JOBS_API = {
   method: "POST" as const,
   listPath: "/api/jobs",
   runPath: "/api/jobs/run",
-  baseUrl: BACKEND_BASE_URL,
 };
 
 export function getJobsListUrl() {
-  return `${JOBS_API.baseUrl}${JOBS_API.listPath}`;
+  return getProxyApiUrl(JOBS_API.listPath);
 }
 
 export function getJobUrl(id: string) {
@@ -21,5 +20,5 @@ export function getJobUrl(id: string) {
 }
 
 export function getJobsRunUrl() {
-  return `${JOBS_API.baseUrl}${JOBS_API.runPath}`;
+  return getProxyApiUrl(JOBS_API.runPath);
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { CheckCircle2, Circle, Loader2, Unplug, Zap } from "lucide-react";
+import { CheckCircle2, Circle, Loader2, Save, Unplug, Zap } from "lucide-react";
 import { WorkflowEnvironmentBadge } from "@/components/templates/automations/workflow-environment-badge";
 import { WorkflowStatusBadge } from "@/components/templates/automations/workflow-status-badge";
 import {
@@ -30,6 +30,7 @@ import {
   shouldUseProductionWebhook,
 } from "@/lib/automations/workflow-environment";
 import { triggerWorkflowJob } from "@/lib/automations/trigger-job";
+import { saveWorkflowNodeConfig } from "@/lib/automations/save-node-config";
 import {
   CONFIGURABLE_NODE_META,
   type ConfigurableNodeId,
@@ -58,7 +59,10 @@ type WorkflowSettingsPanelProps = {
 
 function GoogleIcon({ className }: { className?: string }) {
   return (
-    <svg aria-hidden="true" viewBox="0 0 24 24" className={className}>
+    <svg
+      aria-hidden="true"
+      viewBox="0 0 24 24"
+      className={className}>
       <path
         fill="#4285F4"
         d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -342,6 +346,11 @@ export function WorkflowSettingsPanel({
     ok: boolean;
     message: string;
   } | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [saveResult, setSaveResult] = useState<{
+    ok: boolean;
+    message: string;
+  } | null>(null);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [googleMessage, setGoogleMessage] = useState<{
     ok: boolean;
@@ -519,6 +528,47 @@ export function WorkflowSettingsPanel({
       googleEmail: result.status?.email ?? credentials.googleEmail,
     });
     setGoogleMessage({ ok: true, text: "Spreadsheet ID saved." });
+  }
+
+  async function handleSaveConfig() {
+    if (!jobWorkflowId) {
+      setSaveResult({ ok: false, message: "Workflow ID is required." });
+      return;
+    }
+
+    setSaving(true);
+    setSaveResult(null);
+
+    const result = await saveWorkflowNodeConfig(jobWorkflowId, {
+      topic: config.topic,
+      credentials: {
+        openRouterApiKey: credentials.openRouterApiKey,
+        model: credentials.model,
+        spreadsheetId: credentials.spreadsheetId,
+      },
+    });
+
+    if (result.workflow) {
+      // Keep editor job id in local store; merge credentials from BE workflow
+      updateWorkflowFromBackend({
+        ...result.workflow,
+        id: appWorkflowId,
+        config: {
+          ...result.workflow.config,
+          workflowId: result.workflow.id,
+          topic: config.topic,
+          credentials: normalizeWorkflowCredentials({
+            ...result.workflow.config?.credentials,
+            googleConnected: credentials.googleConnected,
+            googleEmail: credentials.googleEmail,
+          }),
+        },
+      });
+      notifyWorkflowStoreUpdated();
+    }
+
+    setSaveResult({ ok: result.ok, message: result.message });
+    setSaving(false);
   }
 
   async function handleTrigger() {
@@ -716,6 +766,17 @@ export function WorkflowSettingsPanel({
           );
         })}
 
+        {saveResult && (
+          <div
+            className={`rounded-xl border px-4 py-3 text-sm ${
+              saveResult.ok
+                ? "border-[var(--node-green-border)] bg-[var(--node-green-bg)] text-[var(--node-green)]"
+                : "border-rose-500/20 bg-rose-500/10 text-rose-400"
+            }`}>
+            {saveResult.message}
+          </div>
+        )}
+
         {triggerResult && (
           <div
             className={`rounded-xl border px-4 py-3 text-sm ${
@@ -728,12 +789,25 @@ export function WorkflowSettingsPanel({
         )}
       </div>
 
-      <div className="flex items-center justify-between border-t border-border px-5 py-4">
-        <button
+      <div className="flex items-center justify-between gap-2 border-t border-border px-5 py-4">
+        {/* <button
           type="button"
           onClick={onClose}
           className="rounded-xl border border-border px-4 py-2 text-sm font-medium text-foreground transition hover:bg-surface-elevated">
           Close
+        </button> */}
+        {/* <div className="flex items-center gap-2"> */}
+        <button
+          type="button"
+          disabled={saving || !jobWorkflowId}
+          onClick={handleSaveConfig}
+          className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2 text-sm font-medium text-foreground transition hover:bg-surface disabled:cursor-not-allowed disabled:opacity-40">
+          {saving ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Save className="h-4 w-4" />
+          )}
+          Save Config
         </button>
         <button
           type="button"
@@ -752,6 +826,7 @@ export function WorkflowSettingsPanel({
           )}
           {runButtonLabel}
         </button>
+        {/* </div> */}
       </div>
     </aside>
   );

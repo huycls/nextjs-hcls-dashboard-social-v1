@@ -62,29 +62,29 @@ export function EditWorkflowClient({ workflowId }: EditWorkflowClientProps) {
     );
   }
 
+  if (loading || !workflow) {
+    return (
+      <Loading
+        label="Loading workflow"
+        message="Loading workflow..."
+      />
+    );
+  }
+
   return (
-    <>
-      {(loading || !workflow) && (
-        <Loading
-          label="Loading workflow"
-          message="Loading workflow..."
-        />
-      )}
-      {workflow ? (
-        <WorkflowCanvasEditor
-          workflowId={workflow.id}
-          workflowName={workflow.name}
-          workflowType={workflow.type}
-          workflowTypeLabel={WORKFLOW_TYPE_LABELS[workflow.type]}
-          initialConfig={{
-            ...DEFAULT_WORKFLOW_CONFIG,
-            ...workflow.config,
-            credentials: normalizeWorkflowCredentials(
-              workflow.config?.credentials,
-            ),
-          }}
-        />
-      ) : null}
-    </>
+    <WorkflowCanvasEditor
+      key={workflow.id}
+      workflowId={workflow.id}
+      workflowName={workflow.name}
+      workflowType={workflow.type}
+      workflowTypeLabel={WORKFLOW_TYPE_LABELS[workflow.type]}
+      initialConfig={{
+        ...DEFAULT_WORKFLOW_CONFIG,
+        ...workflow.config,
+        credentials: normalizeWorkflowCredentials(
+          workflow.config?.credentials,
+        ),
+      }}
+    />
   );
 }

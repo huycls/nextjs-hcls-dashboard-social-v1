@@ -1,10 +1,14 @@
 import type {
   AppId,
+  WorkflowCredentials,
   WorkflowItem,
   WorkflowStatus,
   WorkflowType,
 } from "@/lib/automations/data";
-import { DEFAULT_WORKFLOW_CREDENTIALS } from "@/lib/automations/data";
+import {
+  DEFAULT_WORKFLOW_CREDENTIALS,
+  normalizeWorkflowCredentials,
+} from "@/lib/automations/data";
 
 export type BackendJob = {
   id: string;
@@ -23,6 +27,12 @@ export type AutomationsListResponse = {
   jobs?: BackendJob[];
 };
 
+export type BackendUiCredentials = {
+  openRouterApiKey?: string;
+  model?: string;
+  spreadsheetId?: string;
+};
+
 export type BackendWorkflow = {
   id: string;
   siteId?: string | null;
@@ -39,6 +49,8 @@ export type BackendWorkflow = {
     webhookTestUrl: string;
     webhookProductionUrl: string;
   };
+  /** Approach C credentials persisted via PATCH /node-config */
+  credentials?: BackendUiCredentials;
   nodeCredentials?: Array<{
     id: string;
     nodeTypeId: string;
@@ -100,6 +112,36 @@ export function mapJobStatusToWorkflowStatus(status: string): WorkflowStatus {
   }
 }
 
+function mapBackendCredentials(
+  workflow: BackendWorkflow,
+): WorkflowCredentials {
+  if (workflow.credentials) {
+    return normalizeWorkflowCredentials(workflow.credentials);
+  }
+
+  // Fallback: hydrate from nodeCredentials.config (legacy / n8n mirror)
+  const openRouterNode = workflow.nodeCredentials?.find(
+    (node) =>
+      node.nodeTypeId === "openrouter-model" ||
+      node.nodeTypeId === "gemini-model",
+  );
+  const sheetNode = workflow.nodeCredentials?.find(
+    (node) =>
+      node.nodeTypeId === "add-to-sheet" ||
+      node.nodeTypeId === "google-sheet",
+  );
+
+  return normalizeWorkflowCredentials({
+    ...DEFAULT_WORKFLOW_CREDENTIALS,
+    openRouterApiKey:
+      openRouterNode?.config?.apiKey ??
+      openRouterNode?.config?.openRouterApiKey ??
+      "",
+    model: openRouterNode?.config?.model ?? "",
+    spreadsheetId: sheetNode?.config?.spreadsheetId ?? "",
+  });
+}
+
 /** Job (automation) + workflow type → item hiển thị trên list */
 export function mapBackendJobToWorkflowItem(
   job: BackendJob,
@@ -120,7 +162,7 @@ export function mapBackendJobToWorkflowItem(
     config: {
       workflowId: workflow.id,
       topic,
-      credentials: { ...DEFAULT_WORKFLOW_CREDENTIALS },
+      credentials: mapBackendCredentials(workflow),
     },
     backendConfig: workflow.config,
     nodeCredentials: workflow.nodeCredentials ?? [],
@@ -140,7 +182,7 @@ export function mapBackendWorkflow(workflow: BackendWorkflow): WorkflowItem {
     config: {
       workflowId: workflow.id,
       topic: workflow.config?.topic ?? "",
-      credentials: { ...DEFAULT_WORKFLOW_CREDENTIALS },
+      credentials: mapBackendCredentials(workflow),
     },
     backendConfig: workflow.config,
     nodeCredentials: workflow.nodeCredentials ?? [],

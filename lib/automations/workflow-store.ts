@@ -79,21 +79,37 @@ export async function fetchWorkflows(): Promise<WorkflowItem[]> {
   return automations;
 }
 
-/** Lấy 1 automation (job) từ BE nếu chưa có trong cache */
+/** Lấy 1 automation (job hoặc workflow) từ BE — luôn refresh để load credentials */
 export async function fetchWorkflowById(id: string): Promise<WorkflowItem> {
-  const cached = getWorkflowById(id);
-  if (cached) return cached;
-
-  const response = await fetch(getJobUrl(id), {
+  // Try job first (list items are jobs)
+  const jobResponse = await fetch(getJobUrl(id), {
     cache: "no-store",
   });
 
-  if (!response.ok) {
-    throw new Error(await parseApiError(response));
+  if (jobResponse.ok) {
+    const job = (await jobResponse.json()) as BackendJob;
+    const workflowResponse = await fetch(getAutomationUrl(job.workflowId), {
+      cache: "no-store",
+    });
+
+    if (!workflowResponse.ok) {
+      throw new Error(await parseApiError(workflowResponse));
+    }
+
+    const automation = mapBackendJobToWorkflowItem(
+      job,
+      (await workflowResponse.json()) as BackendWorkflow,
+    );
+    const workflows = readStorage();
+    writeStorage([
+      automation,
+      ...workflows.filter((item) => item.id !== automation.id),
+    ]);
+    return automation;
   }
 
-  const job = (await response.json()) as BackendJob;
-  const workflowResponse = await fetch(getAutomationUrl(job.workflowId), {
+  // Fallback: workflow id (create flow navigates here)
+  const workflowResponse = await fetch(getAutomationUrl(id), {
     cache: "no-store",
   });
 
@@ -101,8 +117,7 @@ export async function fetchWorkflowById(id: string): Promise<WorkflowItem> {
     throw new Error(await parseApiError(workflowResponse));
   }
 
-  const automation = mapBackendJobToWorkflowItem(
-    job,
+  const automation = mapBackendWorkflow(
     (await workflowResponse.json()) as BackendWorkflow,
   );
   const workflows = readStorage();

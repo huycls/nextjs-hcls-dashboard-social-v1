@@ -1,4 +1,4 @@
-const DEFAULT_BACKEND_BASE_URL = "http://localhost:5000";
+const DEFAULT_BACKEND_BASE_URL = "https://api.avispark.com";
 
 /** Nest backend — used only on the server (BFF / Route Handlers). */
 export const BACKEND_BASE_URL = (

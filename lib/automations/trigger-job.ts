@@ -10,6 +10,7 @@ import { getJobsRunUrl, JOBS_API } from "@/lib/automations/jobs-server";
 
 export type JobStatusPayload = {
   id: string;
+  userId?: string | null;
   workflowId: string;
   status: string;
   errorMessage?: string | null;
@@ -94,6 +95,7 @@ export async function triggerWorkflowJob(
 
     const response = await fetch(getJobsRunUrl(), {
       method: JOBS_API.method,
+      credentials: "include",
       headers: {
         "Content-Type": "application/json",
       },

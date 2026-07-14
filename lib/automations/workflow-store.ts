@@ -59,6 +59,7 @@ function formatLastModified(date: Date) {
 export async function fetchWorkflows(): Promise<WorkflowItem[]> {
   const response = await fetch(getAutomationsListUrl(), {
     cache: "no-store",
+    credentials: "include",
   });
 
   if (!response.ok) {
@@ -84,12 +85,14 @@ export async function fetchWorkflowById(id: string): Promise<WorkflowItem> {
   // Try job first (list items are jobs)
   const jobResponse = await fetch(getJobUrl(id), {
     cache: "no-store",
+    credentials: "include",
   });
 
   if (jobResponse.ok) {
     const job = (await jobResponse.json()) as BackendJob;
     const workflowResponse = await fetch(getAutomationUrl(job.workflowId), {
       cache: "no-store",
+      credentials: "include",
     });
 
     if (!workflowResponse.ok) {
@@ -111,6 +114,7 @@ export async function fetchWorkflowById(id: string): Promise<WorkflowItem> {
   // Fallback: workflow id (create flow navigates here)
   const workflowResponse = await fetch(getAutomationUrl(id), {
     cache: "no-store",
+    credentials: "include",
   });
 
   if (!workflowResponse.ok) {
@@ -135,6 +139,7 @@ export async function createWorkflow(
 ): Promise<WorkflowItem> {
   const response = await fetch(getAutomationsListUrl(), {
     method: "POST",
+    credentials: "include",
     headers: {
       "Content-Type": "application/json",
     },
@@ -189,6 +194,7 @@ export function deleteWorkflowById(id: string) {
 export async function deleteWorkflowJob(id: string): Promise<void> {
   const response = await fetch(getJobUrl(id), {
     method: "DELETE",
+    credentials: "include",
   });
 
   // Already gone on BE — still clear local cache

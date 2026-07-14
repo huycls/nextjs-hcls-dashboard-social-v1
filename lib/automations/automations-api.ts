@@ -13,6 +13,7 @@ import {
 export type BackendJob = {
   id: string;
   siteId?: string | null;
+  userId?: string | null;
   workflowId: string;
   topic?: string;
   status: string;

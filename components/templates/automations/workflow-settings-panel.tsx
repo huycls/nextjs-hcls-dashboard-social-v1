@@ -531,15 +531,16 @@ export function WorkflowSettingsPanel({
   }
 
   async function handleSaveConfig() {
-    if (!jobWorkflowId) {
-      setSaveResult({ ok: false, message: "Workflow ID is required." });
+    // Save lên automation job (appWorkflowId), không phải workflow type
+    if (!appWorkflowId) {
+      setSaveResult({ ok: false, message: "Job ID is required." });
       return;
     }
 
     setSaving(true);
     setSaveResult(null);
 
-    const result = await saveWorkflowNodeConfig(jobWorkflowId, {
+    const result = await saveWorkflowNodeConfig(appWorkflowId, {
       topic: config.topic,
       credentials: {
         openRouterApiKey: credentials.openRouterApiKey,
@@ -549,13 +550,12 @@ export function WorkflowSettingsPanel({
     });
 
     if (result.workflow) {
-      // Keep editor job id in local store; merge credentials from BE workflow
       updateWorkflowFromBackend({
         ...result.workflow,
         id: appWorkflowId,
         config: {
           ...result.workflow.config,
-          workflowId: result.workflow.id,
+          workflowId: config.workflowId || result.workflow.config?.workflowId,
           topic: config.topic,
           credentials: normalizeWorkflowCredentials({
             ...result.workflow.config?.credentials,
@@ -797,18 +797,18 @@ export function WorkflowSettingsPanel({
           Close
         </button> */}
         {/* <div className="flex items-center gap-2"> */}
-        <button
-          type="button"
-          disabled={saving || !jobWorkflowId}
-          onClick={handleSaveConfig}
-          className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2 text-sm font-medium text-foreground transition hover:bg-surface disabled:cursor-not-allowed disabled:opacity-40">
-          {saving ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : (
-            <Save className="h-4 w-4" />
-          )}
-          Save Config
-        </button>
+          <button
+            type="button"
+            disabled={saving || !appWorkflowId}
+            onClick={handleSaveConfig}
+            className="inline-flex items-center gap-2 rounded-xl border border-border px-4 py-2 text-sm font-medium text-foreground transition hover:bg-surface disabled:cursor-not-allowed disabled:opacity-40">
+            {saving ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Save className="h-4 w-4" />
+            )}
+            Save Config
+          </button>
         <button
           type="button"
           disabled={

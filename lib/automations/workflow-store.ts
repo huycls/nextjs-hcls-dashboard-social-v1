@@ -13,7 +13,7 @@ import {
   type BackendWorkflow,
 } from "@/lib/automations/automations-api";
 import { getAutomationUrl, getAutomationsListUrl } from "@/lib/automations/automations-server";
-import { getJobUrl } from "@/lib/automations/jobs-server";
+import { getJobUrl, getJobsListUrl } from "@/lib/automations/jobs-server";
 
 const STORAGE_KEY = "Avispark-workflows";
 
@@ -132,12 +132,15 @@ export async function fetchWorkflowById(id: string): Promise<WorkflowItem> {
   return automation;
 }
 
-/** Tạo workflow trên NestJS — webhook URL theo type */
+/**
+ * Tạo automation job trong `automation_jobs`.
+ * `workflows` chỉ là type template — không tạo document mới ở đó.
+ */
 export async function createWorkflow(
   name: string,
   type: WorkflowType,
 ): Promise<WorkflowItem> {
-  const response = await fetch(getAutomationsListUrl(), {
+  const response = await fetch(getJobsListUrl(), {
     method: "POST",
     credentials: "include",
     headers: {
@@ -150,16 +153,27 @@ export async function createWorkflow(
     throw new Error(await parseApiError(response));
   }
 
-  const workflow = mapBackendWorkflow(
-    (await response.json()) as BackendWorkflow,
+  const job = (await response.json()) as BackendJob;
+  const workflowResponse = await fetch(getAutomationUrl(job.workflowId), {
+    cache: "no-store",
+    credentials: "include",
+  });
+
+  if (!workflowResponse.ok) {
+    throw new Error(await parseApiError(workflowResponse));
+  }
+
+  const automation = mapBackendJobToWorkflowItem(
+    job,
+    (await workflowResponse.json()) as BackendWorkflow,
   );
   const workflows = readStorage();
   writeStorage([
-    workflow,
-    ...workflows.filter((item) => item.id !== workflow.id),
+    automation,
+    ...workflows.filter((item) => item.id !== automation.id),
   ]);
 
-  return workflow;
+  return automation;
 }
 
 export function updateWorkflowFromBackend(workflow: WorkflowItem) {

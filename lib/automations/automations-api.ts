@@ -10,12 +10,36 @@ import {
   normalizeWorkflowCredentials,
 } from "@/lib/automations/data";
 
+export type BackendUiCredentials = {
+  openRouterApiKey?: string;
+  model?: string;
+  spreadsheetId?: string;
+};
+
+export type BackendJobSettings = {
+  model?: string;
+  spreadsheetId?: string;
+};
+
+export type BackendJobCredentialRefs = {
+  apiKeyCredentialId?: string;
+  googleCredentialId?: string;
+  wordpressCredentialId?: string;
+};
+
 export type BackendJob = {
   id: string;
   siteId?: string | null;
   userId?: string | null;
   workflowId: string;
+  name?: string;
   topic?: string;
+  /** Non-secret settings on job */
+  settings?: BackendJobSettings;
+  /** Refs → user_credentials.id */
+  credentialRefs?: BackendJobCredentialRefs;
+  /** Hydrated for editor (from vault) — list thường để trống api key */
+  credentials?: BackendUiCredentials;
   status: string;
   errorMessage?: string | null;
   completedAt?: string | null;
@@ -26,12 +50,6 @@ export type BackendJob = {
 export type AutomationsListResponse = {
   workflows: BackendWorkflow[];
   jobs?: BackendJob[];
-};
-
-export type BackendUiCredentials = {
-  openRouterApiKey?: string;
-  model?: string;
-  spreadsheetId?: string;
 };
 
 export type BackendWorkflow = {
@@ -113,14 +131,34 @@ export function mapJobStatusToWorkflowStatus(status: string): WorkflowStatus {
   }
 }
 
-function mapBackendCredentials(
+function mapJobCredentials(
+  job: BackendJob,
   workflow: BackendWorkflow,
 ): WorkflowCredentials {
+  // 1) Hydrated từ vault (GET job chi tiết)
+  if (job.credentials) {
+    return normalizeWorkflowCredentials({
+      ...job.credentials,
+      model: job.credentials.model || job.settings?.model || "",
+      spreadsheetId:
+        job.credentials.spreadsheetId || job.settings?.spreadsheetId || "",
+    });
+  }
+
+  // 2) Non-secret settings trên job (chưa hydrate key)
+  if (job.settings) {
+    return normalizeWorkflowCredentials({
+      ...DEFAULT_WORKFLOW_CREDENTIALS,
+      model: job.settings.model ?? "",
+      spreadsheetId: job.settings.spreadsheetId ?? "",
+    });
+  }
+
   if (workflow.credentials) {
     return normalizeWorkflowCredentials(workflow.credentials);
   }
 
-  // Fallback: hydrate from nodeCredentials.config (legacy / n8n mirror)
+  // Fallback: legacy nodeCredentials.config
   const openRouterNode = workflow.nodeCredentials?.find(
     (node) =>
       node.nodeTypeId === "openrouter-model" ||
@@ -149,11 +187,12 @@ export function mapBackendJobToWorkflowItem(
   workflow: BackendWorkflow,
 ): WorkflowItem {
   const topic = job.topic?.trim() ?? "";
+  const name = job.name?.trim() || topic || workflow.name;
   const updatedAt = job.updatedAt ?? workflow.updatedAt;
 
   return {
     id: job.id,
-    name: topic || workflow.name,
+    name,
     type: workflow.type,
     status: mapJobStatusToWorkflowStatus(job.status),
     triggers: workflow.triggers ?? 0,
@@ -163,7 +202,7 @@ export function mapBackendJobToWorkflowItem(
     config: {
       workflowId: workflow.id,
       topic,
-      credentials: mapBackendCredentials(workflow),
+      credentials: mapJobCredentials(job, workflow),
     },
     backendConfig: workflow.config,
     nodeCredentials: workflow.nodeCredentials ?? [],
@@ -183,7 +222,7 @@ export function mapBackendWorkflow(workflow: BackendWorkflow): WorkflowItem {
     config: {
       workflowId: workflow.id,
       topic: workflow.config?.topic ?? "",
-      credentials: mapBackendCredentials(workflow),
+      credentials: mapJobCredentials({ workflowId: workflow.id, status: "draft" }, workflow),
     },
     backendConfig: workflow.config,
     nodeCredentials: workflow.nodeCredentials ?? [],

@@ -555,7 +555,10 @@ export function WorkflowSettingsPanel({
         id: appWorkflowId,
         config: {
           ...result.workflow.config,
-          workflowId: config.workflowId || result.workflow.config?.workflowId,
+          workflowId:
+            config.workflowId ||
+            result.workflow.config?.workflowId ||
+            jobWorkflowId,
           topic: config.topic,
           credentials: normalizeWorkflowCredentials({
             ...result.workflow.config?.credentials,

@@ -222,7 +222,15 @@ export function mapBackendWorkflow(workflow: BackendWorkflow): WorkflowItem {
     config: {
       workflowId: workflow.id,
       topic: workflow.config?.topic ?? "",
-      credentials: mapJobCredentials({ workflowId: workflow.id, status: "draft" }, workflow),
+      credentials: mapJobCredentials(
+        {
+          id: workflow.id,
+          workflowId: workflow.id,
+          status: "draft",
+          credentials: workflow.credentials,
+        },
+        workflow,
+      ),
     },
     backendConfig: workflow.config,
     nodeCredentials: workflow.nodeCredentials ?? [],

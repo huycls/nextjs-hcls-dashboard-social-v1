@@ -62,10 +62,14 @@ export function LoginForm() {
     setError(null);
     setLoading(true);
 
-    const result = await loginWithCredentials(email.trim(), password, rememberMe);
+    const result = await loginWithCredentials(
+      email.trim(),
+      password,
+      rememberMe,
+    );
 
     if (!result.ok) {
-      setError(result.message ?? "Login failed. Please try again.");
+      setError("Login failed. Please try again.");
       setLoading(false);
       return;
     }

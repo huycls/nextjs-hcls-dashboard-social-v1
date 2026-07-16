@@ -352,6 +352,9 @@ export function WorkflowSettingsPanel({
     message: string;
   } | null>(null);
   const [googleLoading, setGoogleLoading] = useState(false);
+  const [googleCredentialId, setGoogleCredentialId] = useState(
+    () => config.credentialRefs?.googleCredentialId?.trim() ?? "",
+  );
   const [googleMessage, setGoogleMessage] = useState<{
     ok: boolean;
     text: string;
@@ -373,6 +376,56 @@ export function WorkflowSettingsPanel({
     runEnvironment === "production" ? "Run in production" : "Run test";
 
   const jobWorkflowId = (config.workflowId ?? "").trim() || DEFAULT_WORKFLOW_ID;
+
+  useEffect(() => {
+    const nextGoogleId = config.credentialRefs?.googleCredentialId?.trim() ?? "";
+    if (nextGoogleId) {
+      setGoogleCredentialId(nextGoogleId);
+    }
+  }, [config.credentialRefs?.googleCredentialId]);
+
+  function patchCredentialRefs(
+    patch: Partial<NonNullable<typeof config.credentialRefs>>,
+  ) {
+    const current = configRef.current;
+    onChangeRef.current({
+      ...current,
+      credentialRefs: {
+        ...current.credentialRefs,
+        ...patch,
+      },
+    });
+  }
+
+  async function linkGoogleCredentialToJob(credentialId: string) {
+    const trimmed = credentialId.trim();
+    if (!trimmed || !appWorkflowId) return;
+
+    setGoogleCredentialId(trimmed);
+    patchCredentialRefs({ googleCredentialId: trimmed });
+
+    const current = configRef.current;
+    const currentCredentials = normalizeWorkflowCredentials(
+      current.credentials,
+    );
+
+    await saveWorkflowNodeConfig(
+      appWorkflowId,
+      {
+        topic: current.topic,
+        credentials: {
+          openRouterApiKey: currentCredentials.openRouterApiKey,
+          model: currentCredentials.model,
+          spreadsheetId: currentCredentials.spreadsheetId,
+        },
+        credentialRefs: {
+          ...current.credentialRefs,
+          googleCredentialId: trimmed,
+        },
+      },
+      null,
+    );
+  }
 
   function patchCredentials(patch: Partial<WorkflowCredentials>) {
     const current = configRef.current;
@@ -419,7 +472,21 @@ export function WorkflowSettingsPanel({
             spreadsheetId:
               status.spreadsheetId?.trim() || currentCredentials.spreadsheetId,
           },
+          credentialRefs: status.credentialId
+            ? {
+                ...current.credentialRefs,
+                googleCredentialId: status.credentialId,
+              }
+            : current.credentialRefs,
         });
+
+        if (status.credentialId?.trim()) {
+          setGoogleCredentialId(status.credentialId.trim());
+        }
+
+        if (oauthReturn === "connected" && status.credentialId?.trim()) {
+          await linkGoogleCredentialToJob(status.credentialId);
+        }
 
         if (oauthReturn === "connected") {
           setGoogleMessage({
@@ -547,6 +614,12 @@ export function WorkflowSettingsPanel({
         model: credentials.model,
         spreadsheetId: credentials.spreadsheetId,
       },
+      credentialRefs: {
+        ...config.credentialRefs,
+        ...(googleCredentialId
+          ? { googleCredentialId }
+          : {}),
+      },
     });
 
     if (result.workflow) {
@@ -560,6 +633,7 @@ export function WorkflowSettingsPanel({
             result.workflow.config?.workflowId ||
             jobWorkflowId,
           topic: config.topic,
+          credentialRefs: result.workflow.config?.credentialRefs,
           credentials: normalizeWorkflowCredentials({
             ...result.workflow.config?.credentials,
             googleConnected: credentials.googleConnected,
@@ -568,6 +642,12 @@ export function WorkflowSettingsPanel({
         },
       });
       notifyWorkflowStoreUpdated();
+
+      const savedGoogleId =
+        result.workflow.config?.credentialRefs?.googleCredentialId?.trim();
+      if (savedGoogleId) {
+        setGoogleCredentialId(savedGoogleId);
+      }
     }
 
     setSaveResult({ ok: result.ok, message: result.message });

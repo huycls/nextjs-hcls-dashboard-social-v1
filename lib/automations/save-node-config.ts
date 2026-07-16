@@ -1,4 +1,8 @@
-import type { WorkflowCredentials, WorkflowItem } from "@/lib/automations/data";
+import type {
+  JobCredentialRefs,
+  WorkflowCredentials,
+  WorkflowItem,
+} from "@/lib/automations/data";
 import {
   mapBackendJobToWorkflowItem,
   parseApiError,
@@ -21,6 +25,8 @@ type SaveNodeConfigPayload = {
     WorkflowCredentials,
     "openRouterApiKey" | "model" | "spreadsheetId"
   >;
+  /** Refs tới user_credentials — BE upsert secret và gắn vào job */
+  credentialRefs?: JobCredentialRefs;
 };
 
 /** Persist node config + credentials trên automation job (không đụng workflows) */
@@ -46,6 +52,24 @@ export async function saveWorkflowNodeConfig(
           openRouterApiKey: payload.credentials.openRouterApiKey.trim(),
           model: payload.credentials.model.trim(),
           spreadsheetId: payload.credentials.spreadsheetId.trim(),
+          ...(payload.credentialRefs?.apiKeyCredentialId
+            ? {
+                apiKeyCredentialId:
+                  payload.credentialRefs.apiKeyCredentialId.trim(),
+              }
+            : {}),
+          ...(payload.credentialRefs?.googleCredentialId
+            ? {
+                googleCredentialId:
+                  payload.credentialRefs.googleCredentialId.trim(),
+              }
+            : {}),
+          ...(payload.credentialRefs?.wordpressCredentialId
+            ? {
+                wordpressCredentialId:
+                  payload.credentialRefs.wordpressCredentialId.trim(),
+              }
+            : {}),
         },
       }),
     });

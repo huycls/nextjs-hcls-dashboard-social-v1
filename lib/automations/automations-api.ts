@@ -1,5 +1,6 @@
 import type {
   AppId,
+  JobCredentialRefs,
   WorkflowCredentials,
   WorkflowItem,
   WorkflowStatus,
@@ -21,11 +22,7 @@ export type BackendJobSettings = {
   spreadsheetId?: string;
 };
 
-export type BackendJobCredentialRefs = {
-  apiKeyCredentialId?: string;
-  googleCredentialId?: string;
-  wordpressCredentialId?: string;
-};
+export type BackendJobCredentialRefs = JobCredentialRefs;
 
 export type BackendJob = {
   id: string;
@@ -203,6 +200,7 @@ export function mapBackendJobToWorkflowItem(
       workflowId: workflow.id,
       topic,
       credentials: mapJobCredentials(job, workflow),
+      credentialRefs: job.credentialRefs,
     },
     backendConfig: workflow.config,
     nodeCredentials: workflow.nodeCredentials ?? [],

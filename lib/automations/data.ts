@@ -101,10 +101,18 @@ export type WorkflowCredentials = {
   googleEmail: string;
 };
 
+/** Refs → `user_credentials.id` — secrets nằm ở vault, job chỉ giữ id */
+export type JobCredentialRefs = {
+  apiKeyCredentialId?: string;
+  googleCredentialId?: string;
+  wordpressCredentialId?: string;
+};
+
 export type WorkflowNodeConfig = {
   workflowId: string;
   topic: string;
   credentials: WorkflowCredentials;
+  credentialRefs?: JobCredentialRefs;
 };
 
 export const DEFAULT_WORKFLOW_CREDENTIALS: WorkflowCredentials = {

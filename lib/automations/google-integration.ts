@@ -7,6 +7,8 @@ export type GoogleIntegrationStatus = {
   connected: boolean;
   email?: string | null;
   spreadsheetId?: string | null;
+  /** user_credentials.id — dùng để link job.credentialRefs */
+  credentialId?: string | null;
   status?: "connected" | "revoked" | "expired" | string;
 };
 
@@ -46,6 +48,8 @@ function normalizeStatus(payload: unknown): GoogleIntegrationStatus {
         : null;
   const spreadsheetId =
     typeof data.spreadsheetId === "string" ? data.spreadsheetId : null;
+  const credentialId =
+    typeof data.credentialId === "string" ? data.credentialId : null;
   const status =
     typeof data.status === "string" ? data.status : undefined;
   const connected =
@@ -57,6 +61,7 @@ function normalizeStatus(payload: unknown): GoogleIntegrationStatus {
     connected,
     email,
     spreadsheetId,
+    credentialId,
     status,
   };
 }

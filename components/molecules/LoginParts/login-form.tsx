@@ -82,7 +82,12 @@ export function LoginForm() {
   return (
     <div className="flex w-full max-w-[420px] flex-col">
       <div className="mb-8 flex items-center gap-2">
-        <BrandLogo className="h-6 w-6 shrink-0" />
+        {/* <BrandLogo className="h-6 w-6 shrink-0" /> */}
+        <img
+          src="/assets/logo-avi.png"
+          alt="Avispark"
+          className="h-20 w-20 shrink-0"
+        />
         <ShinyText
           text="Avispark"
           speed={2}

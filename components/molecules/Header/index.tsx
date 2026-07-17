@@ -268,8 +268,13 @@ export function HomeNavbar() {
       <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-6 lg:px-10">
         <Link
           href="/"
-          className="flex items-center gap-2.5">
-          <BrandLogo className="h-5 w-5 shrink-0" />
+          className="flex items-center">
+          {/* <BrandLogo className="h-5 w-5 shrink-0" /> */}
+          <img
+            src="/assets/logo-avi.png"
+            alt="Avispark"
+            className={`h-16 w-16 shrink-0  ${isDark ? "mix-blend-luminosity" : "mix-blend-hard-light"}`}
+          />
           <ShinyText
             text="Avispark"
             speed={2}

@@ -18,6 +18,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Avispark",
   description: "Automation workflow platform",
+  icons: {
+    icon: "/assets/logo-avi.png",
+    shortcut: "/assets/logo-avi.png",
+    apple: "/assets/logo-avi.png",
+  },
 };
 
 export default async function RootLayout({

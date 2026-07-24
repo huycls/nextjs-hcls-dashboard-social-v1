@@ -3,8 +3,11 @@
 import { useState } from "react";
 import { Check, Star } from "lucide-react";
 import { BorderBeam } from "@/components/atoms/BorderBeam";
-
-type BillingCycle = "monthly" | "yearly";
+import {
+  CheckoutDialog,
+  type CheckoutPlan,
+} from "@/components/organisms/CheckoutDialog";
+import type { BillingCycle } from "@/lib/payments/checkout";
 
 type PricingPlan = {
   id: string;
@@ -107,9 +110,11 @@ function BillingToggle({
 function PricingCard({
   plan,
   billing,
+  onSelect,
 }: {
   plan: PricingPlan;
   billing: BillingCycle;
+  onSelect: (plan: PricingPlan) => void;
 }) {
   const price = billing === "monthly" ? plan.monthlyPrice : plan.yearlyPrice;
   const billedLabel =
@@ -166,6 +171,7 @@ function PricingCard({
 
       <button
         type="button"
+        onClick={() => onSelect(plan)}
         className={`mt-8 h-11 w-full rounded-xl text-sm font-medium cursor-pointer transition-all duration-300 ease-in-out ${
           plan.popular
             ? "bg-primary text-background hover:bg-primary-hover"
@@ -181,6 +187,22 @@ function PricingCard({
 
 export function PricingSection() {
   const [billing, setBilling] = useState<BillingCycle>("monthly");
+  const [selectedPlan, setSelectedPlan] = useState<CheckoutPlan | null>(null);
+
+  function handleSelectPlan(plan: PricingPlan) {
+    const price = billing === "monthly" ? plan.monthlyPrice : plan.yearlyPrice;
+
+    setSelectedPlan({
+      id: plan.id,
+      name: plan.name,
+      price,
+      compareAtPrice:
+        billing === "yearly" && plan.yearlyPrice < plan.monthlyPrice
+          ? plan.monthlyPrice
+          : undefined,
+      billing,
+    });
+  }
 
   return (
     <section className="bg-surface-elevated py-20 lg:py-28">
@@ -209,11 +231,18 @@ export function PricingSection() {
                 key={plan.id}
                 plan={plan}
                 billing={billing}
+                onSelect={handleSelectPlan}
               />
             );
           })}
         </div>
       </div>
+
+      <CheckoutDialog
+        open={selectedPlan !== null}
+        plan={selectedPlan}
+        onClose={() => setSelectedPlan(null)}
+      />
     </section>
   );
 }

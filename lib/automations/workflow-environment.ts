@@ -3,8 +3,8 @@ import type { WorkflowStatus } from "@/lib/automations/data";
 export type WorkflowRunEnvironment = "test" | "production";
 
 export const RUN_ENVIRONMENT_LABELS: Record<WorkflowRunEnvironment, string> = {
-  test: "Test",
-  production: "Production",
+  test: "Thử nghiệm",
+  production: "Sản xuất",
 };
 
 /** Draft/Paused/... → test webhook; Active → production webhook */
@@ -24,16 +24,16 @@ export function getRunEnvironmentDescription(
   status: WorkflowStatus | undefined,
 ): string {
   if (status === "Active") {
-    return "Approved workflow — runs use the production webhook.";
+    return "Workflow đã duyệt — các lượt chạy dùng webhook production.";
   }
 
   if (status === "Draft") {
-    return "Draft workflow — runs are dry-run only via the test webhook.";
+    return "Workflow nháp — chỉ chạy thử qua webhook thử nghiệm.";
   }
 
   if (status === "Paused") {
-    return "Paused workflow — runs use the test webhook until reactivated.";
+    return "Workflow tạm dừng — dùng webhook thử nghiệm cho đến khi kích hoạt lại.";
   }
 
-  return "Runs use the test webhook until this workflow is Active.";
+  return "Dùng webhook thử nghiệm cho đến khi workflow ở trạng thái Đang hoạt động.";
 }

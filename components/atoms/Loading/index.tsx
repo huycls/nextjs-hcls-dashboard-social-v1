@@ -43,7 +43,7 @@ interface LoadingProps {
 }
 
 export function Loading({
-  label = "Loading",
+  label = "Đang tải",
   message,
   className,
 }: LoadingProps) {

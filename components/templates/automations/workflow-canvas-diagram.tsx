@@ -90,7 +90,7 @@ function CanvasNodeView({
           isSelected && "border-primary text-primary",
         )}
         style={{ left: node.x, top: node.y, width: size.width, height: size.height }}
-        aria-label="Add trigger">
+        aria-label="Thêm trigger">
         <WorkflowCanvasIcon icon={node.icon} />
       </button>
     );
@@ -298,7 +298,7 @@ export function WorkflowCanvasDiagram({
           </span>
         )}
         <span>
-          {configuredCount} of {template.configurableNodes.length} tasks done
+          {configuredCount}/{template.configurableNodes.length} bước đã hoàn tất
         </span>
       </div>
     </>

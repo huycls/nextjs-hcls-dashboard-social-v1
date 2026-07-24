@@ -14,7 +14,7 @@ export async function ArticlesSection() {
             Blog
           </p>
           <h2 className="mt-4 text-3xl font-semibold text-heading sm:text-4xl lg:text-5xl">
-            Latest Articles
+            Bài viết mới nhất
           </h2>
         </div>
 
@@ -32,7 +32,7 @@ export async function ArticlesSection() {
           </div>
         ) : (
           <p className="mt-14 text-center text-sm text-muted">
-            Latest posts will appear here once WordPress is connected.
+            Bài viết mới nhất sẽ hiển thị tại đây khi WordPress được kết nối.
           </p>
         )}
 
@@ -40,7 +40,7 @@ export async function ArticlesSection() {
           <Link
             href="/articles"
             className="inline-flex h-11 items-center rounded-xl border border-border bg-surface px-6 text-sm font-medium text-heading transition hover:bg-surface-elevated">
-            View all articles
+            Xem tất cả bài viết
           </Link>
         </div>
       </div>

@@ -17,7 +17,7 @@ export async function POST(request: Request) {
     body = (await request.json()) as LoginBody;
   } catch {
     return NextResponse.json(
-      { message: "Invalid JSON body." },
+      { message: "Nội dung JSON không hợp lệ." },
       { status: 400 },
     );
   }
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
 
   if (!email || !password) {
     return NextResponse.json(
-      { message: "Email and password are required." },
+      { message: "Email và mật khẩu là bắt buộc." },
       { status: 400 },
     );
   }
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
   } catch {
     return NextResponse.json(
       {
-        message: `Could not reach backend at ${BACKEND_BASE_URL}/api/auth/login.`,
+        message: `Không thể kết nối backend tại ${BACKEND_BASE_URL}/api/auth/login.`,
       },
       { status: 502 },
     );
@@ -63,7 +63,7 @@ export async function POST(request: Request) {
 
   if (!tokens) {
     return NextResponse.json(
-      { message: "Login succeeded but no access token returned." },
+      { message: "Đăng nhập thành công nhưng không nhận được access token." },
       { status: 502 },
     );
   }

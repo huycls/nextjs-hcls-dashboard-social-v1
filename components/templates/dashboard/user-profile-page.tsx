@@ -49,13 +49,13 @@ export function UserProfilePage() {
 
     const name = form.name.trim();
     if (!name) {
-      setError("Name is required.");
+      setError("Vui lòng nhập tên.");
       return;
     }
 
     const email = form.email.trim();
     if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setError("Enter a valid email address.");
+      setError("Nhập địa chỉ email hợp lệ.");
       return;
     }
 
@@ -82,13 +82,13 @@ export function UserProfilePage() {
               href="/dashboard"
               className="mb-3 inline-flex items-center gap-2 text-sm font-medium text-muted transition hover:text-heading">
               <ArrowLeft className="h-4 w-4" />
-              Back to dashboard
+              Quay lại tổng quan
             </Link>
             <h1 className="text-2xl font-semibold tracking-tight text-heading">
-              Profile
+              Hồ sơ
             </h1>
             <p className="mt-1 text-sm text-muted">
-              Update your basic account information.
+              Cập nhật thông tin tài khoản cơ bản.
             </p>
           </div>
 
@@ -103,10 +103,10 @@ export function UserProfilePage() {
           <div className="space-y-4">
             <Field
               id="profile-name"
-              label="Full name"
+              label="Họ và tên"
               value={form.name}
               onChange={(value) => updateField("name", value)}
-              placeholder="Your name"
+              placeholder="Tên của bạn"
               required
               disabled={!ready || saving}
             />
@@ -121,7 +121,7 @@ export function UserProfilePage() {
             />
             <Field
               id="profile-title"
-              label="Job title"
+              label="Chức danh"
               value={form.title}
               onChange={(value) => updateField("title", value)}
               placeholder="Product Designer"
@@ -129,7 +129,7 @@ export function UserProfilePage() {
             />
             <Field
               id="profile-phone"
-              label="Phone"
+              label="Số điện thoại"
               type="tel"
               value={form.phone}
               onChange={(value) => updateField("phone", value)}
@@ -147,7 +147,7 @@ export function UserProfilePage() {
           {saved && !error && (
             <p className="mt-4 inline-flex items-center gap-1.5 text-sm text-[var(--node-green)]">
               <Check className="h-4 w-4" />
-              Profile saved.
+              Đã lưu hồ sơ.
             </p>
           )}
 
@@ -155,7 +155,7 @@ export function UserProfilePage() {
             <Link
               href="/dashboard"
               className="rounded-xl border border-border px-4 py-2 text-sm font-medium text-foreground transition hover:bg-surface-elevated">
-              Cancel
+              Hủy
             </Link>
             <button
               type="submit"
@@ -164,7 +164,7 @@ export function UserProfilePage() {
               {saving ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
               ) : null}
-              Save changes
+              Lưu thay đổi
             </button>
           </div>
         </form>

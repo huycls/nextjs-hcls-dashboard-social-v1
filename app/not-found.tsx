@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { NotFoundView } from "@/components/molecules/errors/not-found-view";
 
 export const metadata: Metadata = {
-  title: "404 — Page not found",
-  description: "The page you are looking for could not be found.",
+  title: "404 — Không tìm thấy trang",
+  description: "Trang bạn đang tìm kiếm không tồn tại.",
 };
 
 export default function NotFound() {

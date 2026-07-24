@@ -10,37 +10,44 @@ type Step = {
 const steps: Step[] = [
   {
     icon: Upload,
-    title: "1. Upload Your Data",
+    title: "1. Tải dữ liệu lên",
     description:
-      "Simply upload your data to our secure platform. We support various file formats and data types to ensure a seamless integration with your existing systems.",
+      "Chỉ cần tải dữ liệu lên nền tảng bảo mật của chúng tôi. Hỗ trợ nhiều định dạng file và loại dữ liệu để tích hợp liền mạch với hệ thống hiện có.",
   },
   {
     icon: Zap,
-    title: "2. Click Start",
+    title: "2. Nhấn Bắt đầu",
     description:
-      "Our advanced AI algorithms automatically process and analyze your data, extracting valuable insights and patterns that would be difficult to identify manually.",
+      "Thuật toán AI tiên tiến tự động xử lý và phân tích dữ liệu, trích xuất insight và pattern mà khó phát hiện thủ công.",
   },
   {
     icon: Sparkles,
-    title: "3. Get Actionable Insights",
+    title: "3. Nhận insight hành động",
     description:
-      "Receive clear, actionable insights and recommendations based on the AI analysis. Use these insights to make data-driven decisions and improve your business strategies.",
+      "Nhận insight và đề xuất rõ ràng, có thể hành động ngay dựa trên phân tích AI. Dùng chúng để ra quyết định dựa trên dữ liệu và cải thiện chiến lược kinh doanh.",
   },
 ];
 
 function StepsDashboardMock() {
   const messages = [
-    { name: "William Smith", preview: "Meeting Tomorrow", active: true },
-    { name: "Alice Smith", preview: "Re: Project Update", active: false },
-    { name: "Robert Johnson", preview: "Weekend Plans", active: false },
+    { name: "William Smith", preview: "Cuộc họp ngày mai", active: true },
+    { name: "Alice Smith", preview: "Re: Cập nhật dự án", active: false },
+    { name: "Robert Johnson", preview: "Kế hoạch cuối tuần", active: false },
     {
       name: "Emily Davis",
-      preview: "Re: Question about Budget",
+      preview: "Re: Câu hỏi về ngân sách",
       active: false,
     },
   ];
 
-  const navItems = ["Inbox", "Drafts", "Sent", "Junk", "Trash", "Archive"];
+  const navItems = [
+    "Hộp thư đến",
+    "Nháp",
+    "Đã gửi",
+    "Thư rác",
+    "Thùng rác",
+    "Lưu trữ",
+  ];
 
   return (
     <div className="surface-card overflow-hidden rounded-2xl bg-surface shadow-[var(--shadow-card-hover)]">
@@ -61,9 +68,9 @@ function StepsDashboardMock() {
             ))}
           </nav>
           <p className="mb-1 mt-4 text-[8px] font-medium uppercase tracking-wider text-foreground">
-            Categories
+            Danh mục
           </p>
-          {["Social", "Updates", "Forums"].map((cat) => (
+          {["Mạng xã hội", "Cập nhật", "Diễn đàn"].map((cat) => (
             <div
               key={cat}
               className="px-2 py-1 text-[9px] text-foreground">
@@ -74,7 +81,9 @@ function StepsDashboardMock() {
 
         <div className="flex flex-1 border-r border-border">
           <div className="w-[42%] border-r border-border p-2">
-            <p className="mb-2 text-[10px] font-semibold text-heading">Inbox</p>
+            <p className="mb-2 text-[10px] font-semibold text-heading">
+              Hộp thư đến
+            </p>
             {messages.map((msg) => (
               <div
                 key={msg.name}
@@ -93,7 +102,7 @@ function StepsDashboardMock() {
 
           <div className="flex-1 p-4">
             <p className="text-xs font-semibold text-heading">
-              Meeting Tomorrow
+              Cuộc họp ngày mai
             </p>
             <p className="mt-1 text-[9px] text-foreground">
               William Smith &lt;william@example.com&gt;
@@ -118,10 +127,10 @@ export function StepsSection() {
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-            How it works
+            Cách hoạt động
           </p>
           <h2 className="mt-4 text-3xl font-semibold text-heading sm:text-4xl lg:text-5xl">
-            Just 3 steps to get started
+            Chỉ 3 bước để bắt đầu
           </h2>
         </div>
 

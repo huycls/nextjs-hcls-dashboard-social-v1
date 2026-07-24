@@ -127,7 +127,7 @@ export function WorkflowCanvasEditor({
         <Link
           href="/dashboard/automations"
           className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-muted transition hover:bg-surface hover:text-heading"
-          aria-label="Back to automations">
+          aria-label="Quay lại tự động hóa">
           <ArrowLeft className="h-4 w-4" />
         </Link>
 
@@ -137,15 +137,15 @@ export function WorkflowCanvasEditor({
           </div>
           <div className="hidden items-center gap-1 sm:flex">
             <TabChip label={workflowTypeLabel} muted />
-            <TabChip label="Welcome Email Drip" muted />
+            <TabChip label="Chuỗi email chào mừng" muted />
           </div>
         </div>
 
         <div className="hidden items-center gap-3 md:flex">
           <p className="text-xs text-muted">
             {workflow
-              ? `${WORKFLOW_STATUS_LABELS[workflow.status]} · ${configuredCount}/${template.configurableNodes.length} configured`
-              : "Last edited just now"}
+              ? `${WORKFLOW_STATUS_LABELS[workflow.status]} · ${configuredCount}/${template.configurableNodes.length} đã cấu hình`
+              : "Sửa lần cuối vừa xong"}
           </p>
           {workflow && <WorkflowStatusBadge status={workflow.status} />}
           <WorkflowEnvironmentBadge environment={runEnvironment} />
@@ -154,7 +154,7 @@ export function WorkflowCanvasEditor({
         <div className="flex items-center gap-2">
           <button
             type="button"
-            aria-label="Link another app"
+            aria-label="Liên kết ứng dụng khác"
             aria-pressed={rightPanel === "apps"}
             onClick={() => togglePanel("apps")}
             className={cn(
@@ -164,12 +164,12 @@ export function WorkflowCanvasEditor({
                 : "border-border text-muted hover:bg-surface hover:text-foreground",
             )}>
             <Plug className="h-4 w-4" />
-            <span className="hidden lg:inline">Apps</span>
+            <span className="hidden lg:inline">Ứng dụng</span>
           </button>
 
           <button
             type="button"
-            aria-label="Workflow settings"
+            aria-label="Cài đặt workflow"
             aria-pressed={rightPanel === "settings"}
             onClick={() => togglePanel("settings")}
             className={cn(
@@ -179,15 +179,15 @@ export function WorkflowCanvasEditor({
                 : "border-border text-muted hover:bg-surface hover:text-foreground",
             )}>
             <Settings className="h-4 w-4" />
-            <span className="hidden lg:inline">Settings</span>
+            <span className="hidden lg:inline">Cài đặt</span>
           </button>
 
           <button
             type="button"
-            aria-label="Share workflow"
+            aria-label="Chia sẻ workflow"
             className="inline-flex h-9 items-center gap-2 rounded-xl bg-teal-500 px-3.5 text-sm font-medium text-white transition hover:bg-teal-600">
             <Share2 className="h-4 w-4" />
-            Share
+            Chia sẻ
           </button>
         </div>
       </div>
@@ -204,7 +204,7 @@ export function WorkflowCanvasEditor({
             !jobWorkflowId
           }
           playLabel={
-            runEnvironment === "production" ? "Run in production" : "Run test"
+            runEnvironment === "production" ? "Chạy production" : "Chạy thử"
           }
           overlay={
             <div
@@ -212,14 +212,14 @@ export function WorkflowCanvasEditor({
               className="absolute left-5 top-5 z-20 flex gap-2">
               <button
                 type="button"
-                aria-label="Undo"
+                aria-label="Hoàn tác"
                 disabled
                 className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-surface-elevated/95 text-muted shadow-sm backdrop-blur-sm disabled:opacity-50">
                 <Undo2 className="h-4 w-4" />
               </button>
               <button
                 type="button"
-                aria-label="Redo"
+                aria-label="Làm lại"
                 disabled
                 className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-surface-elevated/95 text-muted shadow-sm backdrop-blur-sm disabled:opacity-50">
                 <Redo2 className="h-4 w-4" />
@@ -227,7 +227,7 @@ export function WorkflowCanvasEditor({
               {triggering && (
                 <span className="inline-flex h-9 items-center gap-2 rounded-xl border border-border bg-surface-elevated/95 px-3 text-xs font-medium text-muted shadow-sm backdrop-blur-sm">
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
-                  Running…
+                  Đang chạy…
                 </span>
               )}
             </div>

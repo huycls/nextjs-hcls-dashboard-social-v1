@@ -27,7 +27,7 @@ export function ArticlesArchive({
               ? "bg-primary text-background"
               : "border border-border bg-surface text-foreground hover:bg-surface-elevated"
           }`}>
-          All
+          Tất cả
         </Link>
         {categories.map(({ slug, label }) => (
           <Link
@@ -55,7 +55,7 @@ export function ArticlesArchive({
 
       {articles.length === 0 && (
         <p className="mt-12 text-center text-sm text-muted">
-          No articles in this category yet.
+          Chưa có bài viết trong danh mục này.
         </p>
       )}
 

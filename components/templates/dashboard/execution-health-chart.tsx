@@ -4,16 +4,16 @@ import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 import { TrendingUp } from "lucide-react";
 
 const data = [
-  { name: "Success", value: 86.3, color: "var(--node-green)" },
-  { name: "Delayed", value: 8.5, color: "var(--node-orange)" },
-  { name: "Failed", value: 5.2, color: "var(--error, var(--dpop-error-500))" },
+  { name: "Thành công", value: 86.3, color: "var(--node-green)" },
+  { name: "Trễ", value: 8.5, color: "var(--node-orange)" },
+  { name: "Thất bại", value: 5.2, color: "var(--error, var(--dpop-error-500))" },
 ];
 
 export function ExecutionHealthChart() {
   return (
     <article className="surface-card rounded-2xl bg-surface-elevated p-5">
       <h2 className="mb-2 text-base font-semibold text-heading">
-        Execution Health
+        Sức khỏe thực thi
       </h2>
 
       <div className="relative mx-auto h-[220px] w-full max-w-[240px]">

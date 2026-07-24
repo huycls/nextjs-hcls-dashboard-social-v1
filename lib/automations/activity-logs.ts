@@ -31,11 +31,11 @@ export type WorkflowActivitySummary = {
 };
 
 export const ACTIVITY_LOG_LEVEL_LABELS: Record<ActivityLogLevel, string> = {
-  success: "Success",
-  failed: "Failed",
-  running: "Running",
-  warning: "Warning",
-  info: "Info",
+  success: "Thành công",
+  failed: "Thất bại",
+  running: "Đang chạy",
+  warning: "Cảnh báo",
+  info: "Thông tin",
 };
 
 type ActivityLogsFile = {
@@ -61,7 +61,7 @@ const workflowMeta = new Map(
 );
 
 function formatLogTimestamp(timestamp: string) {
-  return new Date(timestamp).toLocaleString("en-US", {
+  return new Date(timestamp).toLocaleString("vi-VN", {
     month: "short",
     day: "numeric",
     year: "numeric",
@@ -75,14 +75,14 @@ function formatRelativeTime(timestamp: string) {
   const diffMs = Date.now() - new Date(timestamp).getTime();
   const diffMinutes = Math.floor(diffMs / 60_000);
 
-  if (diffMinutes < 1) return "Just now";
-  if (diffMinutes < 60) return `${diffMinutes}m ago`;
+  if (diffMinutes < 1) return "Vừa xong";
+  if (diffMinutes < 60) return `${diffMinutes} phút trước`;
 
   const diffHours = Math.floor(diffMinutes / 60);
-  if (diffHours < 24) return `${diffHours}h ago`;
+  if (diffHours < 24) return `${diffHours} giờ trước`;
 
   const diffDays = Math.floor(diffHours / 24);
-  if (diffDays < 7) return `${diffDays}d ago`;
+  if (diffDays < 7) return `${diffDays} ngày trước`;
 
   return formatLogTimestamp(timestamp);
 }
@@ -129,7 +129,7 @@ export function buildWorkflowActivitySummaries(
 
     summaries.push({
       workflowId,
-      workflowName: fromStore?.name ?? fromMock?.name ?? "Unknown workflow",
+      workflowName: fromStore?.name ?? fromMock?.name ?? "Workflow không xác định",
       apps: fromStore?.apps ?? fromMock?.apps ?? [],
       latestLevel: latest.level,
       latestTitle: latest.title,

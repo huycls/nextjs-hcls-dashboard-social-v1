@@ -18,7 +18,7 @@ export function WorkflowEnvironmentBadge({
   return (
     <span
       className={`inline-flex items-center rounded-lg border px-2.5 py-1 text-xs font-medium ${ENVIRONMENT_STYLES[environment]} ${className}`}>
-      {environment === "test" ? "Test" : "Production"}
+      {environment === "test" ? "Thử nghiệm" : "Production"}
     </span>
   );
 }

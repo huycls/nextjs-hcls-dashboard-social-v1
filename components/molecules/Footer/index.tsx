@@ -31,23 +31,23 @@ type FooterLinks = {
 
 const footerLinks: FooterLinks = {
   product: [
-    { label: "Features", href: "#" },
-    { label: "Pricing", href: "/pricing" },
-    { label: "Documentation", href: "#" },
+    { label: "Tính năng", href: "#" },
+    { label: "Bảng giá", href: "/pricing" },
+    { label: "Tài liệu", href: "#" },
     { label: "API", href: "#" },
   ],
   company: [
-    { label: "About Us", href: "/about-us" },
-    { label: "Careers", href: "#" },
+    { label: "Giới thiệu", href: "/about-us" },
+    { label: "Tuyển dụng", href: "#" },
     { label: "Blog", href: "/articles" },
-    { label: "Press", href: "#" },
-    { label: "Partners", href: "#" },
+    { label: "Báo chí", href: "#" },
+    { label: "Đối tác", href: "#" },
   ],
   resources: [
-    { label: "Community", href: "#" },
-    { label: "Contact", href: "#" },
-    { label: "Support", href: "#" },
-    { label: "Status", href: "#" },
+    { label: "Cộng đồng", href: "#" },
+    { label: "Liên hệ", href: "#" },
+    { label: "Hỗ trợ", href: "#" },
+    { label: "Trạng thái", href: "#" },
   ],
   social: [
     { label: "Twitter", href: "#", icon: TwitterIcon },
@@ -100,7 +100,7 @@ export function HomeFooter() {
         </Link>
 
         <div className="mt-12 grid grid-cols-2 gap-8 sm:grid-cols-4 lg:gap-12">
-          <FooterColumn title="Product">
+          <FooterColumn title="Sản phẩm">
             {footerLinks.product.map((link) => (
               <li key={link.label}>
                 <Link
@@ -124,7 +124,7 @@ export function HomeFooter() {
             ))}
           </FooterColumn>
 
-          <FooterColumn title="Resources">
+          <FooterColumn title="Tài nguyên">
             {footerLinks.resources.map((link) => (
               <li key={link.label}>
                 <Link
@@ -136,7 +136,7 @@ export function HomeFooter() {
             ))}
           </FooterColumn>
 
-          <FooterColumn title="Social">
+          <FooterColumn title="Mạng xã hội">
             {footerLinks.social.map(({ label, href, icon: Icon }) => (
               <li key={label}>
                 <Link
@@ -152,19 +152,19 @@ export function HomeFooter() {
 
         <div className="mt-12 flex flex-col items-start justify-between gap-4 border-t border-border pt-8 sm:flex-row sm:items-center">
           <p className="text-base text-foreground">
-            Copyright © {year} Avispark — Automate your workflow with AI
+            Bản quyền © {year} Avispark — Tự động hóa workflow với AI
           </p>
 
           <div className="flex items-center gap-6">
             <Link
               href="#"
               className="text-base text-foreground transition hover:text-primary">
-              Privacy Policy
+              Chính sách bảo mật
             </Link>
             <Link
               href="#"
               className="text-base text-foreground transition hover:text-primary">
-              Terms of Service
+              Điều khoản dịch vụ
             </Link>
           </div>
         </div>

@@ -3,29 +3,29 @@ import { AlertTriangle, CheckCircle2 } from "lucide-react";
 const integrations = [
   {
     name: "n8n Workflows",
-    lastSync: "2 min ago",
-    status: "Connected",
+    lastSync: "2 phút trước",
+    status: "Đã kết nối",
     tone: "success" as const,
     logo: "n8",
   },
   {
     name: "Google Sheets",
-    lastSync: "15 min ago",
-    status: "Connected",
+    lastSync: "15 phút trước",
+    status: "Đã kết nối",
     tone: "success" as const,
     logo: "GS",
   },
   {
     name: "OpenRouter API",
-    lastSync: "1 hr ago",
-    status: "Syncing",
+    lastSync: "1 giờ trước",
+    status: "Đang đồng bộ",
     tone: "warning" as const,
     logo: "OR",
   },
   {
     name: "Slack Webhooks",
-    lastSync: "3 hr ago",
-    status: "Attention",
+    lastSync: "3 giờ trước",
+    status: "Cần chú ý",
     tone: "warning" as const,
     logo: "SL",
   },
@@ -47,10 +47,10 @@ export function IntegrationStatus() {
     <section className="surface-card rounded-xl bg-surface p-6">
       <div className="mb-5">
         <h2 className="text-base font-semibold text-heading">
-          Integration Status
+          Trạng thái tích hợp
         </h2>
         <p className="mt-1 text-sm text-muted">
-          Real-time status of connected systems
+          Trạng thái thời gian thực của các hệ thống đã kết nối
         </p>
       </div>
 
@@ -67,7 +67,7 @@ export function IntegrationStatus() {
                 <p className="truncate text-sm font-medium text-heading">
                   {name}
                 </p>
-                <p className="text-xs text-muted">Last sync: {lastSync}</p>
+                <p className="text-xs text-muted">Đồng bộ lần cuối: {lastSync}</p>
               </div>
             </div>
 

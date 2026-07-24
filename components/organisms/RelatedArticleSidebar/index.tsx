@@ -42,7 +42,7 @@ function RelatedArticleThumb({
 
 export function RelatedArticlesSidebar({
   articles,
-  title = "Related articles",
+  title = "Bài viết liên quan",
   currentSlug,
 }: RelatedArticlesSidebarProps) {
   const items = currentSlug

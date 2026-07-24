@@ -6,19 +6,19 @@ import { useState } from "react";
 const UPCOMING_INTEGRATIONS = [
   {
     name: "Slack",
-    description: "Push run alerts and approvals into channels.",
+    description: "Gửi cảnh báo chạy và phê duyệt vào các kênh.",
   },
   {
     name: "Google Sheets",
-    description: "Sync workflow outputs to shared spreadsheets.",
+    description: "Đồng bộ đầu ra workflow vào bảng tính dùng chung.",
   },
   {
     name: "Notion",
-    description: "Write generated content into team databases.",
+    description: "Ghi nội dung được tạo vào cơ sở dữ liệu nhóm.",
   },
   {
     name: "Zapier",
-    description: "Bridge Avispark flows with thousands of apps.",
+    description: "Kết nối luồng Avispark với hàng nghìn ứng dụng.",
   },
 ] as const;
 
@@ -33,7 +33,7 @@ export function IntegrationsComingSoonPage() {
 
     const value = email.trim();
     if (!value || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-      setError("Enter a valid email to get notified.");
+      setError("Nhập email hợp lệ để nhận thông báo.");
       return;
     }
 
@@ -53,10 +53,10 @@ export function IntegrationsComingSoonPage() {
     <div className="relative flex min-h-0 flex-1 flex-col">
       <div className="border-b border-border bg-surface px-6 py-5 lg:px-8">
         <h1 className="text-2xl font-semibold tracking-tight text-heading">
-          Integrations
+          Tích hợp
         </h1>
         <p className="mt-1 text-sm text-muted">
-          Connect external apps to your automation workspace.
+          Kết nối ứng dụng bên ngoài với không gian tự động hóa của bạn.
         </p>
       </div>
 
@@ -81,21 +81,22 @@ export function IntegrationsComingSoonPage() {
                 <div className="mb-3 flex flex-wrap items-center gap-2">
                   <span className="inline-flex items-center gap-1.5 rounded-full bg-[var(--node-blue-bg)] px-2.5 py-1 text-xs font-semibold text-[var(--node-blue)]">
                     <Sparkles className="h-3.5 w-3.5" />
-                    Coming soon
+                    Sắp ra mắt
                   </span>
                   <span className="inline-flex items-center gap-1.5 text-xs text-muted">
                     <Clock3 className="h-3.5 w-3.5" />
-                    Feature in progress
+                    Tính năng đang phát triển
                   </span>
                 </div>
 
                 <h2 className="text-xl font-semibold tracking-tight text-heading">
-                  App integrations are on the way
+                  Tích hợp ứng dụng sắp có mặt
                 </h2>
                 <p className="mt-2 max-w-xl text-sm leading-6 text-muted">
-                  We&apos;re building a catalog to link Slack, Sheets, Notion,
-                  and more directly into your workflows. You&apos;ll be able to
-                  authorize apps once and reuse them across automations.
+                  Chúng tôi đang xây dựng danh mục để liên kết Slack, Sheets,
+                  Notion và nhiều hơn nữa trực tiếp vào workflow của bạn. Bạn
+                  sẽ chỉ cần ủy quyền ứng dụng một lần và tái sử dụng trên các
+                  tự động hóa.
                 </p>
 
                 {!subscribed ? (
@@ -104,7 +105,7 @@ export function IntegrationsComingSoonPage() {
                     className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-start">
                     <div className="min-w-0 flex-1">
                       <label htmlFor="integrations-notify-email" className="sr-only">
-                        Email for launch notification
+                        Email nhận thông báo ra mắt
                       </label>
                       <input
                         id="integrations-notify-email"
@@ -127,7 +128,7 @@ export function IntegrationsComingSoonPage() {
                       type="submit"
                       className="inline-flex h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-primary px-4 text-sm font-medium text-[var(--primary-foreground,#fff)] transition hover:bg-primary-hover">
                       <Bell className="h-4 w-4" />
-                      Notify me
+                      Nhận thông báo
                     </button>
                   </form>
                 ) : (
@@ -136,9 +137,9 @@ export function IntegrationsComingSoonPage() {
                     role="status">
                     <Bell className="mt-0.5 h-4 w-4 shrink-0" />
                     <span>
-                      You&apos;re on the list. We&apos;ll notify{" "}
+                      Bạn đã đăng ký. Chúng tôi sẽ thông báo tới{" "}
                       <strong className="font-semibold">{email.trim()}</strong>{" "}
-                      when Integrations launches.
+                      khi Tích hợp ra mắt.
                     </span>
                   </div>
                 )}
@@ -148,7 +149,7 @@ export function IntegrationsComingSoonPage() {
 
           <section>
             <h3 className="mb-3 text-sm font-semibold text-heading">
-              Planned first wave
+              Đợt đầu tiên dự kiến
             </h3>
             <ul className="grid gap-3 sm:grid-cols-2">
               {UPCOMING_INTEGRATIONS.map((item) => (
@@ -160,7 +161,7 @@ export function IntegrationsComingSoonPage() {
                       {item.name}
                     </p>
                     <span className="rounded-full bg-surface px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted">
-                      Soon
+                      Sắp có
                     </span>
                   </div>
                   <p className="mt-1.5 text-xs leading-5 text-muted">

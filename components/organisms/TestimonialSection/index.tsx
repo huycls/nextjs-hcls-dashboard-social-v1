@@ -23,57 +23,60 @@ const testimonials: Testimonial[] = [
   {
     quote: [
       {
-        text: "There is a lot of exciting stuff going on in the stars above us that make ",
+        text: "Có rất nhiều điều thú vị đang diễn ra trên bầu trời phía trên khiến ",
       },
-      { text: "astronomy", emphasis: "underline" },
+      { text: "thiên văn học", emphasis: "underline" },
       {
-        text: " so much fun. The truth is the universe is a ",
+        text: " trở nên hấp dẫn. Sự thật là vũ trụ là một thứ ",
       },
-      { text: "constantly changing", emphasis: "highlight" },
+      { text: "luôn thay đổi", emphasis: "highlight" },
       {
-        text: ", moving, some would say ",
+        text: ", chuyển động, có người còn gọi là ",
       },
-      { text: "living", emphasis: "underline" },
+      { text: "sống", emphasis: "underline" },
       {
-        text: " thing because you just never know what you are going to see on any given night of stargazing.",
+        text: " vì bạn không bao giờ biết mình sẽ thấy gì vào bất kỳ đêm quan sát sao nào.",
       },
     ],
     company: "Google",
     name: "Leslie Alexander",
-    role: "UI Designer",
+    role: "Thiết kế UI",
   },
   {
     quote: [
       { text: "Avispark " },
-      { text: "cut our manual workflow time in half", emphasis: "highlight" },
-      { text: ". The " },
-      { text: "visual builder", emphasis: "underline" },
       {
-        text: " made it easy for our ops team to automate without waiting on engineering — we shipped our first automation ",
+        text: "giảm một nửa thời gian workflow thủ công",
+        emphasis: "highlight",
       },
-      { text: "under a day", emphasis: "underline" },
+      { text: " của chúng tôi. " },
+      { text: "Trình tạo trực quan", emphasis: "underline" },
+      {
+        text: " giúp đội vận hành tự động hóa mà không cần chờ đội kỹ thuật — chúng tôi triển khai automation đầu tiên ",
+      },
+      { text: "trong vòng một ngày", emphasis: "underline" },
       { text: "." },
     ],
     company: "Spotify",
     name: "Michael Chen",
-    role: "Operations Lead",
+    role: "Trưởng nhóm Vận hành",
   },
   {
     quote: [
-      { text: "The " },
-      { text: "execution insights", emphasis: "underline" },
-      { text: " alone are worth it. " },
-      { text: "We catch failures ", emphasis: "highlight" },
-      { text: " before they hit production" },
+      { text: "Riêng " },
+      { text: "insight thực thi", emphasis: "underline" },
+      { text: " đã đáng giá. " },
+      { text: "Chúng tôi phát hiện lỗi ", emphasis: "highlight" },
+      { text: " trước khi chúng ảnh hưởng production" },
       {
-        text: " and our team finally has a ",
+        text: " và đội ngũ cuối cùng có ",
       },
-      { text: "single place to monitor " },
-      { text: " every integration.", emphasis: "underline" },
+      { text: "một nơi duy nhất để giám sát " },
+      { text: " mọi tích hợp.", emphasis: "underline" },
     ],
     company: "Microsoft",
     name: "Sarah Williams",
-    role: "Engineering Manager",
+    role: "Quản lý Kỹ thuật",
   },
 ];
 
@@ -134,10 +137,10 @@ export function TestimonialsSection() {
       <div className="mx-auto max-w-4xl px-6 lg:px-8">
         <div className="text-center">
           <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-            Testimonial highlight
+            Khách hàng nói gì
           </p>
           <h2 className="mt-4 text-3xl font-semibold text-heading sm:text-4xl lg:text-5xl">
-            What our customers are saying
+            Phản hồi từ khách hàng
           </h2>
         </div>
 
@@ -171,14 +174,14 @@ export function TestimonialsSection() {
           <button
             type="button"
             onClick={goToPrevious}
-            aria-label="Previous testimonial"
+            aria-label="Phản hồi trước"
             className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-border bg-surface text-foreground transition hover:bg-primary/50 hover:text-heading">
             <ChevronLeft className="h-4 w-4" />
           </button>
           <button
             type="button"
             onClick={goToNext}
-            aria-label="Next testimonial"
+            aria-label="Phản hồi tiếp theo"
             className="flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-border bg-surface text-foreground transition hover:bg-primary/50 hover:text-heading">
             <ChevronRight className="h-4 w-4" />
           </button>

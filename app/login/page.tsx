@@ -4,14 +4,14 @@ import { LoginForm } from "@/components/molecules/LoginParts/login-form";
 import { LoginPreview } from "@/components/molecules/LoginParts/login-preview";
 
 export const metadata: Metadata = {
-  title: "Avispark — Login",
-  description: "Login to your Avispark account",
+  title: "Avispark — Đăng nhập",
+  description: "Đăng nhập vào tài khoản Avispark",
 };
 
 function LoginFormFallback() {
   return (
     <div className="flex h-[420px] w-full max-w-[420px] items-center justify-center text-sm text-muted">
-      Loading...
+      Đang tải...
     </div>
   );
 }

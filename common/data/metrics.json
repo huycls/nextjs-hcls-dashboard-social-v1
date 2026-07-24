@@ -1,42 +1,42 @@
 {
-  "title": "AI Processing Metrics",
-  "description": "Real-time insights into automated workflows",
+  "title": "Chỉ số xử lý AI",
+  "description": "Thông tin thời gian thực về các workflow tự động",
   "updatedAt": "2026-06-25T08:30:00Z",
   "metrics": [
     {
       "id": "automation-success-rate",
-      "label": "Automation Success Rate",
+      "label": "Tỷ lệ thành công tự động hóa",
       "value": 94,
       "unit": "%",
-      "tooltip": "Percentage of workflow runs that completed successfully without errors in the selected period."
+      "tooltip": "Phần trăm lượt chạy workflow hoàn tất thành công, không lỗi, trong khoảng thời gian đã chọn."
     },
     {
       "id": "document-processing",
-      "label": "Document Processing",
+      "label": "Xử lý tài liệu",
       "value": 87,
       "unit": "%",
-      "tooltip": "Share of documents that were parsed, enriched, and routed by AI within the expected SLA."
+      "tooltip": "Tỷ lệ tài liệu được phân tích, làm giàu và định tuyến bởi AI trong SLA mong đợi."
     },
     {
       "id": "webhook-delivery-rate",
-      "label": "Webhook Delivery Rate",
+      "label": "Tỷ lệ gửi webhook",
       "value": 72,
       "unit": "%",
-      "tooltip": "Successful outbound webhook deliveries versus total attempts, including retries."
+      "tooltip": "Số lần gửi webhook thành công so với tổng số lần thử, bao gồm cả thử lại."
     },
     {
       "id": "ai-response-accuracy",
-      "label": "AI Response Accuracy",
+      "label": "Độ chính xác phản hồi AI",
       "value": 91,
       "unit": "%",
-      "tooltip": "Estimated accuracy of AI-generated outputs based on validation checks and review feedback."
+      "tooltip": "Độ chính xác ước tính của đầu ra AI dựa trên kiểm tra xác thực và phản hồi rà soát."
     },
     {
       "id": "queue-throughput",
-      "label": "Queue Throughput",
+      "label": "Thông lượng hàng đợi",
       "value": 68,
       "unit": "%",
-      "tooltip": "How close the job queue is to target throughput capacity under current load."
+      "tooltip": "Mức độ hàng đợi job gần đạt công suất mục tiêu dưới tải hiện tại."
     }
   ]
 }

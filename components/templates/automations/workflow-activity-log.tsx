@@ -20,12 +20,12 @@ import {
 import { useWorkflows } from "@/lib/automations/use-workflow-store";
 
 const FILTER_OPTIONS: Array<{ id: ActivityLogLevel | "all"; label: string }> = [
-  { id: "all", label: "All" },
-  { id: "success", label: "Success" },
-  { id: "failed", label: "Failed" },
-  { id: "running", label: "Running" },
-  { id: "warning", label: "Warning" },
-  { id: "info", label: "Info" },
+  { id: "all", label: "Tất cả" },
+  { id: "success", label: "Thành công" },
+  { id: "failed", label: "Thất bại" },
+  { id: "running", label: "Đang chạy" },
+  { id: "warning", label: "Cảnh báo" },
+  { id: "info", label: "Thông tin" },
 ];
 
 export function WorkflowActivityLog() {
@@ -97,17 +97,16 @@ export function WorkflowActivityLog() {
       <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
         <aside className="w-full shrink-0 border-b border-border lg:w-[360px] lg:border-b-0 lg:border-r">
           <div className="border-b border-border px-5 py-4">
-            <h2 className="text-sm font-semibold text-heading">Workflows</h2>
+            <h2 className="text-sm font-semibold text-heading">Workflow</h2>
             <p className="mt-1 text-xs text-muted">
-              {filteredSummaries.length} workflow
-              {filteredSummaries.length === 1 ? "" : "s"} with activity
+              {filteredSummaries.length} workflow có hoạt động
             </p>
           </div>
 
           <ul className="max-h-[280px] overflow-y-auto lg:max-h-full lg:flex-1">
             {filteredSummaries.length === 0 ? (
               <li className="px-5 py-10 text-center text-sm text-muted">
-                No activity logs match this filter.
+                Không có nhật ký hoạt động khớp bộ lọc này.
               </li>
             ) : (
               filteredSummaries.map((summary) => {
@@ -137,7 +136,7 @@ export function WorkflowActivityLog() {
                         {summary.apps.length > 0 ? (
                           <AppIcons apps={summary.apps} />
                         ) : (
-                          <span className="text-xs text-muted">No apps</span>
+                          <span className="text-xs text-muted">Chưa có ứng dụng</span>
                         )}
                         <span className="shrink-0 text-xs text-muted">
                           {formatActivityRelativeTime(summary.latestTimestamp)}
@@ -161,10 +160,9 @@ export function WorkflowActivityLog() {
                       {selectedSummary.workflowName}
                     </h2>
                     <p className="mt-1 text-sm text-muted">
-                      {selectedSummary.logCount} log entr
-                      {selectedSummary.logCount === 1 ? "y" : "ies"}
+                      {selectedSummary.logCount} mục nhật ký
                       {levelFilter !== "all"
-                        ? ` · filtered by ${ACTIVITY_LOG_LEVEL_LABELS[levelFilter]}`
+                        ? ` · lọc theo ${ACTIVITY_LOG_LEVEL_LABELS[levelFilter]}`
                         : ""}
                     </p>
                   </div>
@@ -175,7 +173,7 @@ export function WorkflowActivityLog() {
               <div className="flex-1 overflow-y-auto px-6 py-5">
                 {selectedLogs.length === 0 ? (
                   <p className="text-sm text-muted">
-                    No logs for this filter in the selected workflow.
+                    Không có nhật ký cho bộ lọc này trong workflow đã chọn.
                   </p>
                 ) : (
                   <ul className="space-y-0">
@@ -220,10 +218,10 @@ export function WorkflowActivityLog() {
               <ScrollText className="h-10 w-10 text-muted" />
               <div>
                 <p className="text-sm font-medium text-heading">
-                  Select a workflow
+                  Chọn một workflow
                 </p>
                 <p className="mt-1 text-sm text-muted">
-                  Choose a workflow from the list to view its activity logs.
+                  Chọn workflow trong danh sách để xem nhật ký hoạt động.
                 </p>
               </div>
             </div>

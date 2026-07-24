@@ -111,7 +111,7 @@ export async function triggerWorkflowJob(
       return {
         ok: true,
         status: response.status,
-        message: "Workflow job started successfully.",
+        message: "Đã khởi chạy job workflow thành công.",
         job: data?.job ?? null,
         workflow: mapWorkflowFromResponse(data?.workflow),
       };
@@ -130,8 +130,8 @@ export async function triggerWorkflowJob(
       ok: false,
       status: response.status,
       message: errorText
-        ? `Backend returned ${response.status}: ${parseErrorMessage(errorText).slice(0, 200)}`
-        : `Request failed with status ${response.status}`,
+        ? `Backend trả về ${response.status}: ${parseErrorMessage(errorText).slice(0, 200)}`
+        : `Yêu cầu thất bại với mã ${response.status}`,
       job: errorPayload?.job ?? null,
       workflow: mapWorkflowFromResponse(errorPayload?.workflow),
     };
@@ -139,7 +139,7 @@ export async function triggerWorkflowJob(
     return {
       ok: false,
       status: 0,
-      message: "Failed to send job request. Please try again.",
+      message: "Không thể gửi yêu cầu job. Vui lòng thử lại.",
     };
   }
 }

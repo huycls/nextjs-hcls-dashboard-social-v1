@@ -122,7 +122,7 @@ function NodeSectionShell({
           ) : (
             <Circle className="h-3.5 w-3.5" />
           )}
-          {configured ? "Ready" : "Required"}
+          {configured ? "Sẵn sàng" : "Bắt buộc"}
         </span>
       </div>
       {children}
@@ -189,16 +189,16 @@ function OpenRouterFields({
       />
       <Field
         id={`${idPrefix}-model`}
-        label="Model"
+        label="Mô hình"
         value={credentials.model}
         placeholder="openai/gpt-4o-mini"
         onChange={(value) => onPatch({ model: value })}
       />
       {hasOpenRouterCredentials(credentials) ? (
-        <p className="text-xs text-[var(--node-green)]">OpenRouter ready.</p>
+        <p className="text-xs text-[var(--node-green)]">OpenRouter đã sẵn sàng.</p>
       ) : (
         <p className="text-xs text-amber-400">
-          OpenRouter API key and model required.
+          Cần OpenRouter API key và model.
         </p>
       )}
     </div>
@@ -230,12 +230,12 @@ function GoogleSheetFields({
             <p className="text-sm font-medium text-heading">Google Sheets</p>
             {credentials.googleConnected ? (
               <p className="mt-1 truncate text-xs text-node-green">
-                Connected
+                Đã kết nối
                 {credentials.googleEmail ? ` · ${credentials.googleEmail}` : ""}
               </p>
             ) : (
               <p className="mt-1 text-xs text-muted">
-                Connect once. Backend keeps the refresh token.
+                Kết nối một lần. Backend lưu refresh token.
               </p>
             )}
           </div>
@@ -251,7 +251,7 @@ function GoogleSheetFields({
               ) : (
                 <Unplug className="h-4 w-4 shrink-0" />
               )}
-              Disconnect
+              Ngắt kết nối
             </button>
           ) : (
             <button
@@ -264,7 +264,7 @@ function GoogleSheetFields({
               ) : (
                 <GoogleIcon className="h-4 w-4 shrink-0" />
               )}
-              Sign in with Google
+              Đăng nhập bằng Google
             </button>
           )}
         </div>
@@ -292,11 +292,11 @@ function GoogleSheetFields({
                 disabled={googleLoading || !credentials.spreadsheetId.trim()}
                 onClick={onSaveSpreadsheet}
                 className="h-9 shrink-0 rounded-lg bg-primary px-3 text-xs font-medium text-background transition hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-40">
-                Save
+                Lưu
               </button>
             </div>
             <p className="text-[11px] text-muted">
-              From the sheet URL: docs.google.com/spreadsheets/d/
+              Từ URL bảng tính: docs.google.com/spreadsheets/d/
               <span className="text-foreground">SPREADSHEET_ID</span>/edit
             </p>
           </div>
@@ -313,10 +313,10 @@ function GoogleSheetFields({
       )}
 
       {hasGoogleSheetReady(credentials) ? (
-        <p className="text-xs text-[var(--node-green)]">Google Sheets ready.</p>
+        <p className="text-xs text-[var(--node-green)]">Google Sheets đã sẵn sàng.</p>
       ) : (
         <p className="text-xs text-amber-400">
-          Connect Google and set a spreadsheet ID.
+          Kết nối Google và nhập Spreadsheet ID.
         </p>
       )}
     </div>
@@ -373,7 +373,7 @@ export function WorkflowSettingsPanel({
   const runEnvironment = getWorkflowRunEnvironment(workflow?.status);
   const useProductionWebhook = shouldUseProductionWebhook(workflow?.status);
   const runButtonLabel =
-    runEnvironment === "production" ? "Run in production" : "Run test";
+    runEnvironment === "production" ? "Chạy production" : "Chạy thử";
 
   const jobWorkflowId = (config.workflowId ?? "").trim() || DEFAULT_WORKFLOW_ID;
 
@@ -491,12 +491,12 @@ export function WorkflowSettingsPanel({
         if (oauthReturn === "connected") {
           setGoogleMessage({
             ok: true,
-            text: "Google account connected. Tokens are stored on the backend.",
+            text: "Đã kết nối tài khoản Google. Token được lưu trên backend.",
           });
         } else if (oauthReturn === "error") {
           setGoogleMessage({
             ok: false,
-            text: "Google connection failed. Try again.",
+            text: "Kết nối Google thất bại. Vui lòng thử lại.",
           });
         }
       } catch (error) {
@@ -504,7 +504,7 @@ export function WorkflowSettingsPanel({
         if (oauthReturn === "error") {
           setGoogleMessage({
             ok: false,
-            text: "Google connection failed. Try again.",
+            text: "Kết nối Google thất bại. Vui lòng thử lại.",
           });
         } else if (oauthReturn === "connected") {
           setGoogleMessage({
@@ -512,7 +512,7 @@ export function WorkflowSettingsPanel({
             text:
               error instanceof Error
                 ? error.message
-                : "Connected, but status sync failed.",
+                : "Đã kết nối nhưng đồng bộ trạng thái thất bại.",
           });
         }
       } finally {
@@ -540,7 +540,7 @@ export function WorkflowSettingsPanel({
         ok: false,
         text:
           result.message ??
-          "Backend Google OAuth is not available yet. Implement GET /api/integrations/google/auth-url.",
+          "Google OAuth trên backend chưa sẵn sàng. Triển khai GET /api/integrations/google/auth-url.",
       });
       setGoogleLoading(false);
       return;
@@ -559,7 +559,7 @@ export function WorkflowSettingsPanel({
     if (!result.ok) {
       setGoogleMessage({
         ok: false,
-        text: result.message ?? "Could not disconnect Google.",
+        text: result.message ?? "Không thể ngắt kết nối Google.",
       });
       return;
     }
@@ -568,7 +568,7 @@ export function WorkflowSettingsPanel({
       googleConnected: false,
       googleEmail: "",
     });
-    setGoogleMessage({ ok: true, text: "Google disconnected." });
+    setGoogleMessage({ ok: true, text: "Đã ngắt kết nối Google." });
   }
 
   async function handleSaveSpreadsheet() {
@@ -584,7 +584,7 @@ export function WorkflowSettingsPanel({
     if (!result.ok) {
       setGoogleMessage({
         ok: false,
-        text: result.message ?? "Could not save spreadsheet ID on backend.",
+        text: result.message ?? "Không thể lưu Spreadsheet ID trên backend.",
       });
       return;
     }
@@ -594,13 +594,13 @@ export function WorkflowSettingsPanel({
       googleConnected: result.status?.connected ?? true,
       googleEmail: result.status?.email ?? credentials.googleEmail,
     });
-    setGoogleMessage({ ok: true, text: "Spreadsheet ID saved." });
+    setGoogleMessage({ ok: true, text: "Đã lưu Spreadsheet ID." });
   }
 
   async function handleSaveConfig() {
     // Save lên automation job (appWorkflowId), không phải workflow type
     if (!appWorkflowId) {
-      setSaveResult({ ok: false, message: "Job ID is required." });
+      setSaveResult({ ok: false, message: "Cần có Job ID." });
       return;
     }
 
@@ -660,7 +660,7 @@ export function WorkflowSettingsPanel({
     if (!hasWorkflowCredentials(credentials)) {
       setTriggerResult({
         ok: false,
-        message: "Configure OpenRouter and Google Sheets before running.",
+        message: "Cấu hình OpenRouter và Google Sheets trước khi chạy.",
       });
       return;
     }
@@ -699,7 +699,7 @@ export function WorkflowSettingsPanel({
     setTriggerResult({
       ok: result.ok,
       message: [
-        `${runEnvironment === "production" ? "Production" : "Test"} run`,
+        `${runEnvironment === "production" ? "Chạy production" : "Chạy thử"}`,
         result.ok
           ? statusLabel
             ? `Workflow: ${statusLabel}`
@@ -721,9 +721,9 @@ export function WorkflowSettingsPanel({
             <div className="space-y-3">
               <div className="flex items-center justify-between rounded-xl border border-border bg-surface-elevated px-4 py-3">
                 <div>
-                  <p className="text-xs font-medium text-muted">Run status</p>
+                  <p className="text-xs font-medium text-muted">Trạng thái chạy</p>
                   <p className="mt-0.5 text-sm text-foreground">
-                    {workflow.triggers} runs
+                    {workflow.triggers} lượt chạy
                   </p>
                 </div>
                 <WorkflowStatusBadge status={workflow.status} />
@@ -731,7 +731,7 @@ export function WorkflowSettingsPanel({
 
               <div className="rounded-xl border border-border bg-surface-elevated px-4 py-3">
                 <div className="flex items-center justify-between gap-3">
-                  <p className="text-xs font-medium text-muted">Environment</p>
+                  <p className="text-xs font-medium text-muted">Môi trường</p>
                   <WorkflowEnvironmentBadge environment={runEnvironment} />
                 </div>
                 <p className="mt-2 text-xs leading-5 text-foreground">
@@ -752,9 +752,9 @@ export function WorkflowSettingsPanel({
           {requiresTopic && (
             <Field
               id="settings-topic"
-              label="Topic"
+              label="Chủ đề"
               value={config.topic}
-              placeholder="AI marketing trends 2026"
+              placeholder="Xu hướng marketing AI 2026"
               onChange={(value) => onChange({ ...config, topic: value })}
             />
           )}
@@ -772,7 +772,7 @@ export function WorkflowSettingsPanel({
         return (
           <div className="rounded-xl border border-border bg-surface-elevated px-4 py-3">
             <p className="text-sm text-foreground">
-              Uses the same OpenRouter credentials as{" "}
+              Dùng chung thông tin xác thực OpenRouter với{" "}
               <span className="font-medium text-heading">
                 {CONFIGURABLE_NODE_META[openRouterOwner].title}
               </span>
@@ -783,8 +783,8 @@ export function WorkflowSettingsPanel({
                 ready ? "text-[var(--node-green)]" : "text-amber-400"
               }`}>
               {ready
-                ? "Shared credentials ready."
-                : "Configure OpenRouter in AI Settings above."}
+                ? "Thông tin xác thực dùng chung đã sẵn sàng."
+                : "Cấu hình OpenRouter trong Cài đặt AI phía trên."}
             </p>
           </div>
         );
@@ -821,9 +821,9 @@ export function WorkflowSettingsPanel({
   return (
     <aside className="flex w-[360px] shrink-0 flex-col border-l border-border bg-surface-elevated">
       <div className="border-b border-border px-5 py-4">
-        <h2 className="text-base font-semibold text-heading">Node config</h2>
+        <h2 className="text-base font-semibold text-heading">Cấu hình node</h2>
         <p className="mt-1 text-sm text-muted">
-          {configuredCount}/{configurableNodes.length} steps configured
+          {configuredCount}/{configurableNodes.length} bước đã cấu hình
         </p>
       </div>
 
@@ -890,7 +890,7 @@ export function WorkflowSettingsPanel({
             ) : (
               <Save className="h-4 w-4" />
             )}
-            Save Config
+            Lưu cấu hình
           </button>
         <button
           type="button"

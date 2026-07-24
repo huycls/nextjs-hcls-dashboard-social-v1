@@ -42,30 +42,30 @@ export const WORKFLOW_PERMISSIONS: Array<{
 }> = [
   {
     id: "view",
-    label: "View",
-    description: "See workflow details and run history",
+    label: "Xem",
+    description: "Xem chi tiết workflow và lịch sử chạy",
   },
   {
     id: "edit",
-    label: "Edit",
-    description: "Change nodes, settings, and credentials",
+    label: "Sửa",
+    description: "Thay đổi node, cài đặt và thông tin xác thực",
   },
   {
     id: "run",
-    label: "Run",
-    description: "Trigger test and production runs",
+    label: "Chạy",
+    description: "Kích hoạt chạy thử và chạy production",
   },
   {
     id: "manage",
-    label: "Manage",
-    description: "Share access and delete the workflow",
+    label: "Quản lý",
+    description: "Chia sẻ quyền truy cập và xóa workflow",
   },
 ];
 
 export const MEMBER_STATUS_LABELS: Record<MemberStatus, string> = {
-  active: "Active",
-  invited: "Invited",
-  disabled: "Disabled",
+  active: "Đang hoạt động",
+  invited: "Đã mời",
+  disabled: "Đã vô hiệu hóa",
 };
 
 function cloneSeed(): PreAuthorizationState {

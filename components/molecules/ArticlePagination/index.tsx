@@ -32,33 +32,33 @@ export function ArticlesPagination({
 
   return (
     <nav
-      aria-label="Articles pagination"
+      aria-label="Phân trang bài viết"
       className="mt-10 flex items-center justify-center gap-3"
     >
       {hasPreviousPage ? (
         <Link href={previousHref} className={linkClassName} prefetch>
           <ChevronLeft className="h-4 w-4" />
-          Previous
+          Trước
         </Link>
       ) : (
         <span className={disabledClassName} aria-disabled="true">
           <ChevronLeft className="h-4 w-4" />
-          Previous
+          Trước
         </span>
       )}
 
       <span className="min-w-24 text-center text-sm font-medium text-muted">
-        Page {page}
+        Trang {page}
       </span>
 
       {hasNextPage ? (
         <Link href={nextHref} className={linkClassName} prefetch>
-          Next
+          Sau
           <ChevronRight className="h-4 w-4" />
         </Link>
       ) : (
         <span className={disabledClassName} aria-disabled="true">
-          Next
+          Sau
           <ChevronRight className="h-4 w-4" />
         </span>
       )}

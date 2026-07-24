@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { AboutUsContent } from "@/components/organisms/AboutusContent";
 
 export const metadata: Metadata = {
-  title: "About Us — Avispark",
+  title: "Giới thiệu — Avispark",
   description:
-    "Learn about Avispark's mission to make workflow automation accessible, powerful, and trustworthy for every team.",
+    "Tìm hiểu sứ mệnh của Avispark: đưa tự động hóa workflow đến gần hơn, mạnh mẽ và đáng tin cậy cho mọi đội ngũ.",
 };
 
 export default function AboutUsPage() {

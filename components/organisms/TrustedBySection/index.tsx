@@ -14,7 +14,7 @@ export function TrustedBySection() {
     <section className="border-y border-border bg-surface py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <p className="mb-8 text-center text-xs font-medium uppercase tracking-[0.2em] text-foreground">
-          Trusted by leading teams
+          Được tin dùng bởi các đội ngũ hàng đầu
         </p>
 
         <div className="relative overflow-hidden">

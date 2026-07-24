@@ -37,17 +37,17 @@ function EmailSidebarMock({ className }: { className?: string }) {
       </div>
       <div className="space-y-0.5 p-2">
         {[
-          { label: "Inbox", count: "128" },
-          { label: "Drafts", count: "9" },
-          { label: "Sent", count: "" },
-          { label: "Junk", count: "23" },
-          { label: "Trash", count: "" },
-          { label: "Archive", count: "" },
+          { label: "Hộp thư đến", count: "128" },
+          { label: "Nháp", count: "9" },
+          { label: "Đã gửi", count: "" },
+          { label: "Thư rác", count: "23" },
+          { label: "Thùng rác", count: "" },
+          { label: "Lưu trữ", count: "" },
         ].map(({ label, count }) => (
           <div
             key={label}
             className={`flex items-center justify-between rounded-md px-2 py-1.5 text-[10px] ${
-              label === "Inbox"
+              label === "Hộp thư đến"
                 ? "bg-surface-elevated font-medium text-heading"
                 : "text-foreground"
             }`}>
@@ -67,7 +67,7 @@ function WideInboxMock({ className }: { className?: string }) {
       <div className="flex h-full min-h-[140px]">
         <div className="w-28 shrink-0 border-r border-border bg-surface-elevated p-2">
           <div className="mb-2 h-2 w-16 rounded bg-border" />
-          {["Inbox", "Drafts", "Sent"].map((item, i) => (
+          {["Hộp thư đến", "Nháp", "Đã gửi"].map((item, i) => (
             <div
               key={item}
               className={`mb-1 rounded px-2 py-1 text-[9px] ${
@@ -135,37 +135,37 @@ export function SolutionsSection() {
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-            Solution
+            Giải pháp
           </p>
           <h2 className="mt-4 text-3xl font-semibold text-heading sm:text-4xl lg:text-5xl">
-            Empower Your Business with
-            <br className="hidden 2xl:block" /> AI Workflows
+            Nâng tầm doanh nghiệp với
+            <br className="hidden 2xl:block" /> workflow AI
           </h2>
           <p className="mt-4 text-base leading-relaxed text-foreground sm:text-lg">
-            Generic AI tools won&apos;t suffice. Our platform is purpose-built
-            to provide exceptional AI-driven solutions for your unique business
-            needs.
+            Công cụ AI chung chung không đủ. Nền tảng của chúng tôi được xây
+            dựng riêng để cung cấp giải pháp AI phù hợp với nhu cầu kinh doanh
+            đặc thù của bạn.
           </p>
         </div>
 
         <div className="mt-14 grid grid-cols-1 gap-4 lg:grid-cols-3 lg:grid-rows-2">
           <SolutionCard
-            title="Advanced AI Algorithms"
-            description="Our platform utilizes cutting-edge AI algorithms to provide accurate and efficient solutions for your business needs."
+            title="Thuật toán AI tiên tiến"
+            description="Nền tảng sử dụng thuật toán AI hàng đầu để cung cấp giải pháp chính xác và hiệu quả cho nhu cầu kinh doanh của bạn."
             className="lg:col-start-1 lg:row-start-1">
             <DashboardMock className="mx-auto w-full max-w-[220px] opacity-60" />
           </SolutionCard>
 
           <SolutionCard
-            title="Secure Data Handling"
-            description="We prioritize your data security with state-of-the-art encryption and strict privacy protocols, ensuring your information remains confidential."
+            title="Xử lý dữ liệu an toàn"
+            description="Chúng tôi ưu tiên bảo mật dữ liệu với mã hóa tiên tiến và quy trình bảo mật nghiêm ngặt, đảm bảo thông tin của bạn luôn được bảo vệ."
             className="lg:col-start-2 lg:row-start-1">
             <DashboardMock className="mx-auto w-full max-w-[220px] opacity-60" />
           </SolutionCard>
 
           <SolutionCard
-            title="Seamless Integration"
-            description="Easily integrate our AI solutions into your existing workflows and systems for a smooth and efficient operation."
+            title="Tích hợp liền mạch"
+            description="Dễ dàng tích hợp giải pháp AI vào workflow và hệ thống hiện có để vận hành trơn tru, hiệu quả."
             className="lg:col-start-3 lg:row-span-2 lg:row-start-1">
             <div className="relative flex min-h-[280px] items-end justify-center overflow-hidden rounded-2xl bg-[radial-gradient(circle,var(--border)_1px,transparent_1px)] bg-size-[12px_12px] pt-8">
               <EmailSidebarMock className="w-[85%] translate-y-4" />
@@ -173,8 +173,8 @@ export function SolutionsSection() {
           </SolutionCard>
 
           <SolutionCard
-            title="Customizable Solutions"
-            description="Tailor our AI services to your specific needs with flexible customization options, allowing you to get the most out of our platform."
+            title="Giải pháp tùy biến"
+            description="Tùy chỉnh dịch vụ AI theo nhu cầu cụ thể với các tùy chọn linh hoạt, giúp bạn khai thác tối đa nền tảng."
             className="lg:col-span-2 lg:col-start-1 lg:row-start-2">
             <WideInboxMock className="mx-auto w-full max-w-lg" />
           </SolutionCard>

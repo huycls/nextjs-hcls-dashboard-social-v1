@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { PricingTemplate } from "@/components/templates/pricing";
 
 export const metadata: Metadata = {
-  title: "Pricing — Avispark",
+  title: "Bảng giá — Avispark",
   description:
-    "Simple, transparent pricing for teams of every size. Start free and scale as you grow.",
+    "Bảng giá đơn giản, minh bạch cho mọi quy mô đội ngũ. Bắt đầu miễn phí và mở rộng khi bạn phát triển.",
 };
 
 export default function PricingPage() {

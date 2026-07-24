@@ -49,50 +49,50 @@ type NavDropdown = {
 
 const navDropdowns: NavDropdown[] = [
   {
-    label: "Features",
+    label: "Tính năng",
     items: [
       {
-        label: "Workflow builder",
+        label: "Trình tạo workflow",
         href: "#",
-        description: "Design automations visually",
+        description: "Thiết kế tự động hóa trực quan",
       },
       {
-        label: "Integrations",
+        label: "Tích hợp",
         href: "#",
-        description: "Connect your favorite tools",
+        description: "Kết nối các công cụ bạn dùng",
       },
       {
-        label: "Analytics",
+        label: "Phân tích",
         href: "#",
-        description: "Track execution health",
+        description: "Theo dõi sức khỏe thực thi",
       },
     ],
   },
   {
-    label: "Solutions",
+    label: "Giải pháp",
     items: [
       {
-        label: "For startups",
+        label: "Cho startup",
         href: "#",
-        description: "Scale ops without extra headcount",
+        description: "Mở rộng vận hành mà không cần thêm nhân sự",
       },
       {
-        label: "For enterprises",
+        label: "Cho doanh nghiệp",
         href: "#",
-        description: "Secure, compliant automation",
+        description: "Tự động hóa an toàn, tuân thủ",
       },
       {
-        label: "For developers",
+        label: "Cho developers",
         href: "#",
-        description: "API-first workflow platform",
+        description: "Nền tảng workflow ưu tiên API",
       },
     ],
   },
 ];
 
 const navLinks = [
-  { label: "About", href: "/about-us" },
-  { label: "Pricing", href: "/pricing" },
+  { label: "Giới thiệu", href: "/about-us" },
+  { label: "Bảng giá", href: "/pricing" },
   { label: "Blog", href: "/articles" },
 ] as const;
 
@@ -271,7 +271,7 @@ export function HomeNavbar() {
           className="flex items-center">
           {/* <BrandLogo className="h-5 w-5 shrink-0" /> */}
           <img
-            src="/assets/logo-avi.png"
+            src="/assets/favicon.co"
             alt="Avispark"
             className={`h-16 w-16 shrink-0  ${isDark ? "mix-blend-luminosity" : "mix-blend-hard-light"}`}
           />
@@ -295,7 +295,7 @@ export function HomeNavbar() {
             <Link
               href="/about-us"
               className="cursor-pointer rounded-lg px-3 py-2 text-sm font-medium text-foreground transition hover:text-primary">
-              About
+              Giới thiệu
             </Link>
             {navDropdowns.map((dropdown) => (
               <NavDropdownMenu
@@ -306,7 +306,7 @@ export function HomeNavbar() {
             <Link
               href="/pricing"
               className="cursor-pointer rounded-lg px-3 py-2 text-sm font-medium text-foreground transition hover:text-primary">
-              Pricing
+              Bảng giá
             </Link>
             <Link
               href="/articles"
@@ -326,7 +326,7 @@ export function HomeNavbar() {
               <Link
                 href="/login"
                 className="inline-flex h-10 cursor-pointer items-center rounded-lg border border-border bg-surface px-4 text-sm font-medium text-foreground transition-colors duration-300 ease-in-out hover:bg-primary hover:text-background">
-                Login
+                Đăng nhập
               </Link>
               <Link
                 href="/dashboard"
@@ -335,14 +335,14 @@ export function HomeNavbar() {
                   className="h-3.5 w-3.5 shrink-0"
                   variant="light"
                 />
-                <span className="hidden sm:inline">Get Started for Free</span>
-                <span className="sm:hidden">Get Started</span>
+                <span className="hidden sm:inline">Bắt đầu miễn phí</span>
+                <span className="sm:hidden">Bắt đầu</span>
               </Link>
             </div>
 
             <button
               type="button"
-              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-label={mobileOpen ? "Đóng menu" : "Mở menu"}
               aria-expanded={mobileOpen}
               aria-controls="home-mobile-nav"
               onClick={() => setMobileOpen((current) => !current)}
@@ -382,7 +382,7 @@ export function HomeNavbar() {
           <>
             <motion.button
               type="button"
-              aria-label="Close menu"
+              aria-label="Đóng menu"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -451,7 +451,7 @@ export function HomeNavbar() {
                   href="/login"
                   onClick={closeMobileMenu}
                   className="inline-flex h-11 items-center justify-center rounded-lg border border-border bg-surface px-4 text-sm font-medium text-foreground transition hover:bg-primary hover:text-background">
-                  Login
+                  Đăng nhập
                 </Link>
                 <Link
                   href="/dashboard"
@@ -461,7 +461,7 @@ export function HomeNavbar() {
                     className="h-3.5 w-3.5 shrink-0"
                     variant="light"
                   />
-                  Get Started for Free
+                  Bắt đầu miễn phí
                 </Link>
               </motion.div>
             </motion.nav>

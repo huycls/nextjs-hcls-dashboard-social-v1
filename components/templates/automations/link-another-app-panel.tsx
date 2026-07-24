@@ -27,15 +27,15 @@ export function LinkAnotherAppPanel({ onClose }: LinkAnotherAppPanelProps) {
       <div className="flex items-start justify-between gap-3 border-b border-border px-5 py-4">
         <div>
           <h2 className="text-base font-semibold text-heading">
-            Link Another App
+            Liên kết ứng dụng khác
           </h2>
           <p className="mt-1 text-xs text-muted">
-            Search integrations to extend this workflow
+            Tìm tích hợp để mở rộng workflow này
           </p>
         </div>
         <button
           type="button"
-          aria-label="Close panel"
+          aria-label="Đóng bảng"
           onClick={onClose}
           className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-muted transition hover:bg-surface hover:text-heading">
           <X className="h-4 w-4" />
@@ -49,7 +49,7 @@ export function LinkAnotherAppPanel({ onClose }: LinkAnotherAppPanelProps) {
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Search apps"
+            placeholder="Tìm ứng dụng"
             className="h-10 w-full rounded-xl border border-border bg-surface pl-9 pr-3 text-sm text-foreground outline-none transition placeholder:text-muted focus:border-primary/40 focus:ring-2 focus:ring-primary/15"
           />
         </label>
@@ -84,7 +84,7 @@ export function LinkAnotherAppPanel({ onClose }: LinkAnotherAppPanelProps) {
 
         {apps.length === 0 && (
           <p className="px-3 py-8 text-center text-sm text-muted">
-            No apps match “{query}”.
+            Không có ứng dụng khớp “{query}”.
           </p>
         )}
       </div>

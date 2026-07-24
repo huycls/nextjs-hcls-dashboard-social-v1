@@ -23,7 +23,7 @@ export function ArticlesTemplate({
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <MarketingPageHeader
           eyebrow="Blog"
-          title="Articles"
+          title="Bài viết"
           description=""
         />
 
@@ -31,7 +31,7 @@ export function ArticlesTemplate({
           <ArticlesArchive pageData={pageData} categories={categories} />
           <RelatedArticlesSidebar
             articles={sidebarArticles}
-            title="Related articles"
+            title="Bài viết liên quan"
           />
         </div>
       </div>

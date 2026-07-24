@@ -8,34 +8,40 @@ type ActivityItem = {
 
 const activities: ActivityItem[] = [
   {
-    title: "CRM Lead Assignment",
+    title: "Phân bổ lead CRM",
     subtitle: "Webhook trigger · Slack notify",
     meta: "3.4s",
     status: "Approved",
-    date: "Today",
+    date: "Hôm nay",
   },
   {
-    title: "Order Confirmation",
+    title: "Xác nhận đơn hàng",
     subtitle: "Email sequence · Shopify",
     meta: "1.2s",
     status: "Processing",
-    date: "Yesterday",
+    date: "Hôm qua",
   },
   {
-    title: "Invoice Reconciliation",
+    title: "Đối soát hóa đơn",
     subtitle: "Sheet sync · Google Sheets",
     meta: "—",
     status: "Pending Docs",
-    date: "Mar 18",
+    date: "18/03",
   },
   {
-    title: "Content Post Generator",
+    title: "Tạo bài đăng nội dung",
     subtitle: "AI pipeline · Gemini",
     meta: "5.8s",
     status: "Approved",
-    date: "Mar 17",
+    date: "17/03",
   },
 ];
+
+const STATUS_LABELS: Record<ActivityItem["status"], string> = {
+  Approved: "Đã duyệt",
+  Processing: "Đang xử lý",
+  "Pending Docs": "Chờ tài liệu",
+};
 
 const statusStyles: Record<ActivityItem["status"], string> = {
   Approved: "bg-[var(--node-green-bg)] text-[var(--node-green)]",
@@ -49,10 +55,10 @@ export function RecentWorkflows() {
     <section className="surface-card rounded-xl bg-surface p-6 lg:col-span-3">
       <div className="mb-5">
         <h2 className="text-base font-semibold text-heading">
-          Recent Activity
+          Hoạt động gần đây
         </h2>
         <p className="mt-1 text-sm text-muted">
-          Latest workflows processed by AI
+          Các workflow mới nhất được AI xử lý
         </p>
       </div>
 
@@ -72,7 +78,7 @@ export function RecentWorkflows() {
               </span>
               <span
                 className={`inline-flex rounded-md px-2.5 py-1 text-xs font-medium ${statusStyles[item.status]}`}>
-                {item.status}
+                {STATUS_LABELS[item.status]}
               </span>
               <span className="text-xs text-muted">{item.date}</span>
             </div>

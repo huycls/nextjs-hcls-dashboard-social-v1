@@ -16,8 +16,8 @@ import {
 // } from "@/lib/wp/articles";
 
 export const metadata: Metadata = {
-  title: "Articles — Avispark",
-  description: "Latest news and guides from WordPress headless CMS.",
+  title: "Bài viết — Avispark",
+  description: "Tin tức và hướng dẫn mới nhất từ Avispark.",
 };
 
 export const revalidate = 300;

@@ -85,11 +85,11 @@ export async function loginWithCredentials(
     };
   } catch (error) {
     const hint =
-      error instanceof Error ? error.message : "Unknown connection error";
+      error instanceof Error ? error.message : "Lỗi kết nối không xác định";
 
     return {
       ok: false,
-      message: `Could not reach login API at ${AUTH_LOGIN_URL}. ${hint}`,
+      message: `Không thể kết nối tới API đăng nhập tại ${AUTH_LOGIN_URL}. ${hint}`,
     };
   }
 }

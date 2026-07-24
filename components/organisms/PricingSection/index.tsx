@@ -19,17 +19,17 @@ type PricingPlan = {
 const plans: PricingPlan[] = [
   {
     id: "basic",
-    name: "Basic",
+    name: "Cơ bản",
     monthlyPrice: 19,
     yearlyPrice: 15,
     features: [
-      "1 User",
-      "5GB Storage",
-      "Basic Support",
-      "Limited API Access",
-      "Standard Analytics",
+      "1 người dùng",
+      "5GB lưu trữ",
+      "Hỗ trợ cơ bản",
+      "Truy cập API giới hạn",
+      "Phân tích tiêu chuẩn",
     ],
-    footer: "Perfect for individuals and small projects",
+    footer: "Phù hợp cho cá nhân và dự án nhỏ",
   },
   {
     id: "pro",
@@ -38,27 +38,27 @@ const plans: PricingPlan[] = [
     yearlyPrice: 39,
     popular: true,
     features: [
-      "5 Users",
-      "50GB Storage",
-      "Priority Support",
-      "Full API Access",
-      "Advanced Analytics",
+      "5 người dùng",
+      "50GB lưu trữ",
+      "Hỗ trợ ưu tiên",
+      "Truy cập API đầy đủ",
+      "Phân tích nâng cao",
     ],
-    footer: "Ideal for growing businesses and teams",
+    footer: "Lý tưởng cho doanh nghiệp và đội ngũ đang phát triển",
   },
   {
     id: "enterprise",
-    name: "Enterprise",
+    name: "Doanh nghiệp",
     monthlyPrice: 99,
     yearlyPrice: 79,
     features: [
-      "Unlimited Users",
-      "500GB Storage",
-      "24/7 Premium Support",
-      "Custom Integrations",
-      "AI-Powered Insights",
+      "Không giới hạn người dùng",
+      "500GB lưu trữ",
+      "Hỗ trợ premium 24/7",
+      "Tích hợp tùy chỉnh",
+      "Insight AI",
     ],
-    footer: "For large-scale operations and high-volume",
+    footer: "Dành cho vận hành quy mô lớn và khối lượng cao",
   },
 ];
 
@@ -77,13 +77,13 @@ function BillingToggle({
         className={`text-sm font-medium ${
           !isYearly ? "text-primary" : "text-foreground"
         }`}>
-        Monthly
+        Theo tháng
       </span>
       <button
         type="button"
         role="switch"
         aria-checked={isYearly}
-        aria-label="Toggle yearly billing"
+        aria-label="Chuyển sang thanh toán theo năm"
         onClick={() => onChange(isYearly ? "monthly" : "yearly")}
         className={`cursor-pointer transition-all duration-300 ease-in-out relative shadow-sm top-0.5 bg-primary h-7 w-12 rounded-full ${
           isYearly ? "bg-primary" : "bg-surface"
@@ -98,7 +98,7 @@ function BillingToggle({
         className={`text-sm font-medium ${
           isYearly ? "text-primary" : "text-foreground"
         }`}>
-        Yearly
+        Theo năm
       </span>
     </div>
   );
@@ -113,7 +113,7 @@ function PricingCard({
 }) {
   const price = billing === "monthly" ? plan.monthlyPrice : plan.yearlyPrice;
   const billedLabel =
-    billing === "monthly" ? "billed monthly" : "billed yearly";
+    billing === "monthly" ? "thanh toán theo tháng" : "thanh toán theo năm";
 
   return (
     <article
@@ -130,7 +130,7 @@ function PricingCard({
       {plan.popular && (
         <div className="absolute right-4 top-4 inline-flex items-center gap-1 rounded-full bg-primary px-2.5 py-1 text-xs font-medium text-background">
           <Star className="h-3 w-3 fill-background" />
-          <span className="-mt-0.5">Popular</span>
+          <span className="-mt-0.5">Phổ biến</span>
         </div>
       )}
 
@@ -143,7 +143,7 @@ function PricingCard({
           <span className="text-4xl font-semibold tracking-tight text-heading">
             ${price}
           </span>
-          <span className="mb-1 text-sm text-foreground">/ month</span>
+          <span className="mb-1 text-sm text-foreground">/ tháng</span>
         </p>
         <p className="mt-1 text-center text-xs text-foreground">
           {billedLabel}
@@ -171,7 +171,7 @@ function PricingCard({
             ? "bg-primary text-background hover:bg-primary-hover"
             : "surface-card bg-surface text-heading hover:bg-primary hover:text-background hover:shadow-[var(--shadow-card-hover)]"
         }`}>
-        Subscribe
+        Đăng ký
       </button>
 
       <p className="mt-4 text-center text-xs text-foreground">{plan.footer}</p>
@@ -187,11 +187,11 @@ export function PricingSection() {
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-            Pricing
+            Bảng giá
           </p>
-          <h2 className="mt-4 text-3xl font-semibold text-heading sm:text-4xl lg:text-5xl">
-            Choose the plan that&apos;s right
-            <br className="hidden 2xl:block" /> for you
+          <h2 className="mt-4 text-3xl font-semibold text-heading sm:text-4xl lg:text-5xl leading-14">
+            Chọn gói phù hợp
+            <br className="hidden 2xl:block" /> theo nhu cầu
           </h2>
 
           <div className="mt-8">

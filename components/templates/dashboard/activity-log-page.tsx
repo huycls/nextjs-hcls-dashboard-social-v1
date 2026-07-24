@@ -7,10 +7,10 @@ export function ActivityLogPage() {
     <div className="relative flex min-h-0 flex-1 flex-col">
       <div className="border-b border-border bg-surface px-6 py-5 lg:px-8">
         <h1 className="text-2xl font-semibold tracking-tight text-heading">
-          Log Activity
+          Nhật ký hoạt động
         </h1>
         <p className="mt-1 text-sm text-muted">
-          Track status updates and notifications by workflow
+          Theo dõi cập nhật trạng thái và thông báo theo workflow
         </p>
       </div>
 

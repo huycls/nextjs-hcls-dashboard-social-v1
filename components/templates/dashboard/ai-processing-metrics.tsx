@@ -91,7 +91,7 @@ function MetricTooltip({ label, text }: { label: string; text: string }) {
     <span className="group relative inline-flex shrink-0">
       <button
         type="button"
-        aria-label={`About ${label}`}
+        aria-label={`Giới thiệu về ${label}`}
         className="inline-flex h-4 w-4 items-center justify-center rounded-full text-muted transition hover:text-heading focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/30">
         <Info
           className="h-3.5 w-3.5"

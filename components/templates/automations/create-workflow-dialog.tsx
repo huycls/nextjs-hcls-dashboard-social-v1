@@ -73,7 +73,7 @@ export function CreateWorkflowDialog({
       setError(
         createError instanceof Error
           ? createError.message
-          : "Failed to create workflow.",
+          : "Không thể tạo workflow.",
       );
       setCreating(false);
     }
@@ -93,11 +93,11 @@ export function CreateWorkflowDialog({
           <h2
             id="create-workflow-title"
             className="text-lg font-semibold text-heading">
-            {step === "type" ? "Choose workflow type" : "Name your workflow"}
+            {step === "type" ? "Chọn loại workflow" : "Đặt tên workflow"}
           </h2>
           <button
             type="button"
-            aria-label="Close dialog"
+            aria-label="Đóng hộp thoại"
             onClick={handleClose}
             className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-foreground transition hover:bg-surface hover:text-foreground">
             <X className="h-4 w-4" />
@@ -136,7 +136,7 @@ export function CreateWorkflowDialog({
             className="p-6">
             {selectedType && (
               <p className="mb-4 text-sm text-foreground">
-                Type:{" "}
+                Loại:{" "}
                 <span className="font-medium text-heading">
                   {WORKFLOW_TYPE_LABELS[selectedType]}
                 </span>
@@ -146,14 +146,14 @@ export function CreateWorkflowDialog({
             <label
               htmlFor="workflow-name"
               className="mb-2 block text-sm font-medium text-heading">
-              Workflow name
+              Tên workflow
             </label>
             <input
               id="workflow-name"
               type="text"
               value={workflowName}
               onChange={(event) => setWorkflowName(event.target.value)}
-              placeholder="Enter workflow name"
+              placeholder="Nhập tên workflow"
               autoFocus
               disabled={creating}
               className="h-11 w-full rounded-xl border border-border bg-surface px-4 text-sm text-foreground outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/20 disabled:opacity-60"
@@ -166,13 +166,13 @@ export function CreateWorkflowDialog({
                 type="button"
                 onClick={handleBack}
                 className="rounded-xl border border-border px-4 py-2 text-sm font-medium text-foreground transition hover:bg-surface">
-                Back
+                Quay lại
               </button>
               <button
                 type="submit"
                 disabled={!workflowName.trim() || creating}
                 className="rounded-xl bg-primary px-4 py-2 text-sm font-medium text-background transition hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-40">
-                {creating ? "Creating..." : "Create workflow"}
+                {creating ? "Đang tạo..." : "Tạo workflow"}
               </button>
             </div>
           </form>

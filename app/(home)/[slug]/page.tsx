@@ -36,14 +36,14 @@ export async function generateMetadata({
   const { slug } = await params;
 
   if (isReservedArticleSlug(slug)) {
-    return { title: "Not found — Avispark" };
+    return { title: "Không tìm thấy — Avispark" };
   }
 
   // const article = await getArticleBySlug(slug);
   const article = getArticleFromSnapshot(slug);
 
   if (!article) {
-    return { title: "Article not found — Avispark" };
+    return { title: "Không tìm thấy bài viết — Avispark" };
   }
 
   return {
@@ -96,7 +96,7 @@ export default async function ArticleDetailPage({
           <RelatedArticlesSidebar
             articles={related}
             currentSlug={slug}
-            title="Related articles"
+            title="Bài viết liên quan"
           />
         </div>
       </div>

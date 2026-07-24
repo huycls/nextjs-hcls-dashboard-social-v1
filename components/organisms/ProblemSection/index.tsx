@@ -10,21 +10,21 @@ type ProblemItem = {
 const problems: ProblemItem[] = [
   {
     icon: Brain,
-    title: "Data Overload",
+    title: "Quá tải dữ liệu",
     description:
-      "Businesses struggle to make sense of vast amounts of complex data, missing out on valuable insights that could drive growth and innovation.",
+      "Doanh nghiệp gặp khó khăn khi xử lý khối lượng dữ liệu phức tạp, bỏ lỡ những insight quý giá có thể thúc đẩy tăng trưởng và đổi mới.",
   },
   {
     icon: Zap,
-    title: "Slow Decision-Making",
+    title: "Ra quyết định chậm",
     description:
-      "Traditional data processing methods are too slow, causing businesses to lag behind market changes and miss crucial opportunities.",
+      "Phương pháp xử lý dữ liệu truyền thống quá chậm, khiến doanh nghiệp bị tụt hậu so với thị trường và bỏ lỡ cơ hội quan trọng.",
   },
   {
     icon: Shield,
-    title: "Data Security Concerns",
+    title: "Lo ngại bảo mật dữ liệu",
     description:
-      "With increasing cyber threats, businesses worry about the safety of their sensitive information when adopting new technologies.",
+      "Trước các mối đe dọa mạng ngày càng tăng, doanh nghiệp lo lắng về an toàn thông tin nhạy cảm khi áp dụng công nghệ mới.",
   },
 ];
 
@@ -34,10 +34,10 @@ export function ProblemSection() {
       <div className="mx-auto max-w-6xl px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-            Problem
+            Vấn đề
           </p>
           <h2 className="mt-4 text-3xl font-semibold text-heading sm:text-4xl lg:text-5xl">
-            Manually entering your data is a hassle.
+            Nhập liệu thủ công là một gánh nặng.
           </h2>
         </div>
 

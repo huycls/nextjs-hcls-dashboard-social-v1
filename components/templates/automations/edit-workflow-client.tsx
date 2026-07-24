@@ -56,8 +56,8 @@ export function EditWorkflowClient({ workflowId }: EditWorkflowClientProps) {
   if (!isClient) {
     return (
       <Loading
-        label="Loading workflow"
-        message="Loading workflow..."
+        label="Đang tải workflow"
+        message="Đang tải workflow..."
       />
     );
   }
@@ -65,8 +65,8 @@ export function EditWorkflowClient({ workflowId }: EditWorkflowClientProps) {
   if (loading || !workflow) {
     return (
       <Loading
-        label="Loading workflow"
-        message="Loading workflow..."
+        label="Đang tải workflow"
+        message="Đang tải workflow..."
       />
     );
   }

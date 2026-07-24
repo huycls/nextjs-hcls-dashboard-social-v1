@@ -4,42 +4,42 @@ import { MarketingPageHeader } from "@/components/organisms/AboutusContent/marke
 import CountUp from "@/components/atoms/CountUp";
 
 const stats = [
-  { value: 10, suffix: "K+", label: "Workflows automated" },
-  { value: 500, suffix: "+", label: "Teams worldwide" },
-  { value: 99.9, suffix: "%", label: "Uptime SLA" },
-  { value: 24, suffix: "/7", label: "Enterprise support" },
+  { value: 10, suffix: "K+", label: "Workflow đã tự động hóa" },
+  { value: 500, suffix: "+", label: "Đội ngũ trên toàn cầu" },
+  { value: 99.9, suffix: "%", label: "Cam kết uptime SLA" },
+  { value: 24, suffix: "/7", label: "Hỗ trợ doanh nghiệp" },
 ];
 
 const values = [
   {
     icon: Zap,
-    title: "Move fast, ship reliably",
+    title: "Triển khai nhanh, vận hành ổn định",
     description:
-      "We believe automation should accelerate teams — not add complexity. Every feature we build is tested for real-world reliability.",
+      "Chúng tôi tin rằng tự động hóa phải giúp đội ngũ làm việc nhanh hơn — không tạo thêm phức tạp. Mọi tính năng đều được kiểm thử độ tin cậy thực tế.",
   },
   {
     icon: Users,
-    title: "Built for every team",
+    title: "Dành cho mọi đội ngũ",
     description:
-      "From solo founders to enterprise ops, Avispark scales with you. No-code for starters, full API control for power users.",
+      "Từ founder solo đến vận hành doanh nghiệp, Avispark mở rộng cùng bạn. No-code cho người mới, kiểm soát API đầy đủ cho power user.",
   },
   {
     icon: Shield,
-    title: "Security by default",
+    title: "Bảo mật mặc định",
     description:
-      "Your data and workflows are protected with encryption at rest and in transit, role-based access, and audit logs.",
+      "Dữ liệu và workflow của bạn được bảo vệ bằng mã hóa khi lưu trữ và truyền tải, phân quyền theo vai trò và nhật ký kiểm toán.",
   },
   {
     icon: Lightbulb,
-    title: "AI that works for you",
+    title: "AI phục vụ công việc của bạn",
     description:
-      "We integrate leading AI models into practical workflow nodes — classification, extraction, summarization, and more.",
+      "Chúng tôi tích hợp các mô hình AI hàng đầu vào node workflow thực tế — phân loại, trích xuất, tóm tắt và nhiều hơn nữa.",
   },
   {
     icon: Heart,
-    title: "Customer-obsessed",
+    title: "Lấy khách hàng làm trung tâm",
     description:
-      "Our roadmap is shaped by real user feedback. We ship improvements weekly and listen to every support conversation.",
+      "Lộ trình sản phẩm được định hình bởi phản hồi thực tế. Chúng tôi phát hành cải tiến hàng tuần và lắng nghe mọi cuộc trò chuyện hỗ trợ.",
   },
 ];
 
@@ -49,9 +49,9 @@ export function AboutUsContent() {
       <section className="bg-background py-16 lg:py-20">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <MarketingPageHeader
-            eyebrow="About us"
-            title="We help teams automate what matters"
-            description="Avispark was founded with a simple mission: make workflow automation accessible, powerful, and trustworthy for every team — from startups to enterprises."
+            eyebrow="Giới thiệu"
+            title="Giúp đội ngũ tự động hóa những việc quan trọng"
+            description="Avispark được thành lập với sứ mệnh đơn giản: làm cho tự động hóa workflow trở nên dễ tiếp cận, mạnh mẽ và đáng tin cậy cho mọi đội ngũ — từ startup đến doanh nghiệp."
           />
 
           <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -81,18 +81,18 @@ export function AboutUsContent() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-              Our story
+              Câu chuyện của chúng tôi
             </p>
             <h2 className="mt-4 text-3xl font-semibold text-heading sm:text-4xl">
-              Born from frustration with manual work
+              Sinh ra từ sự bực bội với công việc thủ công
             </h2>
             <p className="mt-5 text-base leading-relaxed text-foreground sm:text-lg">
-              Our founders spent years watching talented teams drown in
-              repetitive tasks — copying data between tools, triggering alerts
-              manually, and waiting on engineering for every small automation.
-              Avispark started as an internal tool and grew into a platform used
-              by hundreds of teams to reclaim their time and focus on
-              high-impact work.
+              Các founder đã dành nhiều năm chứng kiến đội ngũ tài năng chìm
+              trong công việc lặp lại — sao chép dữ liệu giữa các công cụ, gửi
+              cảnh báo thủ công và chờ đội kỹ thuật cho mỗi automation nhỏ.
+              Avispark bắt đầu như công cụ nội bộ và phát triển thành nền tảng
+              được hàng trăm đội ngũ sử dụng để lấy lại thời gian và tập trung
+              vào công việc có tác động cao.
             </p>
           </div>
         </div>
@@ -102,10 +102,10 @@ export function AboutUsContent() {
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-3xl text-center">
             <p className="text-sm font-semibold uppercase tracking-wider text-primary">
-              Our values
+              Giá trị cốt lõi
             </p>
             <h2 className="mt-4 text-3xl font-semibold text-heading sm:text-4xl">
-              What drives us every day
+              Điều thúc đẩy chúng tôi mỗi ngày
             </h2>
           </div>
 
@@ -132,23 +132,23 @@ export function AboutUsContent() {
       <section className="bg-surface-elevated py-16 lg:py-20">
         <div className="mx-auto max-w-3xl px-6 text-center lg:px-8">
           <h2 className="text-3xl font-semibold text-heading sm:text-4xl">
-            Ready to automate your workflows?
+            Sẵn sàng tự động hóa workflow?
           </h2>
           <p className="mt-4 text-base text-foreground sm:text-lg">
-            Join hundreds of teams already using Avispark to build smarter,
-            faster automations.
+            Tham gia cùng hàng trăm đội ngũ đang dùng Avispark để xây dựng
+            automation thông minh và nhanh hơn.
           </p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href="/dashboard"
               className="inline-flex h-12 items-center gap-2 rounded-xl bg-primary px-6 text-sm font-medium text-background transition hover:bg-primary-hover">
-              Get started for free
+              Bắt đầu miễn phí
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               href="/pricing"
               className="inline-flex h-12 items-center rounded-xl border border-border bg-surface px-6 text-sm font-medium text-heading transition hover:bg-surface-elevated">
-              View pricing
+              Xem bảng giá
             </Link>
           </div>
         </div>

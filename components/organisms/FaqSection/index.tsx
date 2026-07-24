@@ -11,29 +11,29 @@ type FaqItem = {
 
 const faqs: FaqItem[] = [
   {
-    question: "What is Avispark?",
+    question: "Avispark là gì?",
     answer:
-      "Avispark is an automation workflow platform that helps teams build, deploy, and monitor AI-driven workflows — from simple triggers to complex multi-step pipelines.",
+      "Avispark là nền tảng workflow tự động hóa giúp đội ngũ xây dựng, triển khai và giám sát workflow AI — từ trigger đơn giản đến pipeline nhiều bước phức tạp.",
   },
   {
-    question: "How can I get started with Avispark?",
+    question: "Làm thế nào để bắt đầu với Avispark?",
     answer:
-      "Create a free account, connect your integrations, and use the visual workflow builder to design your first automation. Most teams ship their first workflow in under a day.",
+      "Tạo tài khoản miễn phí, kết nối tích hợp và dùng trình tạo workflow trực quan để thiết kế automation đầu tiên. Hầu hết đội ngũ triển khai workflow đầu tiên trong vòng một ngày.",
   },
   {
-    question: "What types of AI models does Avispark support?",
+    question: "Avispark hỗ trợ những loại mô hình AI nào?",
     answer:
-      "Avispark supports popular LLM providers and custom API endpoints. You can plug in models for classification, summarization, extraction, and more within your workflow nodes.",
+      "Avispark hỗ trợ các nhà cung cấp LLM phổ biến và endpoint API tùy chỉnh. Bạn có thể tích hợp mô hình cho phân loại, tóm tắt, trích xuất và nhiều hơn nữa trong các node workflow.",
   },
   {
-    question: "Is Avispark suitable for beginners in AI development?",
+    question: "Avispark có phù hợp với người mới bắt đầu phát triển AI?",
     answer:
-      "Yes. The drag-and-drop canvas requires no code to get started. Advanced users can still customize nodes, webhooks, and API calls when they need more control.",
+      "Có. Canvas kéo-thả không cần code để bắt đầu. Người dùng nâng cao vẫn có thể tùy chỉnh node, webhook và API call khi cần kiểm soát nhiều hơn.",
   },
   {
-    question: "What kind of support does Avispark provide?",
+    question: "Avispark cung cấp loại hỗ trợ nào?",
     answer:
-      "All plans include documentation and community support. Pro and Enterprise plans add priority and 24/7 premium support with dedicated onboarding assistance.",
+      "Tất cả gói đều có tài liệu và hỗ trợ cộng đồng. Gói Pro và Enterprise bổ sung hỗ trợ ưu tiên và premium 24/7 cùng hỗ trợ onboarding chuyên biệt.",
   },
 ];
 
@@ -101,7 +101,7 @@ export function FaqSection() {
             FAQ
           </p>
           <h2 className="mt-4 text-3xl font-semibold text-heading sm:text-4xl lg:text-5xl">
-            Frequently asked questions
+            Câu hỏi thường gặp
           </h2>
         </div>
 
@@ -117,7 +117,7 @@ export function FaqSection() {
         </div>
 
         <p className="mt-10 text-center text-sm text-foreground">
-          Still have questions? Email us at{" "}
+          Vẫn còn thắc mắc? Gửi email cho chúng tôi tại{" "}
           <a
             href="mailto:support@Avispark.com"
             className="font-medium text-heading underline underline-offset-2">

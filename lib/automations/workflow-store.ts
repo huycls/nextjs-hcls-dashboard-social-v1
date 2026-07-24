@@ -247,7 +247,7 @@ export function incrementWorkflowTriggers(id: string) {
       ? {
           ...workflow,
           triggers: workflow.triggers + 1,
-          lastModified: "Just now",
+          lastModified: "Vừa xong",
         }
       : workflow,
   );

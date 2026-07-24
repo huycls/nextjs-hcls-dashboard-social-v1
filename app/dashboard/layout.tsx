@@ -5,8 +5,8 @@ import { AppShell } from "@/components/templates/dashboard/app-shell";
 import { getAuthToken } from "@/lib/auth/auth-server";
 
 export const metadata: Metadata = {
-  title: "Avispark — Dashboard",
-  description: "Automation workflow dashboard",
+  title: "Avispark — Tổng quan",
+  description: "Bảng điều khiển workflow tự động hóa",
 };
 
 export default async function DashboardLayout({

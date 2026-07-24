@@ -109,7 +109,7 @@ export async function fetchGoogleAuthUrl(
     if (!authUrl) {
       return {
         ok: false,
-        message: "Backend did not return a Google auth URL.",
+        message: "Backend chưa trả về URL xác thực Google.",
       };
     }
 
@@ -120,7 +120,7 @@ export async function fetchGoogleAuthUrl(
       message:
         error instanceof Error
           ? error.message
-          : "Could not start Google OAuth.",
+          : "Không thể bắt đầu Google OAuth.",
     };
   }
 }
@@ -142,7 +142,7 @@ export async function disconnectGoogleIntegration(): Promise<GoogleMutationResul
       message:
         error instanceof Error
           ? error.message
-          : "Could not disconnect Google.",
+          : "Không thể ngắt kết nối Google.",
     };
   }
 }
@@ -174,7 +174,7 @@ export async function updateGoogleSpreadsheetId(
       message:
         error instanceof Error
           ? error.message
-          : "Could not update spreadsheet ID.",
+          : "Không thể cập nhật Spreadsheet ID.",
     };
   }
 }

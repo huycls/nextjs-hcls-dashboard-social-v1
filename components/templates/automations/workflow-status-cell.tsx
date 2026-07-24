@@ -53,7 +53,7 @@ export function WorkflowStatusCell({
     <div className="flex items-center gap-2">
       <StatusToggle
         checked={workflow.status === "Active"}
-        label={`Toggle status for ${workflow.name}`}
+        label={`Bật/tắt trạng thái cho ${workflow.name}`}
         onChange={onToggle}
       />
       <WorkflowStatusBadge status={workflow.status} />

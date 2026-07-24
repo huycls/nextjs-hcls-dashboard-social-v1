@@ -6,179 +6,179 @@
       "workflowId": "wf-payment-ack-success",
       "timestamp": "2025-07-10T09:20:00.000Z",
       "level": "success",
-      "title": "Workflow completed",
-      "message": "Payment acknowledgment email delivered to customer."
+      "title": "Workflow hoàn tất",
+      "message": "Email xác nhận thanh toán đã gửi tới khách hàng."
     },
     {
       "id": "log-pas-2",
       "workflowId": "wf-payment-ack-success",
       "timestamp": "2025-07-10T09:19:42.000Z",
       "level": "running",
-      "title": "Processing payment data",
-      "message": "Validating transaction and preparing notification."
+      "title": "Đang xử lý dữ liệu thanh toán",
+      "message": "Xác thực giao dịch và chuẩn bị thông báo."
     },
     {
       "id": "log-pas-3",
       "workflowId": "wf-payment-ack-success",
       "timestamp": "2025-07-10T09:19:30.000Z",
       "level": "info",
-      "title": "Workflow triggered",
-      "message": "Webhook received a new payment event."
+      "title": "Workflow được kích hoạt",
+      "message": "Webhook nhận sự kiện thanh toán mới."
     },
     {
       "id": "log-paf-1",
       "workflowId": "wf-payment-ack-failed",
       "timestamp": "2025-07-10T09:20:00.000Z",
       "level": "failed",
-      "title": "Delivery failed",
-      "message": "Could not send acknowledgment — SMTP connection timed out.",
-      "detail": "Error code: SMTP_TIMEOUT · Retry scheduled in 15 minutes."
+      "title": "Gửi thất bại",
+      "message": "Không thể gửi xác nhận — kết nối SMTP hết thời gian chờ.",
+      "detail": "Mã lỗi: SMTP_TIMEOUT · Thử lại sau 15 phút."
     },
     {
       "id": "log-paf-2",
       "workflowId": "wf-payment-ack-failed",
       "timestamp": "2025-07-10T09:19:55.000Z",
       "level": "warning",
-      "title": "Retry attempt",
-      "message": "First delivery attempt failed, retrying automatically."
+      "title": "Lần thử lại",
+      "message": "Lần gửi đầu thất bại, đang thử lại tự động."
     },
     {
       "id": "log-paf-3",
       "workflowId": "wf-payment-ack-failed",
       "timestamp": "2025-07-10T09:19:30.000Z",
       "level": "info",
-      "title": "Workflow triggered",
-      "message": "Webhook received a new payment event."
+      "title": "Workflow được kích hoạt",
+      "message": "Webhook nhận sự kiện thanh toán mới."
     },
     {
       "id": "log-crm-1",
       "workflowId": "wf-crm-lead-assignment",
       "timestamp": "2025-07-09T14:35:00.000Z",
       "level": "success",
-      "title": "Lead assigned",
-      "message": "3 leads routed to sales team via Slack notification."
+      "title": "Đã gán lead",
+      "message": "3 lead được chuyển tới đội sales qua thông báo Slack."
     },
     {
       "id": "log-crm-2",
       "workflowId": "wf-crm-lead-assignment",
       "timestamp": "2025-07-09T14:34:20.000Z",
       "level": "running",
-      "title": "Scoring leads",
-      "message": "AI model evaluating inbound lead priority."
+      "title": "Đang chấm điểm lead",
+      "message": "Mô hình AI đánh giá mức ưu tiên lead đến."
     },
     {
       "id": "log-crm-3",
       "workflowId": "wf-crm-lead-assignment",
       "timestamp": "2025-07-09T14:34:00.000Z",
       "level": "info",
-      "title": "Workflow triggered",
-      "message": "New form submission received from landing page."
+      "title": "Workflow được kích hoạt",
+      "message": "Nhận gửi form mới từ trang đích."
     },
     {
       "id": "log-order-1",
       "workflowId": "wf-order-confirmation",
       "timestamp": "2025-07-08T11:12:00.000Z",
       "level": "running",
-      "title": "Generating confirmation",
-      "message": "Creating personalized order confirmation content."
+      "title": "Đang tạo xác nhận",
+      "message": "Tạo nội dung xác nhận đơn hàng cá nhân hóa."
     },
     {
       "id": "log-order-2",
       "workflowId": "wf-order-confirmation",
       "timestamp": "2025-07-08T11:10:00.000Z",
       "level": "info",
-      "title": "Workflow triggered",
-      "message": "Stripe checkout session completed."
+      "title": "Workflow được kích hoạt",
+      "message": "Phiên thanh toán Stripe hoàn tất."
     },
     {
       "id": "log-order-3",
       "workflowId": "wf-order-confirmation",
       "timestamp": "2025-07-07T16:45:00.000Z",
       "level": "success",
-      "title": "Workflow completed",
-      "message": "Order confirmation sent to customer inbox."
+      "title": "Workflow hoàn tất",
+      "message": "Xác nhận đơn hàng đã gửi tới hộp thư khách hàng."
     },
     {
       "id": "log-inv-1",
       "workflowId": "wf-invoice-reconciliation",
       "timestamp": "2025-07-07T16:45:00.000Z",
       "level": "failed",
-      "title": "Sync failed",
-      "message": "Spreadsheet API returned 403 — credentials may have expired.",
-      "detail": "Please update integration credentials in Settings."
+      "title": "Đồng bộ thất bại",
+      "message": "Spreadsheet API trả về 403 — thông tin xác thực có thể đã hết hạn.",
+      "detail": "Vui lòng cập nhật thông tin xác thực tích hợp trong Cài đặt."
     },
     {
       "id": "log-inv-2",
       "workflowId": "wf-invoice-reconciliation",
       "timestamp": "2025-07-07T16:44:10.000Z",
       "level": "warning",
-      "title": "Partial match",
-      "message": "2 of 5 invoices could not be matched automatically."
+      "title": "Khớp một phần",
+      "message": "2 trong 5 hóa đơn không thể khớp tự động."
     },
     {
       "id": "log-inv-3",
       "workflowId": "wf-invoice-reconciliation",
       "timestamp": "2025-07-07T16:43:00.000Z",
       "level": "info",
-      "title": "Workflow triggered",
-      "message": "Scheduled monthly reconciliation started."
+      "title": "Workflow được kích hoạt",
+      "message": "Đối soát hàng tháng theo lịch đã bắt đầu."
     },
     {
       "id": "log-content-1",
       "workflowId": "wf-content-post-generator",
       "timestamp": "2025-07-06T08:05:00.000Z",
       "level": "success",
-      "title": "Posts published",
-      "message": "8 content drafts pushed to connected channels."
+      "title": "Đã xuất bản bài",
+      "message": "8 bản nháp nội dung đã đẩy lên các kênh đã kết nối."
     },
     {
       "id": "log-content-2",
       "workflowId": "wf-content-post-generator",
       "timestamp": "2025-07-06T08:02:00.000Z",
       "level": "running",
-      "title": "Generating content",
-      "message": "AI pipeline processing topic batch."
+      "title": "Đang tạo nội dung",
+      "message": "Pipeline AI đang xử lý lô chủ đề."
     },
     {
       "id": "log-content-3",
       "workflowId": "wf-content-post-generator",
       "timestamp": "2025-07-06T08:00:00.000Z",
       "level": "info",
-      "title": "Workflow triggered",
-      "message": "Manual run initiated from dashboard."
+      "title": "Workflow được kích hoạt",
+      "message": "Chạy thủ công từ tổng quan."
     },
     {
       "id": "log-onboard-1",
       "workflowId": "wf-customer-onboarding",
       "timestamp": "2025-07-05T10:30:00.000Z",
       "level": "info",
-      "title": "Draft saved",
-      "message": "Workflow configuration updated — not yet activated."
+      "title": "Đã lưu nháp",
+      "message": "Cấu hình workflow đã cập nhật — chưa kích hoạt."
     },
     {
       "id": "log-support-1",
       "workflowId": "wf-support-ticket-routing",
       "timestamp": "2025-07-04T13:15:00.000Z",
       "level": "failed",
-      "title": "Routing error",
-      "message": "Unable to assign ticket — no available agent in queue.",
-      "detail": "Ticket #4821 left in unassigned state."
+      "title": "Lỗi định tuyến",
+      "message": "Không thể gán ticket — không có agent sẵn sàng trong hàng đợi.",
+      "detail": "Ticket #4821 ở trạng thái chưa được gán."
     },
     {
       "id": "log-support-2",
       "workflowId": "wf-support-ticket-routing",
       "timestamp": "2025-07-04T13:14:30.000Z",
       "level": "warning",
-      "title": "High priority detected",
-      "message": "Ticket flagged as urgent based on keyword analysis."
+      "title": "Phát hiện ưu tiên cao",
+      "message": "Ticket được đánh dấu khẩn dựa trên phân tích từ khóa."
     },
     {
       "id": "log-support-3",
       "workflowId": "wf-support-ticket-routing",
       "timestamp": "2025-07-04T13:14:00.000Z",
       "level": "info",
-      "title": "Workflow triggered",
-      "message": "New Zendesk ticket created."
+      "title": "Workflow được kích hoạt",
+      "message": "Ticket Zendesk mới được tạo."
     }
   ]
 }

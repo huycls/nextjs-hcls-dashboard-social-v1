@@ -69,7 +69,7 @@ export function LoginForm() {
     );
 
     if (!result.ok) {
-      setError("Login failed. Please try again.");
+      setError("Đăng nhập thất bại. Vui lòng thử lại.");
       setLoading(false);
       return;
     }
@@ -84,7 +84,7 @@ export function LoginForm() {
       <div className="mb-8 flex items-center gap-2">
         {/* <BrandLogo className="h-6 w-6 shrink-0" /> */}
         <img
-          src="/assets/logo-avi.png"
+          src="/assets/favicon.co"
           alt="Avispark"
           className="h-20 w-20 shrink-0"
         />
@@ -104,10 +104,10 @@ export function LoginForm() {
       </div>
 
       <h1 className="text-[32px] font-semibold tracking-tight text-heading">
-        Hi, Welcome
+        Xin chào
       </h1>
       <p className="mt-2 text-sm text-foreground">
-        Please login to your account
+        Vui lòng đăng nhập vào tài khoản của bạn
       </p>
 
       <form
@@ -138,7 +138,7 @@ export function LoginForm() {
           <label
             htmlFor="password"
             className="mb-2 block text-sm font-medium text-heading">
-            Password
+            Mật khẩu
           </label>
           <div className="relative">
             <Lock className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-foreground" />
@@ -154,7 +154,7 @@ export function LoginForm() {
             />
             <button
               type="button"
-              aria-label={showPassword ? "Hide password" : "Show password"}
+              aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-4 top-1/2 -translate-y-1/2 text-foreground transition hover:text-foreground">
               {showPassword ? (
@@ -174,12 +174,12 @@ export function LoginForm() {
               onChange={(event) => setRememberMe(event.target.checked)}
               className="h-4 w-4 rounded border-border bg-surface-elevated text-primary focus:ring-primary/30"
             />
-            Remember me
+            Ghi nhớ đăng nhập
           </label>
           <Link
             href="#"
             className="text-sm font-medium text-heading underline underline-offset-2">
-            Forgot password?
+            Quên mật khẩu?
           </Link>
         </div>
 
@@ -194,7 +194,7 @@ export function LoginForm() {
           disabled={loading}
           className="inline-flex h-12 w-full items-center justify-center gap-2 rounded-xl bg-primary text-sm font-medium text-background shadow-sm transition hover:bg-primary-hover disabled:cursor-not-allowed disabled:opacity-60">
           {loading && <Loader2 className="h-4 w-4 animate-spin" />}
-          Login
+          Đăng nhập
         </button>
       </form>
 
@@ -204,7 +204,7 @@ export function LoginForm() {
         </div>
         <div className="relative flex justify-center">
           <span className="bg-background px-3 text-sm text-foreground">
-            Or login with
+            Hoặc đăng nhập bằng
           </span>
         </div>
       </div>
@@ -215,23 +215,23 @@ export function LoginForm() {
           disabled
           className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-border bg-surface-elevated text-sm font-medium text-heading opacity-50">
           <GoogleIcon />
-          Sign in with Google
+          Đăng nhập bằng Google
         </button>
         <button
           type="button"
           disabled
           className="inline-flex h-12 items-center justify-center gap-2 rounded-xl border border-border bg-surface-elevated text-sm font-medium text-heading opacity-50">
           <AppleIcon />
-          Sign in with Apple
+          Đăng nhập bằng Apple
         </button>
       </div>
 
       <p className="mt-8 text-center text-sm text-foreground">
-        Don&apos;t have an account?{" "}
+        Chưa có tài khoản?{" "}
         <Link
           href="#"
           className="font-medium text-heading underline underline-offset-2">
-          Register
+          Đăng ký
         </Link>
       </p>
     </div>

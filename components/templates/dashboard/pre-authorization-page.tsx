@@ -98,21 +98,21 @@ export function PreAuthorizationPage() {
 
     const name = inviteName.trim();
     const email = inviteEmail.trim().toLowerCase();
-    const title = inviteTitle.trim() || "Team member";
+    const title = inviteTitle.trim() || "Thành viên nhóm";
 
     if (!name || !email) {
-      setInviteError("Name and email are required.");
+      setInviteError("Vui lòng nhập tên và email.");
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      setInviteError("Enter a valid email.");
+      setInviteError("Nhập email hợp lệ.");
       return;
     }
     if (
       state.members.some((m) => m.email.toLowerCase() === email) ||
       state.admin.email.toLowerCase() === email
     ) {
-      setInviteError("This email is already in the workspace.");
+      setInviteError("Email này đã có trong workspace.");
       return;
     }
 
@@ -148,7 +148,7 @@ export function PreAuthorizationPage() {
   if (!state) {
     return (
       <div className="flex flex-1 items-center justify-center text-sm text-muted">
-        Loading permissions…
+        Đang tải quyền…
       </div>
     );
   }
@@ -158,11 +158,11 @@ export function PreAuthorizationPage() {
       <div className="flex flex-col gap-4 border-b border-border bg-surface px-6 py-5 sm:flex-row sm:items-center sm:justify-between lg:px-8">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-heading">
-            Pre-Authorization
+            Ủy quyền trước
           </h1>
           <p className="mt-1 text-sm text-muted">
-            Admin grants workflow access to child users before they can view,
-            edit, or run automations.
+            Admin cấp quyền truy cập workflow cho người dùng con trước khi họ
+            có thể xem, sửa hoặc chạy tự động hóa.
           </p>
         </div>
 
@@ -170,7 +170,7 @@ export function PreAuthorizationPage() {
           {savedFlash && (
             <span className="inline-flex items-center gap-1.5 text-xs font-medium text-[var(--node-green)]">
               <Check className="h-3.5 w-3.5" />
-              Saved
+              Đã lưu
             </span>
           )}
           <button
@@ -178,7 +178,7 @@ export function PreAuthorizationPage() {
             onClick={() => setInviteOpen(true)}
             className="inline-flex h-10 items-center gap-2 rounded-xl bg-primary px-4 text-sm font-medium text-[var(--primary-foreground,#fff)] transition hover:bg-primary-hover">
             <UserPlus className="h-4 w-4" />
-            Invite user
+            Mời người dùng
           </button>
         </div>
       </div>
@@ -187,21 +187,21 @@ export function PreAuthorizationPage() {
         <div className="mb-5 grid gap-3 sm:grid-cols-3">
           <StatCard
             icon={Shield}
-            label="Admin"
+            label="Quản trị"
             value={state.admin.name}
-            hint="Full access to all workflows"
+            hint="Toàn quyền với mọi workflow"
           />
           <StatCard
             icon={Users}
-            label="Child users"
+            label="Người dùng con"
             value={String(state.members.length)}
-            hint={`${state.members.filter((m) => m.status === "active").length} active`}
+            hint={`${state.members.filter((m) => m.status === "active").length} đang hoạt động`}
           />
           <StatCard
             icon={Workflow}
-            label="Workflows"
+            label="Workflow"
             value={String(state.workflows.length)}
-            hint="Available for permission grants"
+            hint="Sẵn sàng để cấp quyền"
           />
         </div>
 
@@ -214,7 +214,7 @@ export function PreAuthorizationPage() {
                   type="search"
                   value={query}
                   onChange={(event) => setQuery(event.target.value)}
-                  placeholder="Search users"
+                  placeholder="Tìm kiếm người dùng"
                   className="h-10 w-full rounded-xl border border-border bg-surface pl-9 pr-3 text-sm text-foreground outline-none transition placeholder:text-muted focus:border-primary/40 focus:ring-2 focus:ring-primary/15"
                 />
               </div>
@@ -229,11 +229,11 @@ export function PreAuthorizationPage() {
 
             <div className="flex-1 overflow-y-auto px-2 py-2">
               <p className="px-2 py-2 text-[11px] font-semibold uppercase tracking-wide text-muted">
-                Child users
+                Người dùng con
               </p>
               {filteredMembers.length === 0 ? (
                 <p className="px-3 py-8 text-center text-sm text-muted">
-                  No users match “{query}”.
+                  Không có người dùng khớp “{query}”.
                 </p>
               ) : (
                 filteredMembers.map((member) => {
@@ -268,7 +268,7 @@ export function PreAuthorizationPage() {
                           {member.email}
                         </span>
                         <span className="mt-1 block text-[11px] text-muted">
-                          {granted} workflow{granted === 1 ? "" : "s"} granted
+                          {granted} workflow được cấp quyền
                         </span>
                       </span>
                     </button>
@@ -283,10 +283,10 @@ export function PreAuthorizationPage() {
               <div className="flex flex-1 flex-col items-center justify-center gap-2 px-6 py-16 text-center">
                 <Users className="h-8 w-8 text-muted" />
                 <p className="text-sm font-medium text-heading">
-                  Select a child user
+                  Chọn người dùng con
                 </p>
                 <p className="max-w-sm text-sm text-muted">
-                  Choose a user on the left to assign workflow permissions.
+                  Chọn người dùng bên trái để gán quyền workflow.
                 </p>
               </div>
             ) : (
@@ -307,7 +307,7 @@ export function PreAuthorizationPage() {
                   </div>
 
                   <label className="flex items-center gap-2 text-sm text-muted">
-                    Status
+                    Trạng thái
                     <select
                       value={selectedMember.status ?? "active"}
                       onChange={(event) =>
@@ -331,14 +331,14 @@ export function PreAuthorizationPage() {
                 <div className="border-b border-border px-5 py-3">
                   <p className="text-xs text-muted">
                     {getGrantsForUser(state.grants, selectedMember.id).length}{" "}
-                    grant
+                    quyền
                     {getGrantsForUser(state.grants, selectedMember.id)
                       .length === 1
                       ? ""
-                      : "s"}{" "}
-                    · Toggle permissions per workflow.{" "}
+                      : ""}{" "}
+                    · Bật/tắt quyền theo từng workflow.{" "}
                     <span className="text-foreground">
-                      Manage implies View, Edit, and Run.
+                      Quản lý bao gồm Xem, Sửa và Chạy.
                     </span>
                   </p>
                 </div>
@@ -390,7 +390,7 @@ export function PreAuthorizationPage() {
                                   className="px-3 py-4 text-center">
                                   <input
                                     type="checkbox"
-                                    aria-label={`${permission.label} on ${workflow.name}`}
+                                    aria-label={`${permission.label} trên ${workflow.name}`}
                                     checked={checked}
                                     onChange={(event) =>
                                       handleTogglePermission(
@@ -430,11 +430,10 @@ export function PreAuthorizationPage() {
                 <h2
                   id="invite-user-title"
                   className="text-lg font-semibold text-heading">
-                  Invite child user
+                  Mời người dùng con
                 </h2>
                 <p className="mt-1 text-sm text-muted">
-                  They start with no workflow access until you grant
-                  permissions.
+                  Họ bắt đầu không có quyền workflow cho đến khi bạn cấp quyền.
                 </p>
               </div>
               <button
@@ -444,14 +443,14 @@ export function PreAuthorizationPage() {
                   setInviteError(null);
                 }}
                 className="rounded-lg px-2 py-1 text-sm text-muted hover:bg-surface hover:text-heading">
-                Close
+                Đóng
               </button>
             </div>
 
             <div className="space-y-3">
               <InviteField
                 id="invite-name"
-                label="Full name"
+                label="Họ và tên"
                 value={inviteName}
                 onChange={setInviteName}
                 placeholder="Lan Pham"
@@ -468,7 +467,7 @@ export function PreAuthorizationPage() {
               />
               <InviteField
                 id="invite-title"
-                label="Title"
+                label="Chức danh"
                 value={inviteTitle}
                 onChange={setInviteTitle}
                 placeholder="Content Ops"
@@ -489,13 +488,13 @@ export function PreAuthorizationPage() {
                   setInviteError(null);
                 }}
                 className="rounded-xl border border-border px-4 py-2 text-sm font-medium text-foreground hover:bg-surface">
-                Cancel
+                Hủy
               </button>
               <button
                 type="submit"
                 className="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-sm font-medium text-[var(--primary-foreground,#fff)] hover:bg-primary-hover">
                 <Plus className="h-4 w-4" />
-                Add user
+                Thêm người dùng
               </button>
             </div>
           </form>

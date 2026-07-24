@@ -45,7 +45,7 @@ export function WorkflowActivityChart() {
     <article className="surface-card rounded-2xl bg-surface-elevated p-5 xl:col-span-2">
       <div className="mb-6 flex items-center justify-between">
         <h2 className="text-base font-semibold text-heading">
-          Workflow Activity Trend
+          Xu hướng hoạt động workflow
         </h2>
       </div>
 

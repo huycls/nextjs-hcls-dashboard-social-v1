@@ -3,10 +3,7 @@ import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { ThemeHeadScript } from "@/components/theme/theme-script";
-import {
-  getThemeFromCookie,
-  THEME_STORAGE_KEY,
-} from "@/lib/theme";
+import { getThemeFromCookie, THEME_STORAGE_KEY } from "@/lib/theme";
 import "./globals.css";
 
 const inter = Inter({
@@ -17,11 +14,11 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "Avispark",
-  description: "Automation workflow platform",
+  description: "Nền tảng tự động hóa quy trình làm việc",
   icons: {
-    icon: "/assets/logo-avi.png",
-    shortcut: "/assets/logo-avi.png",
-    apple: "/assets/logo-avi.png",
+    icon: "/assets/favicon.co",
+    shortcut: "/assets/favicon.co",
+    apple: "/assets/favicon.co",
   },
 };
 
@@ -35,7 +32,7 @@ export default async function RootLayout({
 
   return (
     <html
-      lang="en"
+      lang="vi"
       className={`${inter.variable} ${inter.className} h-full antialiased ${theme}`}
       data-theme={theme}
       suppressHydrationWarning>

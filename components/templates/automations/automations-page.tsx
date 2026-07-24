@@ -14,16 +14,16 @@ export function AutomationsPage() {
       <div className="flex items-center justify-between border-b border-border bg-surface px-6 py-5 lg:px-8">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight text-heading">
-            Automations
+            Tự động hóa
           </h1>
           <p className="mt-1 text-sm text-muted">
-            Manage your workflow projects and integrations
+            Quản lý dự án workflow và tích hợp của bạn
           </p>
         </div>
 
         <button
           type="button"
-          aria-label="Add new workflow"
+          aria-label="Thêm workflow mới"
           onClick={() => setCreateDialogOpen(true)}
           className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-background transition hover:bg-primary-hover">
           <Plus className="h-5 w-5" />

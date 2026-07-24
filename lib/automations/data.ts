@@ -18,9 +18,9 @@ export type WorkflowStatus =
   | "Failed";
 
 export const WORKFLOW_STATUS_LABELS: Record<WorkflowStatus, string> = {
-  Active: "Active",
-  Paused: "Paused",
-  Draft: "Draft",
+  Active: "Đang hoạt động",
+  Paused: "Tạm dừng",
+  Draft: "Nháp",
   Running: "Đang thực hiện",
   Failed: "Thất bại",
 };
@@ -42,20 +42,20 @@ export const WORKFLOW_TYPES: Array<{
   {
     id: "generate-idea-posts",
     typeId: WORKFLOW_TYPE_IDS["generate-idea-posts"],
-    title: "Generate Idea Posts",
-    description: "Brainstorm and generate post ideas for your social channels.",
+    title: "Tạo ý tưởng bài đăng",
+    description: "Brainstorm và tạo ý tưởng bài đăng cho kênh mạng xã hội.",
   },
   {
     id: "generate-content-post",
     typeId: WORKFLOW_TYPE_IDS["generate-content-post"],
-    title: "Generate Content Post",
-    description: "Create full content posts ready to publish across platforms.",
+    title: "Tạo nội dung bài đăng",
+    description: "Tạo nội dung bài đăng hoàn chỉnh, sẵn sàng xuất bản trên nhiều nền tảng.",
   },
 ];
 
 export const WORKFLOW_TYPE_LABELS: Record<WorkflowType, string> = {
-  "generate-idea-posts": "Generate Idea Posts",
-  "generate-content-post": "Generate Content Post",
+  "generate-idea-posts": "Tạo ý tưởng bài đăng",
+  "generate-content-post": "Tạo nội dung bài đăng",
 };
 
 export type WorkflowBackendConfig = {

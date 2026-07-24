@@ -54,14 +54,14 @@ export function NotFoundView() {
           />
         )}
         <p className="mt-3 text-sm leading-relaxed text-muted sm:text-base">
-          The page you&apos;re looking for doesn&apos;t exist
-          <br /> or has been moved.
+          Trang bạn tìm kiếm không tồn tại
+          <br /> hoặc đã được di chuyển.
         </p>
 
         <Link
           href="/"
           className="mt-8 inline-flex h-11 items-center rounded-xl bg-primary px-6 text-sm font-medium text-background transition hover:bg-primary-hover">
-          Back to home
+          Về trang chủ
         </Link>
       </div>
     </div>

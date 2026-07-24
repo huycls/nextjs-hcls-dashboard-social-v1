@@ -28,15 +28,15 @@ export function HeroSection() {
         {" "}
         <div className="mx-auto max-w-3xl text-center">
           <p className="mb-4 text-sm font-medium uppercase tracking-wider text-primary">
-            Automation platform
+            Nền tảng tự động hóa
           </p>
           <h1 className="text-4xl font-semibold tracking-tight text-heading sm:text-5xl lg:text-6xl">
-            Automate workflows.
+            Tự động hóa workflow.
             <br />
             <span className="justify-start items-center mt-3 inline-flex">
-              Work
+              Làm việc
               <RotatingText
-                texts={["smarter", "faster"]}
+                texts={["thông minh", "nhanh hơn"]}
                 mainClassName={`${isDark ? "text-black" : "text-white"} px-2 ml-4 sm:px-2 md:px-3 bg-primary overflow-hidden py-0.5  sm:py-1 md:py-2 justify-center rounded-lg min-w-[160px] lg:min-w-[260px]`}
                 staggerFrom="last"
                 initial={{ y: "100%" }}
@@ -53,20 +53,20 @@ export function HeroSection() {
             </span>
           </h1>
           <p className="mx-auto mt-6 max-w-xl text-lg text-foreground">
-            Avispark helps teams build, deploy, and monitor automation workflows
-            — from simple triggers to complex multi-step pipelines.
+            Avispark giúp đội ngũ xây dựng, triển khai và giám sát workflow tự
+            động — từ trigger đơn giản đến pipeline nhiều bước phức tạp.
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href="/dashboard"
               className="inline-flex group h-12 items-center gap-2 rounded-xl bg-primary px-6 text-sm font-medium text-background transition hover:bg-primary-hover duration-300 ease-in-out">
-              Open dashboard
+              Mở dashboard
               <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-all duration-300 ease-in-out" />
             </Link>
             <Link
               href="/login"
               className="inline-flex h-12 items-center rounded-xl border border-border bg-surface px-6 text-sm font-medium text-heading transition-all hover:bg-primary hover:text-background duration-300 ease-in-out">
-              Sign in
+              Đăng nhập
             </Link>
           </div>
         </div>

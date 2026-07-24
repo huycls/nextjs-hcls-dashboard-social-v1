@@ -49,7 +49,7 @@ export function WorkflowCanvasViewport({
   overlay,
   onPlay,
   playDisabled,
-  playLabel = "Run workflow",
+  playLabel = "Chạy workflow",
   onBackgroundClick,
 }: WorkflowCanvasViewportProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -189,11 +189,11 @@ export function WorkflowCanvasViewport({
       onClick: onPlay,
       disabled: playDisabled,
     },
-    { id: "layers" as const, icon: Layers, label: "Layers" },
-    { id: "text" as const, icon: Type, label: "Text" },
-    { id: "image" as const, icon: ImageIcon, label: "Image" },
-    { id: "select" as const, icon: MousePointer2, label: "Select" },
-    { id: "comment" as const, icon: MessageSquare, label: "Comment" },
+    { id: "layers" as const, icon: Layers, label: "Lớp" },
+    { id: "text" as const, icon: Type, label: "Văn bản" },
+    { id: "image" as const, icon: ImageIcon, label: "Hình ảnh" },
+    { id: "select" as const, icon: MousePointer2, label: "Chọn" },
+    { id: "comment" as const, icon: MessageSquare, label: "Bình luận" },
   ];
 
   return (
@@ -216,17 +216,17 @@ export function WorkflowCanvasViewport({
         data-canvas-ui="true"
         className="absolute bottom-5 left-5 z-20 flex items-center gap-2">
         <div className="inline-flex items-center gap-1 rounded-xl border border-border bg-surface-elevated/95 px-2 py-1.5 text-xs font-medium text-foreground shadow-sm backdrop-blur-sm">
-          <span className="px-2">Page 1</span>
+          <span className="px-2">Trang 1</span>
           <button
             type="button"
-            aria-label="Duplicate page"
+            aria-label="Nhân đôi trang"
             className="inline-flex h-7 w-7 items-center justify-center rounded-lg text-muted transition hover:bg-surface hover:text-heading">
             <Copy className="h-3.5 w-3.5" />
           </button>
         </div>
         <button
           type="button"
-          aria-label="Add page"
+          aria-label="Thêm trang"
           className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-border bg-surface-elevated/95 text-muted shadow-sm backdrop-blur-sm transition hover:text-heading">
           <Plus className="h-4 w-4" />
         </button>
@@ -264,7 +264,7 @@ export function WorkflowCanvasViewport({
           type="button"
           className="ml-1 inline-flex h-9 items-center gap-2 rounded-xl bg-[var(--node-blue)] px-3 text-sm font-medium text-white transition hover:opacity-90">
           <Sparkles className="h-3.5 w-3.5" />
-          Ask AI
+          Hỏi AI
         </button>
       </div>
 
@@ -273,7 +273,7 @@ export function WorkflowCanvasViewport({
         className="absolute bottom-5 right-5 z-20 flex items-center gap-1 rounded-xl border border-border bg-surface-elevated/95 px-1.5 py-1 text-xs text-muted shadow-sm backdrop-blur-sm">
         <button
           type="button"
-          aria-label="Zoom out"
+          aria-label="Thu nhỏ"
           onClick={zoomOut}
           disabled={scale <= MIN_ZOOM}
           className="inline-flex h-7 w-7 items-center justify-center rounded-lg transition hover:bg-surface disabled:opacity-40">
@@ -283,12 +283,12 @@ export function WorkflowCanvasViewport({
           type="button"
           onClick={fitToView}
           className="min-w-12 rounded-lg px-1 py-1 font-medium text-foreground transition hover:bg-surface"
-          aria-label="Reset zoom">
+          aria-label="Đặt lại thu phóng">
           {Math.round(scale * 100)}%
         </button>
         <button
           type="button"
-          aria-label="Zoom in"
+          aria-label="Phóng to"
           onClick={zoomIn}
           disabled={scale >= MAX_ZOOM}
           className="inline-flex h-7 w-7 items-center justify-center rounded-lg transition hover:bg-surface disabled:opacity-40">

@@ -19,7 +19,7 @@ type KpiCard = {
 
 const cards: KpiCard[] = [
   {
-    title: "Workflows Run Today",
+    title: "Workflow chạy hôm nay",
     value: "147",
     trend: "+12%",
     trendUp: true,
@@ -27,7 +27,7 @@ const cards: KpiCard[] = [
     iconClass: "bg-[var(--node-blue-bg)] text-[var(--node-blue)]",
   },
   {
-    title: "Automations Approved",
+    title: "Tự động hóa đã duyệt",
     value: "89",
     trend: "+23%",
     trendUp: true,
@@ -35,15 +35,15 @@ const cards: KpiCard[] = [
     iconClass: "bg-[var(--node-green-bg)] text-[var(--node-green)]",
   },
   {
-    title: "Avg Processing Time",
-    value: "2.3 hrs",
+    title: "Thời gian xử lý TB",
+    value: "2.3 giờ",
     trend: "-45%",
     trendUp: true,
     icon: Clock,
     iconClass: "bg-[var(--node-orange-bg)] text-[var(--node-orange)]",
   },
   {
-    title: "Cost Saved",
+    title: "Chi phí tiết kiệm",
     value: "$12,540",
     trend: "+18%",
     trendUp: true,

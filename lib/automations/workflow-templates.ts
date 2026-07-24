@@ -135,8 +135,8 @@ function buildFlowTemplate(type: WorkflowType): WorkflowTemplate {
   const nodes: CanvasNode[] = [
     {
       id: "start",
-      label: "Start",
-      subtitle: "When clicking",
+      label: "Bắt đầu",
+      subtitle: "Khi nhấn",
       x: startX,
       y: spineY,
       icon: "start",
@@ -156,7 +156,7 @@ function buildFlowTemplate(type: WorkflowType): WorkflowTemplate {
     },
     {
       id: "process",
-      label: "Process",
+      label: "Xử lý",
       subtitle: "prepare: payload",
       x: processX,
       y: spineY,
@@ -166,7 +166,7 @@ function buildFlowTemplate(type: WorkflowType): WorkflowTemplate {
     },
     {
       id: "ai-settings",
-      label: "AI Settings",
+      label: "Cài đặt AI",
       subtitle: "gemini: model",
       x: aiX,
       y: spineY,
@@ -192,7 +192,7 @@ function buildFlowTemplate(type: WorkflowType): WorkflowTemplate {
 
     nodes.push({
       id: "branch",
-      label: "If",
+      label: "Nếu",
       subtitle: "",
       x: logicX,
       y: logicY,
@@ -212,7 +212,7 @@ function buildFlowTemplate(type: WorkflowType): WorkflowTemplate {
     nodes.push(
       {
         id: "integration",
-        label: "Integration",
+        label: "Tích hợp",
         subtitle: "openrouter: model",
         x: branchX,
         y: trueY,
@@ -223,7 +223,7 @@ function buildFlowTemplate(type: WorkflowType): WorkflowTemplate {
       },
       {
         id: "output",
-        label: "Output",
+        label: "Đầu ra",
         subtitle: "add: to sheet",
         x: branchX,
         y: falseY,
@@ -239,20 +239,20 @@ function buildFlowTemplate(type: WorkflowType): WorkflowTemplate {
         from: "branch",
         to: "integration",
         tone: "true",
-        label: "True",
+        label: "Đúng",
       },
       {
         from: "branch",
         to: "output",
         tone: "false",
-        label: "False",
+        label: "Sai",
       },
     );
 
     const mergeX = branchX + cardW + gap;
     nodes.push({
       id: "complete",
-      label: "Complete",
+      label: "Hoàn tất",
       subtitle: "mark: done",
       x: mergeX,
       y: spineY,
@@ -287,7 +287,7 @@ function buildFlowTemplate(type: WorkflowType): WorkflowTemplate {
 
     nodes.push({
       id: "complete",
-      label: "Complete",
+      label: "Hoàn tất",
       subtitle: "mark: done",
       x: cursorX,
       y: spineY,
@@ -303,7 +303,7 @@ function buildFlowTemplate(type: WorkflowType): WorkflowTemplate {
 
   nodes.push({
     id: "review",
-    label: "Review",
+    label: "Rà soát",
     subtitle: "check: result",
     x: cursorX,
     y: spineY,
@@ -316,7 +316,7 @@ function buildFlowTemplate(type: WorkflowType): WorkflowTemplate {
   const addX = cursorX + cardW + gap;
   nodes.push({
     id: "add-step",
-    label: "Add",
+    label: "Thêm",
     subtitle: "",
     x: addX,
     y: spineY + (CANVAS_NODE_HEIGHT - CANVAS_ADD_SIZE) / 2,
@@ -348,23 +348,23 @@ export const CONFIGURABLE_NODE_META: Record<
   { title: string; description: string; kind: "webhook" | "credentials" }
 > = {
   webhook: {
-    title: "Trigger",
-    description: "Configure when and how this workflow starts.",
+    title: "Kích hoạt",
+    description: "Cấu hình thời điểm và cách workflow bắt đầu.",
     kind: "webhook",
   },
   "gemini-model": {
-    title: "AI Settings",
-    description: "OpenRouter API key and model for content generation.",
+    title: "Cài đặt AI",
+    description: "OpenRouter API key và model để tạo nội dung.",
     kind: "credentials",
   },
   "openrouter-model": {
-    title: "Integration",
-    description: "OpenRouter connection shared with AI Settings.",
+    title: "Tích hợp",
+    description: "Kết nối OpenRouter dùng chung với Cài đặt AI.",
     kind: "credentials",
   },
   "add-to-sheet": {
-    title: "Output",
-    description: "Connect Google and choose the spreadsheet for results.",
+    title: "Đầu ra",
+    description: "Kết nối Google và chọn bảng tính cho kết quả.",
     kind: "credentials",
   },
 };
@@ -373,21 +373,21 @@ export const LINKABLE_APPS = [
   {
     id: "asana",
     name: "Asana",
-    description: "Track work and manage projects across teams.",
+    description: "Theo dõi công việc và quản lý dự án trong nhóm.",
     color: "#F06A6A",
     initial: "A",
   },
   {
     id: "figma",
     name: "Figma",
-    description: "Collaborate on interface design in real time.",
+    description: "Cộng tác thiết kế giao diện theo thời gian thực.",
     color: "#A259FF",
     initial: "F",
   },
   {
     id: "mailchimp",
     name: "Mailchimp",
-    description: "Send campaigns and grow your audience.",
+    description: "Gửi chiến dịch và phát triển khán giả.",
     color: "#FFE01B",
     initial: "M",
     darkText: true,
@@ -395,35 +395,35 @@ export const LINKABLE_APPS = [
   {
     id: "slack",
     name: "Slack",
-    description: "Message teammates and automate channel updates.",
+    description: "Nhắn tin với đồng đội và tự động hóa cập nhật kênh.",
     color: "#4A154B",
     initial: "S",
   },
   {
     id: "spotify",
     name: "Spotify",
-    description: "Sync playlists and listening activity.",
+    description: "Đồng bộ playlist và hoạt động nghe nhạc.",
     color: "#1DB954",
     initial: "Sp",
   },
   {
     id: "vscode",
     name: "Visual Studio Code",
-    description: "Connect editor events to your workflows.",
+    description: "Kết nối sự kiện từ trình soạn thảo vào workflow.",
     color: "#007ACC",
     initial: "V",
   },
   {
     id: "zapier",
     name: "Zapier",
-    description: "Bridge thousands of apps into one flow.",
+    description: "Kết nối hàng nghìn ứng dụng trong một luồng.",
     color: "#FF4A00",
     initial: "Z",
   },
   {
     id: "zoom",
     name: "Zoom",
-    description: "Trigger actions from meetings and webinars.",
+    description: "Kích hoạt hành động từ cuộc họp và hội thảo trực tuyến.",
     color: "#2D8CFF",
     initial: "Zo",
   },

@@ -66,12 +66,12 @@ function passThroughBackendResponse(backendResponse: Response) {
 async function proxyRequest(request: NextRequest, context: RouteContext) {
   const { path } = await context.params;
   if (!path?.length) {
-    return NextResponse.json({ message: "Not found." }, { status: 404 });
+    return NextResponse.json({ message: "Không tìm thấy." }, { status: 404 });
   }
 
   // Handled by dedicated routes under /api/auth/*
   if (path[0] === "auth") {
-    return NextResponse.json({ message: "Not found." }, { status: 404 });
+    return NextResponse.json({ message: "Không tìm thấy." }, { status: 404 });
   }
 
   const rawAccess = request.cookies.get(AUTH_COOKIE_NAME)?.value;
@@ -82,7 +82,7 @@ async function proxyRequest(request: NextRequest, context: RouteContext) {
 
   if (!accessToken && !refreshToken) {
     return NextResponse.json(
-      { message: "Unauthorized. Please sign in again." },
+      { message: "Chưa xác thực. Vui lòng đăng nhập lại." },
       { status: 401 },
     );
   }
@@ -100,7 +100,7 @@ async function proxyRequest(request: NextRequest, context: RouteContext) {
     if (!refreshed) {
       return applyClearAuthCookies(
         NextResponse.json(
-          { message: "Session expired. Please sign in again." },
+          { message: "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại." },
           { status: 401 },
         ),
       );
@@ -114,7 +114,7 @@ async function proxyRequest(request: NextRequest, context: RouteContext) {
       );
     } catch {
       return NextResponse.json(
-        { message: `Could not reach backend at ${BACKEND_BASE_URL}.` },
+        { message: `Không thể kết nối tới backend tại ${BACKEND_BASE_URL}.` },
         { status: 502 },
       );
     }
@@ -126,7 +126,7 @@ async function proxyRequest(request: NextRequest, context: RouteContext) {
     backendResponse = await run(accessToken!);
   } catch {
     return NextResponse.json(
-      { message: `Could not reach backend at ${BACKEND_BASE_URL}.` },
+      { message: `Không thể kết nối tới backend tại ${BACKEND_BASE_URL}.` },
       { status: 502 },
     );
   }
@@ -136,7 +136,7 @@ async function proxyRequest(request: NextRequest, context: RouteContext) {
     if (!refreshed) {
       return applyClearAuthCookies(
         NextResponse.json(
-          { message: "Session expired. Please sign in again." },
+          { message: "Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại." },
           { status: 401 },
         ),
       );
@@ -146,7 +146,7 @@ async function proxyRequest(request: NextRequest, context: RouteContext) {
       backendResponse = await run(refreshed.accessToken);
     } catch {
       return NextResponse.json(
-        { message: `Could not reach backend at ${BACKEND_BASE_URL}.` },
+        { message: `Không thể kết nối tới backend tại ${BACKEND_BASE_URL}.` },
         { status: 502 },
       );
     }

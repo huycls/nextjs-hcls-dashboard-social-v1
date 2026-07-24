@@ -97,7 +97,7 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
           setLoadError(
             error instanceof Error
               ? error.message
-              : "Failed to load workflows.",
+              : "Không thể tải danh sách workflow.",
           );
         }
       })
@@ -161,7 +161,7 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
         ? {
             ...workflow,
             status: enabled ? ("Active" as const) : ("Paused" as const),
-            lastModified: "Just now",
+            lastModified: "Vừa xong",
           }
         : workflow,
     );
@@ -200,7 +200,7 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
       setDeleteError(
         error instanceof Error
           ? error.message
-          : "Failed to delete automation.",
+          : "Không thể xóa tự động hóa.",
       );
     } finally {
       setDeleting(false);
@@ -216,24 +216,24 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
     <div className="relative flex flex-1 flex-col">
       {loading ? (
         <Loading
-          label="Loading workflows"
-          message="Loading workflows..."
+          label="Đang tải workflow"
+          message="Đang tải workflow..."
         />
       ) : null}
       {!embedded && (
         <div className="flex items-center justify-between border-b border-border bg-surface px-6 py-5 lg:px-8">
           <div>
             <h1 className="text-2xl font-semibold tracking-tight text-heading">
-              Automations
+              Tự động hóa
             </h1>
             <p className="mt-1 text-sm text-muted">
-              Manage your workflow projects and integrations
+              Quản lý dự án workflow và tích hợp của bạn
             </p>
           </div>
 
           <button
             type="button"
-            aria-label="Add new workflow"
+            aria-label="Thêm workflow mới"
             onClick={() => setCreateDialogOpen(true)}
             className="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-background transition hover:bg-primary-hover">
             <Plus className="h-5 w-5" />
@@ -253,12 +253,12 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
             <div className="flex items-center gap-2">
               <ClipboardList className="h-4 w-4 text-muted" />
               <h2 className="text-sm font-semibold text-heading">
-                Recent Workflows
+                Workflow gần đây
               </h2>
             </div>
             <button
               type="button"
-              aria-label="Workflow list options"
+              aria-label="Tùy chọn danh sách workflow"
               className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-muted transition hover:bg-surface hover:text-foreground">
               <MoreHorizontal className="h-4 w-4" />
             </button>
@@ -271,18 +271,18 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
                   <th className="w-12 px-4 py-3">
                     <input
                       type="checkbox"
-                      aria-label="Select all workflows on this page"
+                      aria-label="Chọn tất cả workflow trên trang này"
                       checked={allPageSelected}
                       onChange={toggleSelectAll}
                       className="h-4 w-4 rounded border-border"
                     />
                   </th>
-                  <th className="px-4 py-3 font-medium">Name</th>
-                  <th className="px-4 py-3 font-medium">Type</th>
-                  <th className="px-4 py-3 font-medium">Apps</th>
-                  <th className="px-4 py-3 font-medium">Status</th>
-                  <th className="px-4 py-3 font-medium">Last modified</th>
-                  <th className="w-24 px-4 py-3 font-medium">Actions</th>
+                  <th className="px-4 py-3 font-medium">Tên</th>
+                  <th className="px-4 py-3 font-medium">Loại</th>
+                  <th className="px-4 py-3 font-medium">Ứng dụng</th>
+                  <th className="px-4 py-3 font-medium">Trạng thái</th>
+                  <th className="px-4 py-3 font-medium">Sửa lần cuối</th>
+                  <th className="w-24 px-4 py-3 font-medium">Thao tác</th>
                 </tr>
               </thead>
               <tbody>
@@ -291,7 +291,7 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
                     <td
                       colSpan={7}
                       className="px-4 py-12 text-center text-sm text-muted">
-                      No workflows found. Create a new project to get started.
+                      Chưa có workflow nào. Tạo dự án mới để bắt đầu.
                     </td>
                   </tr>
                 ) : (
@@ -307,7 +307,7 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
                         <td className="px-4 py-4">
                           <input
                             type="checkbox"
-                            aria-label={`Select ${workflow.name}`}
+                            aria-label={`Chọn ${workflow.name}`}
                             checked={isSelected}
                             onChange={() => toggleSelect(workflow.id)}
                             className="h-4 w-4 rounded border-border"
@@ -354,13 +354,13 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
                           <div className="flex items-center justify-end gap-1">
                             <Link
                               href={`/dashboard/automations/${workflow.id}/edit`}
-                              aria-label={`Edit ${workflow.name}`}
+                              aria-label={`Sửa ${workflow.name}`}
                               className="inline-flex h-8 w-8 items-center justify-center rounded-lg text-muted transition hover:bg-surface hover:text-foreground">
                               <Pencil className="h-5 w-5" />
                             </Link>
                             <button
                               type="button"
-                              aria-label={`Delete ${workflow.name}`}
+                              aria-label={`Xóa ${workflow.name}`}
                               onClick={() => {
                                 setDeleteError(null);
                                 setWorkflowToDelete(workflow);
@@ -382,7 +382,7 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                aria-label="Previous page"
+                aria-label="Trang trước"
                 disabled={effectivePage <= 1}
                 onClick={() => setPage((current) => Math.max(1, current - 1))}
                 className="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-border bg-surface-elevated text-foreground transition hover:bg-surface disabled:cursor-not-allowed disabled:opacity-40">
@@ -400,7 +400,7 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
                   <button
                     key={pageNumber}
                     type="button"
-                    aria-label={`Go to page ${pageNumber}`}
+                    aria-label={`Đi tới trang ${pageNumber}`}
                     aria-current={
                       pageNumber === effectivePage ? "page" : undefined
                     }
@@ -417,7 +417,7 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
 
               <button
                 type="button"
-                aria-label="Next page"
+                aria-label="Trang sau"
                 disabled={effectivePage >= totalPages}
                 onClick={() =>
                   setPage((current) => Math.min(totalPages, current + 1))
@@ -431,7 +431,7 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
               <label
                 htmlFor="page-size"
                 className="font-medium">
-                Show
+                Hiển thị
               </label>
               <select
                 id="page-size"
@@ -448,7 +448,7 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
                   </option>
                 ))}
               </select>
-              <span>from: {workflows.length}</span>
+              <span>trong tổng: {workflows.length}</span>
             </div>
           </div>
         </div>
@@ -481,16 +481,16 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
             <h2
               id="delete-workflow-title"
               className="text-lg font-semibold text-heading">
-              Delete automation?
+              Xóa tự động hóa?
             </h2>
             <p
               id="delete-workflow-description"
               className="mt-2 text-sm text-muted">
-              Are you sure you want to delete{" "}
+              Bạn có chắc muốn xóa{" "}
               <span className="font-medium text-heading">
                 {workflowToDelete.name}
               </span>
-              ? This removes the job from the database and cannot be undone.
+              ? Thao tác này xóa job khỏi cơ sở dữ liệu và không thể hoàn tác.
             </p>
 
             {deleteError && (
@@ -506,14 +506,14 @@ export function WorkflowList({ embedded = false }: WorkflowListProps) {
                   setDeleteError(null);
                 }}
                 className="rounded-xl border border-border px-4 py-2 text-sm font-medium text-foreground transition hover:bg-surface disabled:opacity-40">
-                Cancel
+                Hủy
               </button>
               <button
                 type="button"
                 disabled={deleting}
                 onClick={confirmDelete}
                 className="rounded-xl bg-rose-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-rose-700 disabled:opacity-40">
-                {deleting ? "Deleting..." : "Delete automation"}
+                {deleting ? "Đang xóa..." : "Xóa tự động hóa"}
               </button>
             </div>
           </div>

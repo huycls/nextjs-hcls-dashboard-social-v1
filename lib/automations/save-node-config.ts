@@ -37,7 +37,7 @@ export async function saveWorkflowNodeConfig(
 ): Promise<SaveNodeConfigResult> {
   const id = jobId.trim();
   if (!id) {
-    return { ok: false, message: "Job ID is required." };
+    return { ok: false, message: "Cần có Job ID." };
   }
 
   try {
@@ -97,20 +97,20 @@ export async function saveWorkflowNodeConfig(
     if (!workflow) {
       return {
         ok: true,
-        message: "Config saved.",
+        message: "Đã lưu cấu hình.",
         workflow: null,
       };
     }
 
     return {
       ok: true,
-      message: "Config saved.",
+      message: "Đã lưu cấu hình.",
       workflow: mapBackendJobToWorkflowItem(job, workflow),
     };
   } catch {
     return {
       ok: false,
-      message: "Failed to save config. Please try again.",
+      message: "Không thể lưu cấu hình. Vui lòng thử lại.",
     };
   }
 }

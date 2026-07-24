@@ -18,23 +18,23 @@ import { logout } from "@/lib/auth/auth-client";
 
 const mainNav = [
   {
-    label: "Dashboard",
+    label: "Tổng quan",
     href: "/dashboard",
     icon: LayoutDashboard,
     exact: true,
   },
   {
-    label: "Automations",
+    label: "Tự động hóa",
     href: "/dashboard/automations",
     icon: Workflow,
   },
   {
-    label: "Pre-Authorization",
+    label: "Ủy quyền trước",
     href: "/dashboard/pre-authorization",
     icon: Shield,
   },
-  { label: "Log Activity", href: "/dashboard/activity", icon: FileText },
-  { label: "Integrations", href: "/dashboard/integrations", icon: Plug },
+  { label: "Nhật ký hoạt động", href: "/dashboard/activity", icon: FileText },
+  { label: "Tích hợp", href: "/dashboard/integrations", icon: Plug },
 ];
 
 function isActivePath(pathname: string, href: string, exact = false) {
@@ -126,8 +126,8 @@ export function Sidebar() {
       <button
         type="button"
         onClick={handleLogout}
-        title="Logout"
-        aria-label="Logout"
+        title="Đăng xuất"
+        aria-label="Đăng xuất"
         className={cn(
           "group relative mt-4 flex items-center justify-center rounded-xl text-sidebar-foreground transition hover:bg-sidebar-hover hover:text-sidebar-heading",
           "h-11 w-11 self-center",
@@ -135,12 +135,12 @@ export function Sidebar() {
         )}>
         <LogOut className="h-5 w-5 shrink-0 min-[1500px]:h-4 min-[1500px]:w-4" />
         <span className="hidden text-sm font-medium min-[1500px]:inline">
-          Logout
+          Đăng xuất
         </span>
         <span
           role="tooltip"
           className="pointer-events-none absolute left-full top-1/2 z-50 ml-3 -translate-y-1/2 whitespace-nowrap rounded-lg border border-border bg-surface-elevated px-2.5 py-1.5 text-xs font-medium text-heading opacity-0 shadow-md transition group-hover:opacity-100 min-[1500px]:hidden">
-          Logout
+          Đăng xuất
         </span>
       </button>
     </aside>
